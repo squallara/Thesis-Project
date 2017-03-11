@@ -45,14 +45,14 @@ public class SceneManager : MonoBehaviour {
         print(p1LeftSpeed);
 
         ///////////////////////////Enabling/Disabling the trail renderer seems weird//////////////////////////
-        //if(p1LeftSpeed < 1f)
-        //{
-        //    player1HandLeft.GetComponent<TrailRenderer>().enabled = false;
-        //}
-        //else
-        //{
-        //    player1HandLeft.GetComponent<TrailRenderer>().enabled = true;
-        //}
+        if (p1LeftSpeed < 1f)
+        {
+            player1HandLeft.GetComponent<TrailRenderer>().enabled = false;
+        }
+        else
+        {
+            player1HandLeft.GetComponent<TrailRenderer>().enabled = true;
+        }
     }
 
 
