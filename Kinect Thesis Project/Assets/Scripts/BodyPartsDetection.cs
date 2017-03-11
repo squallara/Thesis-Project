@@ -120,13 +120,48 @@ public class BodyPartsDetection : MonoBehaviour
                         trRend.widthMultiplier = 0.35f;
                         trRend.numCapVertices = 5;
                         trRend.material = SceneManager.instance.player1mat;
+                        if(jt == Kinect.JointType.HandLeft)
+                        {
+                            SceneManager.instance.player1HandLeft = jointObj;
+                        }
+                        else
+                        {
+                            SceneManager.instance.player1HandRight = jointObj;
+                        }
                     }
                     jointObj.name = jt.ToString();
                     jointObj.transform.parent = body.transform;
                 }
                 else
                 {
-                    print("Do something for player2");
+                    //print("Do something for player2");
+                    GameObject jointObj = Instantiate(SceneManager.instance.player2);
+
+                    if (jt == Kinect.JointType.SpineMid)
+                    {
+                        jointObj.transform.localScale = new Vector3(1.5f, 1.5f, 0.1f);
+                    }
+                    else
+                    {
+                        jointObj.transform.localScale = new Vector3(1f, 1f, 1f);
+                        jointObj.GetComponent<MeshRenderer>().enabled = false;
+                        jointObj.AddComponent<TrailRenderer>();
+                        var trRend = jointObj.GetComponent<TrailRenderer>();
+                        trRend.time = 0.25f;
+                        trRend.widthMultiplier = 0.35f;
+                        trRend.numCapVertices = 5;
+                        trRend.material = SceneManager.instance.player2mat;
+                        if (jt == Kinect.JointType.HandLeft)
+                        {
+                            SceneManager.instance.player2HandLeft = jointObj;
+                        }
+                        else
+                        {
+                            SceneManager.instance.player2HandRight = jointObj;
+                        }
+                    }
+                    jointObj.name = jt.ToString();
+                    jointObj.transform.parent = body.transform;
                 }
             }
         }
