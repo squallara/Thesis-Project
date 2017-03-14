@@ -7,15 +7,25 @@ public class SceneManager : MonoBehaviour {
     public static SceneManager instance;
 
     [HideInInspector]
-    public GameObject player1HandLeft, player1HandRight, player2HandLeft, player2HandRight;
+    public GameObject player1HandLeft, player1HandRight, player2HandLeft, player2HandRight, spineMidPlayer1, spineMidPlayer2;
+    [HideInInspector]
+    public float[] playersHandsSpeed; //where 0-p1LeftSpeed, 1-p1RightSpeed, 2-p2LeftSpeed, 3-p2RightSpeed
+    [HideInInspector]
+    public float[] maxSpeed;  //same order like before
+    [HideInInspector]
+    public float[] distribution, zoneDistribution; //same order. For the zoneDistribution I using cell 0 for player1 and cell 1 for player2
+    
     public GameObject player1, player2;
     public Material player1mat, player2mat;
+    public int minMovementSpeed, maxMovementSpeed; //we need a restriction to the max movement speed due to some jumps of the sensor that triggers huge speeds
 
-    public enum Speed {high, mid, low};
-    public enum Zone {far, neutral, close};
+    private enum Zone {far, neutral, close};
+    private Zone zone;
 
     private Vector3 p1LeftPrevPos, p1RightPrevPos, p2LeftPrevPos, p2RightPrevPos;
-    private float currVel, p1LeftSpeed, p1RightSpeed, p2LeftSpeed, p2RightSpeed;
+    private float currVel;
+    private bool p1PosAssigned, p2PosAssigned, p1ZoneAssigned, p2ZoneAssigned;
+    private float[,] minMaxDistance; // 0,0 - minPlayer1    0,1 - maxPlayer1    1,0 - minPlayer2    1,1 - maxPlayer2
 
 
     void Start()
@@ -24,39 +34,128 @@ public class SceneManager : MonoBehaviour {
         {
             instance = this;
         }
-        p1LeftPrevPos = Vector3.zero;
-        p1RightPrevPos = Vector3.zero;
-        p2LeftPrevPos = Vector3.zero;
-        p2RightPrevPos = Vector3.zero;
+        playersHandsSpeed = new float[4];
+        maxSpeed = new float[4];
+        distribution = new float[4];
+        zoneDistribution = new float[2];
+        minMaxDistance = new float[2, 2];
+        p1PosAssigned = false;
+        p2PosAssigned = false;
+        p1ZoneAssigned = false;
+        p2ZoneAssigned = false;
     }
 
     void Update()
     {
         if(player1HandLeft != null && player1HandRight != null)
         {
-            p1LeftSpeed = SpeedDetection(player1HandLeft);
-            p1RightSpeed = SpeedDetection(player1HandRight);
+            if (p1PosAssigned == false)
+            {
+                p1LeftPrevPos = player1HandLeft.transform.position;
+                p1RightPrevPos = player1HandRight.transform.position;
+                p1PosAssigned = true;
+            }
+            playersHandsSpeed[0] = SpeedDetection(player1HandLeft);
+            playersHandsSpeed[1] = SpeedDetection(player1HandRight);
         }
         if(player2HandLeft != null && player2HandRight != null)
         {
-            p2LeftSpeed = SpeedDetection(player2HandLeft);
-            p2RightSpeed = SpeedDetection(player2HandRight);
+            if (p2PosAssigned == false)
+            {
+                p2LeftPrevPos = player2HandLeft.transform.position;
+                p2RightPrevPos = player2HandRight.transform.position;
+                p2PosAssigned = true;
+            }
+            playersHandsSpeed[2] = SpeedDetection(player2HandLeft);
+            playersHandsSpeed[3] = SpeedDetection(player2HandRight);
         }
-        print(p1LeftSpeed);
+        if(spineMidPlayer1 != null)
+        {
+            if (p1ZoneAssigned == false)
+            {
+                AssignMinMaxZone(spineMidPlayer1);
+            }
+            else
+            {
+                DetectDistance(spineMidPlayer1);
+                //if (spineMidPlayer1.transform.position.z <= zoneDistribution[0])
+                //{
+                //    print("zone: Close");
+                //}
+                //else if (spineMidPlayer1.transform.position.z > zoneDistribution[0] && spineMidPlayer1.transform.position.z <= zoneDistribution[0] * 2)
+                //{
+                //    print("zone: Neutral");
+                //}
+                //else if (spineMidPlayer1.transform.position.z > zoneDistribution[0] * 2)
+                //{
+                //    print("zone: Far");
+                //}
+            }
+        }
+        if(spineMidPlayer2 != null)
+        {
+            if (p2ZoneAssigned == false)
+            {
+                AssignMinMaxZone(spineMidPlayer2);
+            }
+            else
+            {
+                DetectDistance(spineMidPlayer2);
+                //if (spineMidPlayer2.transform.position.z <= zoneDistribution[1])
+                //{
+                //    print("zone: Close");
+                //}
+                //else if (spineMidPlayer2.transform.position.z > zoneDistribution[1] && spineMidPlayer2.transform.position.z <= zoneDistribution[1] * 2)
+                //{
+                //    print("zone: Neutral");
+                //}
+                //else if (spineMidPlayer2.transform.position.z > zoneDistribution[1] * 2)
+                //{
+                //    print("zone: Far");
+                //}
+            }
+        }
+
+        if (player1HandLeft != null || player1HandRight != null || player2HandLeft != null || player2HandRight != null)
+        {
+            for (int i = 0; i < 4; i++)     //I would like to replace later number 4 with a more dynamic option.
+            {
+                if (Mathf.Round(playersHandsSpeed[i]) >= minMovementSpeed && Mathf.Round(playersHandsSpeed[i]) < maxMovementSpeed)
+                {
+                    //print(Mathf.Round(playersHandsSpeed[i]));
+                    SortMax(i);
+                    distribution[i] = (maxSpeed[i] + minMovementSpeed) / 3;
+                    if (Mathf.Round(playersHandsSpeed[i]) <= distribution[i])   //////GOES TO LOW AND MID BEFORE IT GOES TO HIGH (Same problem for Mid, goes first to low) AND IT IS LOGICAL BECAUSE THE MOVEMENT OF THE HAND IT STARTS FROM LOW BEFORE IT REACHES HIGH. SOLUTION?
+                    {                                                           //////IS THIS A PROBLEM ACTUALLY? SHOULDN'T THE SOUNDS CHANGES BEING CONTINUOUSLY?    CALCULATE THE ACCELERATION ALSO IN ORDER TO CLARIFY THEIR HAND'S INTENTION.
+                        print("Low sound effect");
+                    }
+                    else if (Mathf.Round(playersHandsSpeed[i]) > distribution[i] && Mathf.Round(playersHandsSpeed[i]) <= distribution[i] * 2)
+                    {
+                        print("Mid sound effect");
+                    }
+                    else if(Mathf.Round(playersHandsSpeed[i]) > distribution[i] * 2)
+                    {
+                        print("High sound effect");
+                    }
+                }
+            }
+        }
+
 
         ///////////////////////////Enabling/Disabling the trail renderer seems weird//////////////////////////
-        if (p1LeftSpeed < 1f)
-        {
-            player1HandLeft.GetComponent<TrailRenderer>().enabled = false;
-        }
-        else
-        {
-            player1HandLeft.GetComponent<TrailRenderer>().enabled = true;
-        }
+        //if (p1LeftSpeed < 1f)
+        //{
+        //    player1HandLeft.GetComponent<TrailRenderer>().enabled = false;
+        //}
+        //else
+        //{
+        //    player1HandLeft.GetComponent<TrailRenderer>().enabled = true;
+        //}
     }
 
 
-    public float SpeedDetection(GameObject obj)
+    //Detect their mean speed by using simple physics.
+    private float SpeedDetection(GameObject obj)
     {
         if(obj == player1HandLeft)
         {
@@ -80,6 +179,65 @@ public class SceneManager : MonoBehaviour {
         }
 
         return currVel;
+    }
+
+
+    //Sort only the maximum speed because min is defined always by the threshold that they have to overpass in order to register a movement.
+    private void SortMax(int k)
+    {
+        if(Mathf.Round(playersHandsSpeed[k]) > maxSpeed[k])
+        {
+            maxSpeed[k] = Mathf.Round(playersHandsSpeed[k]);
+        }
+    }
+
+
+    //Organize which is the min/max distance they can travel from kinect in order to arrange the zones.
+    private void DetectDistance(GameObject obj)
+    {
+        if(obj == spineMidPlayer1)
+        {
+            if(spineMidPlayer1.transform.position.z < minMaxDistance[0,0])
+            {
+                minMaxDistance[0, 0] = spineMidPlayer1.transform.position.z;
+            }
+            if(spineMidPlayer1.transform.position.z > minMaxDistance[0,1])
+            {
+                minMaxDistance[0, 1] = spineMidPlayer1.transform.position.z;
+            }
+            zoneDistribution[0] = (minMaxDistance[0, 0] + minMaxDistance[0, 1]) / 3;
+
+        }
+        else if(obj = spineMidPlayer2)
+        {
+            if (spineMidPlayer2.transform.position.z < minMaxDistance[1, 0])
+            {
+                minMaxDistance[1, 0] = spineMidPlayer2.transform.position.z;
+            }
+            if (spineMidPlayer2.transform.position.z > minMaxDistance[1, 1])
+            {
+                minMaxDistance[1, 1] = spineMidPlayer2.transform.position.z;
+            }
+            zoneDistribution[1] = (minMaxDistance[1, 0] + minMaxDistance[1, 1]) / 3;
+        }
+    }
+
+
+    //Initialize players max min distance from the kinect.
+    private void AssignMinMaxZone(GameObject obj)
+    {
+        if(obj == spineMidPlayer1)
+        {
+            minMaxDistance[0, 0] = spineMidPlayer1.transform.position.z;
+            minMaxDistance[0, 1] = spineMidPlayer1.transform.position.z;
+            p1ZoneAssigned = true;
+        }
+        else if(obj == spineMidPlayer2)
+        {
+            minMaxDistance[1, 0] = spineMidPlayer2.transform.position.z;
+            minMaxDistance[1, 1] = spineMidPlayer2.transform.position.z;
+            p2ZoneAssigned = true;
+        }
     }
 
 }

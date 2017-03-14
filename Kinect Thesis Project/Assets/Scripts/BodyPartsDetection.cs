@@ -61,6 +61,10 @@ public class BodyPartsDetection : MonoBehaviour
             {
                 Destroy(_Bodies[trackingId]);
                 _Bodies.Remove(trackingId);
+                if(trackingId == player1Id)
+                {
+                    player1Assigned = false;
+                }
             }
         }
 
@@ -109,6 +113,7 @@ public class BodyPartsDetection : MonoBehaviour
                     if (jt == Kinect.JointType.SpineMid)
                     {
                         jointObj.transform.localScale = new Vector3(1.5f, 1.5f, 0.1f);
+                        SceneManager.instance.spineMidPlayer1 = jointObj;
                     }
                     else
                     {
@@ -140,6 +145,7 @@ public class BodyPartsDetection : MonoBehaviour
                     if (jt == Kinect.JointType.SpineMid)
                     {
                         jointObj.transform.localScale = new Vector3(1.5f, 1.5f, 0.1f);
+                        SceneManager.instance.spineMidPlayer2 = jointObj;
                     }
                     else
                     {
