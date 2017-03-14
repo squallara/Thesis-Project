@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MusicPlayer : MonoBehaviour {
+public class MusicPlayer : MonoBehaviour
+{
 
     int toneSetAmount, rythmToneSetAmount, bassSetAmount, tonePos, rythmPos, bassPos;
 
     public BeatManager beatMan;
 
     public UserInput Player1, Player2;
+
+    UserInput bassInput;
 
     string p2name;
 
@@ -18,17 +21,20 @@ public class MusicPlayer : MonoBehaviour {
 
     float toneTimer, rythmTimer, beatManTime1, beatManTime2, toneLength, rythmLength;
 
-    bool rythmPlayable, tonePlayable;
+    bool rythmPlayable, tonePlayable, bassPlayable;
 
     public bool player2active, usingToneMatch, bassFollowsRythm, player2rythm;
 
     public float disableTime;
-    
 
-	// Use this for initialization
-	void Start () {
+
+    // Use this for initialization
+    void Start()
+    {
 
         InitializeToneSets();
+
+        bassInput = beatMan.GetComponent<UserInput>();
 
         tonePos = 0;
         rythmPos = 0;
@@ -39,14 +45,16 @@ public class MusicPlayer : MonoBehaviour {
 
         tonePlayable = true;
         rythmPlayable = true;
+        bassPlayable = true;
 
         p2name = Player2.name;
 
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
 
         StatusError();
 
@@ -55,6 +63,15 @@ public class MusicPlayer : MonoBehaviour {
 
         rythmTimer = rythmTimer - Time.deltaTime;
         toneTimer = toneTimer - Time.deltaTime;
+
+        if (player2rythm)
+        {
+            
+        }
+        else
+        {
+            bassInput = Player1;
+        }
 
         DisableTones();
 
@@ -66,24 +83,26 @@ public class MusicPlayer : MonoBehaviour {
         {
             Debug.Log("Player 1 Melodic");
             PlayerIO(Player1, melodicToneSet, toneSetAmount, ref tonePos, ref tonePlayable);
-            
+
         }
         else
         {
             Debug.Log("Player 1 Rythm");
             if (bassFollowsRythm)
             {
+                SetBassInput(Player1);
                 Debug.Log("Player 1 rythm, bass follows Rythm");
-                BassFollowRythm(Player1);
+                BassFollowRythm(Player1, bassInput);
             }
             else
             {
                 Debug.Log("Player 1 Rythm, bass follows beat");
                 PlayerIO(Player1, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
+
             }
-            
+
         }
-        
+
 
         if (player2active)
         {
@@ -93,38 +112,41 @@ public class MusicPlayer : MonoBehaviour {
                 Debug.Log("Player 2 Rythm");
                 if (bassFollowsRythm)
                 {
+                    SetBassInput(Player2);
                     Debug.Log("Player 2 Rythm, bass follows rythm");
-                    BassFollowRythm(Player2);
+                    BassFollowRythm(Player2, bassInput);
                 }
                 else
                 {
                     Debug.Log("Player 2 Rythm, bass follows beat");
                     PlayerIO(Player2, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
-                    
+
                 }
             }
             else
             {
                 Debug.Log("Player 2 Melodic");
                 PlayerIO(Player2, melodicToneSet, toneSetAmount, ref tonePos, ref tonePlayable);
-                
+                Debug.Log("Userinput P2 = " + Player2.userInput);
+
             }
-            
+
         }
         if (!bassFollowsRythm)
         {
             Debug.Log("Bass Follows Beat");
             if (player2rythm)
             {
-                BassFollowBeat(Player2, bassToneSet,bassSetAmount,ref rythmPos);
+                BassFollowBeat(Player2, bassToneSet, bassSetAmount, ref rythmPos);
             }
             else
             {
                 BassFollowBeat(Player1, bassToneSet, bassSetAmount, ref rythmPos);
             }
         }
-        
-	}
+
+
+    }
 
     public void PlayerIO(UserInput playerInput, toneHolder[] toneSet, int toneSetAmount, ref int tonePos, ref bool isPlayable)
     {
@@ -133,11 +155,11 @@ public class MusicPlayer : MonoBehaviour {
 
         bool isRythmPlayer = false;
 
-        if(player2rythm && playerInput.name == p2name)
+        if (player2rythm && playerInput.name == p2name)
         {
             isRythmPlayer = true;
         }
-        else if(!player2rythm && playerInput.name != p2name)
+        else if (!player2rythm && playerInput.name != p2name)
         {
             isRythmPlayer = true;
         }
@@ -145,7 +167,7 @@ public class MusicPlayer : MonoBehaviour {
         if (usingToneMatch)
         {
             InputMatcher();
-        }  
+        }
 
         if (tonePos >= toneSetAmount)
         {
@@ -168,7 +190,7 @@ public class MusicPlayer : MonoBehaviour {
             if (playerInput.userInput == playerInput.InputHigh && isPlayable == true)
             {
                 isPlayable = false;
-                
+
                 playerInput.audioSource.PlayOneShot(high);
 
                 if (!usingToneMatch)
@@ -176,7 +198,7 @@ public class MusicPlayer : MonoBehaviour {
                     tonePos++;
                 }
 
-                if(isRythmPlayer)
+                if (isRythmPlayer)
                 {
                     rythmLength = toneSet[tonePos].timeLength;
                 }
@@ -213,7 +235,7 @@ public class MusicPlayer : MonoBehaviour {
 
             }
 
-            else if(playerInput.userInput == playerInput.InputLow && isPlayable == true)
+            else if (playerInput.userInput == playerInput.InputLow && isPlayable == true)
             {
                 playerInput.audioSource.PlayOneShot(low);
 
@@ -243,17 +265,17 @@ public class MusicPlayer : MonoBehaviour {
     void StatusError()
     {
 
-        if(Player1 == null || Player2 == null)
+        if (Player1 == null || Player2 == null)
         {
-            Debug.LogError("Missing Player GameObject. Player 1 = "+Player1.name+". Player 2 = "+Player2.name+".");
+            Debug.LogError("Missing Player GameObject. Player 1 = " + Player1.name + ". Player 2 = " + Player2.name + ".");
         }
-        if(toneSetObject == null || rythmSetObject == null)
+        if (toneSetObject == null || rythmSetObject == null)
         {
             Debug.LogError("Missing Tone Set GameObject. Tone Set Object 1 = " + toneSetObject.name + ". Tone Set Object 2 = " + rythmSetObject.name + ".");
         }
 
     }
-    
+
     void InputMatcher()
     {
 
@@ -262,12 +284,12 @@ public class MusicPlayer : MonoBehaviour {
             Debug.Log("Input High Matched");
             tonePos = 0;
         }
-        if(Player2.userInput == Player2.InputMid)
+        if (Player2.userInput == Player2.InputMid)
         {
             Debug.Log("Input Mid Matched");
             tonePos = 1;
         }
-        if(Player2.userInput == Player2.InputLow)
+        if (Player2.userInput == Player2.InputLow)
         {
             Debug.Log("Input Low Matched");
             tonePos = 2;
@@ -281,16 +303,18 @@ public class MusicPlayer : MonoBehaviour {
         float beatManThreshold1 = beatMan.toneFollowBeat - disableTime;
         float beatManThreshold2 = beatMan.rythmFollowBeat - disableTime;
 
-        if(beatManTime1 < beatManThreshold1){
+        if (beatManTime1 < beatManThreshold1)
+        {
 
             tonePlayable = false;
 
         }
 
-        if (beatManTime1 < beatManThreshold2)
+        if (beatManTime2 < beatManThreshold2)
         {
 
             rythmPlayable = false;
+            bassPlayable = false;
             beatMan.startBass = false;
 
         }
@@ -303,6 +327,7 @@ public class MusicPlayer : MonoBehaviour {
         if (rythmTimer <= 0 && beatManTime2 <= 0)
         {
             rythmPlayable = true;
+            bassPlayable = true;
             rythmTimer = rythmLength;
         }
         if (toneTimer <= 0 && beatManTime1 <= 0)
@@ -362,19 +387,18 @@ public class MusicPlayer : MonoBehaviour {
     void BassFollowRythm(UserInput playerInput)
     {
 
+        BassPlayer(playerInput, bassToneSet,bassSetAmount, ref bassPos, ref bassPlayable);
+
         PlayerIO(playerInput, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
 
-        PlayerIO(playerInput, bassToneSet, bassSetAmount, ref bassPos, ref rythmPlayable);
-
-        playerInput.userInput = null;
     }
 
-    void BassFollowBeat(UserInput playerInput, toneHolder[] bassHolder, int toneSetAmount,ref int tonePos)
+    void BassFollowBeat(UserInput playerInput, toneHolder[] bassHolder, int toneSetAmount, ref int tonePos)
     {
 
         AudioClip bassTone;
 
-        if(tonePos >= toneSetAmount)
+        if (tonePos >= toneSetAmount)
         {
             tonePos = 0;
         }
@@ -384,15 +408,15 @@ public class MusicPlayer : MonoBehaviour {
 
         bassTone = currentBassSet.low;
 
-        if(playerInput.userInput == playerInput.InputHigh)
+        if (playerInput.userInput == playerInput.InputHigh)
         {
             bassTone = currentBassSet.high;
         }
-        else if(playerInput.userInput == playerInput.InputMid)
+        else if (playerInput.userInput == playerInput.InputMid)
         {
             bassTone = currentBassSet.mid;
         }
-        else if(playerInput.userInput == playerInput.InputLow)
+        else if (playerInput.userInput == playerInput.InputLow)
         {
             bassTone = currentBassSet.low;
         }
@@ -405,4 +429,56 @@ public class MusicPlayer : MonoBehaviour {
 
     }
 
+    void BassPlayer(UserInput playerInput, toneHolder[] bassHolder, int toneSetAmount, ref int tonesetPos, ref bool isBassPlayable)
+    {
+
+        AudioClip highBass, midBass, lowBass;
+
+        if(tonesetPos >= toneSetAmount)
+        {
+            tonesetPos = 0;
+        }
+
+        toneHolder currentBass = bassHolder[tonesetPos];
+
+        highBass = currentBass.high;
+        midBass = currentBass.mid;
+        lowBass = currentBass.low;
+
+        if (playerInput.InputHigh == "" && playerInput.InputMid == "" && playerInput.InputLow == "")
+        {
+            Debug.LogError("Assign input controls");
+        }
+        else
+        {
+            if(playerInput.userInput == playerInput.InputHigh && isBassPlayable == true)
+            {
+                beatMan.bassAudioSource.PlayOneShot(highBass);
+                isBassPlayable = false;
+            }
+            else if(playerInput.userInput == playerInput.InputMid && isBassPlayable == true)
+            {
+                beatMan.bassAudioSource.PlayOneShot(midBass);
+                isBassPlayable = false;
+            }
+            else if(playerInput.userInput == playerInput.InputLow && isBassPlayable == true)
+            {
+                beatMan.bassAudioSource.PlayOneShot(lowBass);
+                isBassPlayable = false;
+            }
+        }
+
+
+    }
+    
+
+    void SetBassInput(UserInput userInput)
+    {
+        bassInput.InputHigh = userInput.InputHigh;
+        bassInput.InputMid = userInput.InputMid;
+        bassInput.InputLow = userInput.InputLow;
+        bassInput.userInput = userInput.userInput;
+
+        bassInput.getInput = userInput.getInput;
+    }
 }
