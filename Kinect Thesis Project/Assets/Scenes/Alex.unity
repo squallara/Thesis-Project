@@ -162,9 +162,12 @@ MonoBehaviour:
   player1HandRight: {fileID: 0}
   player2HandLeft: {fileID: 0}
   player2HandRight: {fileID: 0}
+  spineMidPlayer1: {fileID: 0}
+  spineMidPlayer2: {fileID: 0}
   playersHandsSpeed: []
   maxSpeed: []
   distribution: []
+  zoneDistribution: []
   player1: {fileID: 1412090686529800, guid: 9bf81831093ba7246bb7be14c028a388, type: 2}
   player2: {fileID: 1068183866558416, guid: 788a144802ab21f4f9d755f973491daa, type: 2}
   player1mat: {fileID: 2100000, guid: d813b785ee161fc4ebffc403e00eb2f0, type: 2}
@@ -503,7 +506,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1781568359}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 82.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
