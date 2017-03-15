@@ -27,6 +27,7 @@ public class SceneManager : MonoBehaviour {
     private bool p1PosAssigned, p2PosAssigned, p1ZoneAssigned, p2ZoneAssigned;
     private float[,] minMaxDistance; // 0,0 - minPlayer1    0,1 - maxPlayer1    1,0 - minPlayer2    1,1 - maxPlayer2
 
+    public UserInput userInput1, userInput2;
 
     void Start()
     {
@@ -127,15 +128,39 @@ public class SceneManager : MonoBehaviour {
                     distribution[i] = (maxSpeed[i] - minMovementSpeed) / 3;
                     if (Mathf.Round(playersHandsSpeed[i]) <= (distribution[i] + minMovementSpeed))   //////GOES TO LOW AND MID BEFORE IT GOES TO HIGH (Same problem for Mid, goes first to low) AND IT IS LOGICAL BECAUSE THE MOVEMENT OF THE HAND IT STARTS FROM LOW BEFORE IT REACHES HIGH. SOLUTION?
                     {                                                           //////IS THIS A PROBLEM ACTUALLY? SHOULDN'T THE SOUNDS CHANGES BEING CONTINUOUSLY?    CALCULATE THE ACCELERATION ALSO IN ORDER TO CLARIFY THEIR HAND'S INTENTION.
-                        print("Low sound effect");
+                        //print("Low sound effect");
+                        if (i < 2)
+                        {
+                            userInput1.userInput = "low";
+                        }
+                        else
+                        {
+                            userInput2.userInput = "low";
+                        }
                     }
                     else if (Mathf.Round(playersHandsSpeed[i]) > (distribution[i] + minMovementSpeed) && Mathf.Round(playersHandsSpeed[i]) <= ((distribution[i] + minMovementSpeed) + distribution[i]))
                     {
-                        print("Mid sound effect");
+                        //print("Mid sound effect");
+                        if (i < 2)
+                        {
+                            userInput1.userInput = "mid";
+                        }
+                        else
+                        {
+                            userInput2.userInput = "mid";
+                        }
                     }
                     else if (Mathf.Round(playersHandsSpeed[i]) > ((distribution[i] + minMovementSpeed) + distribution[i]))
                     {
-                        print("High sound effect");
+                        //print("High sound effect");
+                        if (i < 2)
+                        {
+                            userInput1.userInput = "high";
+                        }
+                        else
+                        {
+                            userInput2.userInput = "high";
+                        }
                     }
                 }
             }
