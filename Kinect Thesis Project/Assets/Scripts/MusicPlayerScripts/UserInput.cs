@@ -4,28 +4,28 @@ using UnityEngine;
 
 public class UserInput : MonoBehaviour {
 
-    public string InputHigh, InputMid, InputLow;
+    public string inputHigh, inputMid, inputLow, depthFar, depthMid, depthClose;
 
     [HideInInspector]
-    public string userInput, getInput;
+    public string userInput, userDepth, getInput, depthInput;
 
     public AudioSource audioSource;
 
     // Use this for initialization
     void Start () {
 
-        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource = gameObject.GetComponent<AudioSource>();
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        getInput = Input.inputString;
+        depthInput = Input.inputString;
 
-        if (getInput == InputHigh || getInput == InputLow || getInput == InputMid)
+        if(depthInput == depthFar || depthInput == depthMid || depthInput == depthClose)
         {
-            userInput = Input.inputString;
+            userDepth = depthInput;
         }
 
     }

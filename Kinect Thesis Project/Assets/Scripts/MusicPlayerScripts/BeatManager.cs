@@ -36,11 +36,16 @@ public class BeatManager : MonoBehaviour
     public UserInput getRythmInput;
 
     // Use this for initialization
+    
+    void Awake()
+    {
+        getRythmInput = gameObject.AddComponent<UserInput>();
+    }
 
     void Start()
     {
 
-        getRythmInput = gameObject.AddComponent<UserInput>();
+        
 
         drumAudioSource = gameObject.AddComponent<AudioSource>();
         bassAudioSource = gameObject.AddComponent<AudioSource>();

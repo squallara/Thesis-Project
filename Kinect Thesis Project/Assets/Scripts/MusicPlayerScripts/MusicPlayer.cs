@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class MusicPlayer : MonoBehaviour
 {
@@ -27,6 +28,16 @@ public class MusicPlayer : MonoBehaviour
 
     public float disableTime;
 
+    public AudioMixer EQMixer;
+
+    string rythmMixGroup = "Rythm", toneMixGroup = "Tone";
+
+    bool MixerSet;
+
+    bool P2isRythm;
+
+    AudioMixerSnapshot[] snapshots;
+
 
     // Use this for initialization
     void Start()
@@ -49,6 +60,12 @@ public class MusicPlayer : MonoBehaviour
 
         p2name = Player2.name;
 
+        MixerSet = false;
+
+        P2isRythm = player2rythm;
+        snapshots = new AudioMixerSnapshot[3];
+        
+
 
     }
 
@@ -67,10 +84,30 @@ public class MusicPlayer : MonoBehaviour
         if (player2rythm)
         {
             
+            if (!MixerSet)
+            {
+                GetMixers(Player2, EQMixer,rythmMixGroup);
+                GetMixers(Player1, EQMixer, toneMixGroup);
+                MixerSet = true;
+            }
+
         }
         else
         {
-            bassInput = Player1;
+
+            if (!MixerSet)
+            {
+                GetMixers(Player1, EQMixer, rythmMixGroup);
+                GetMixers(Player2, EQMixer, toneMixGroup);
+                MixerSet = true;
+            }
+            
+        }
+
+        if(player2rythm != P2isRythm)
+        {
+            MixerSet = false;
+            P2isRythm = player2rythm;
         }
 
         DisableTones();
@@ -92,7 +129,7 @@ public class MusicPlayer : MonoBehaviour
             {
                 SetBassInput(Player1);
                 Debug.Log("Player 1 rythm, bass follows Rythm");
-                BassFollowRythm(Player1, bassInput);
+                BassFollowRythm(Player1);
             }
             else
             {
@@ -114,7 +151,7 @@ public class MusicPlayer : MonoBehaviour
                 {
                     SetBassInput(Player2);
                     Debug.Log("Player 2 Rythm, bass follows rythm");
-                    BassFollowRythm(Player2, bassInput);
+                    BassFollowRythm(Player2);
                 }
                 else
                 {
@@ -180,14 +217,14 @@ public class MusicPlayer : MonoBehaviour
         mid = currentToneSet.mid;
         low = currentToneSet.low;
 
-        if (playerInput.InputHigh == "" && playerInput.InputMid == "" && playerInput.InputLow == "")
+        if (playerInput.inputHigh == "" && playerInput.inputMid == "" && playerInput.inputLow == "")
         {
             Debug.LogError("Assign input controls");
         }
         else
         {
 
-            if (playerInput.userInput == playerInput.InputHigh && isPlayable == true)
+            if (playerInput.userInput == playerInput.inputHigh && isPlayable == true)
             {
                 isPlayable = false;
 
@@ -211,7 +248,7 @@ public class MusicPlayer : MonoBehaviour
 
             }
 
-            else if (playerInput.userInput == playerInput.InputMid && isPlayable == true)
+            else if (playerInput.userInput == playerInput.inputMid && isPlayable == true)
             {
                 playerInput.audioSource.PlayOneShot(mid);
 
@@ -235,7 +272,7 @@ public class MusicPlayer : MonoBehaviour
 
             }
 
-            else if (playerInput.userInput == playerInput.InputLow && isPlayable == true)
+            else if (playerInput.userInput == playerInput.inputLow && isPlayable == true)
             {
                 playerInput.audioSource.PlayOneShot(low);
 
@@ -262,6 +299,17 @@ public class MusicPlayer : MonoBehaviour
 
     }
 
+    public void PlayerDepth(UserInput P1Input, UserInput P2Input)
+    {
+
+        if(P1Input.userDepth == P1Input.depthFar)
+        {
+            //Player1.audioSource.outputAudioMixerGroup.audioMixer.TransitionToSnapshots(snapshots[0],25,1);
+        }
+        
+
+    }
+
     void StatusError()
     {
 
@@ -279,20 +327,41 @@ public class MusicPlayer : MonoBehaviour
     void InputMatcher()
     {
 
-        if (Player2.userInput == Player2.InputHigh)
+        if (player2rythm)
         {
-            Debug.Log("Input High Matched");
-            tonePos = 0;
+            if (Player2.userInput == Player2.inputHigh)
+            {
+                Debug.Log("Input High Matched");
+                tonePos = 0;
+            }
+            if (Player2.userInput == Player2.inputMid)
+            {
+                Debug.Log("Input Mid Matched");
+                tonePos = 1;
+            }
+            if (Player2.userInput == Player2.inputLow)
+            {
+                Debug.Log("Input Low Matched");
+                tonePos = 2;
+            }
         }
-        if (Player2.userInput == Player2.InputMid)
+        else
         {
-            Debug.Log("Input Mid Matched");
-            tonePos = 1;
-        }
-        if (Player2.userInput == Player2.InputLow)
-        {
-            Debug.Log("Input Low Matched");
-            tonePos = 2;
+            if (Player1.userInput == Player1.inputHigh)
+            {
+                Debug.Log("Input High Matched");
+                tonePos = 0;
+            }
+            if (Player1.userInput == Player1.inputMid)
+            {
+                Debug.Log("Input Mid Matched");
+                tonePos = 1;
+            }
+            if (Player1.userInput == Player1.inputLow)
+            {
+                Debug.Log("Input Low Matched");
+                tonePos = 2;
+            }
         }
 
     }
@@ -408,15 +477,15 @@ public class MusicPlayer : MonoBehaviour
 
         bassTone = currentBassSet.low;
 
-        if (playerInput.userInput == playerInput.InputHigh)
+        if (playerInput.userInput == playerInput.inputHigh)
         {
             bassTone = currentBassSet.high;
         }
-        else if (playerInput.userInput == playerInput.InputMid)
+        else if (playerInput.userInput == playerInput.inputMid)
         {
             bassTone = currentBassSet.mid;
         }
-        else if (playerInput.userInput == playerInput.InputLow)
+        else if (playerInput.userInput == playerInput.inputLow)
         {
             bassTone = currentBassSet.low;
         }
@@ -445,23 +514,23 @@ public class MusicPlayer : MonoBehaviour
         midBass = currentBass.mid;
         lowBass = currentBass.low;
 
-        if (playerInput.InputHigh == "" && playerInput.InputMid == "" && playerInput.InputLow == "")
+        if (playerInput.inputHigh == "" && playerInput.inputMid == "" && playerInput.inputLow == "")
         {
             Debug.LogError("Assign input controls");
         }
         else
         {
-            if(playerInput.userInput == playerInput.InputHigh && isBassPlayable == true)
+            if(playerInput.userInput == playerInput.inputHigh && isBassPlayable == true)
             {
                 beatMan.bassAudioSource.PlayOneShot(highBass);
                 isBassPlayable = false;
             }
-            else if(playerInput.userInput == playerInput.InputMid && isBassPlayable == true)
+            else if(playerInput.userInput == playerInput.inputMid && isBassPlayable == true)
             {
                 beatMan.bassAudioSource.PlayOneShot(midBass);
                 isBassPlayable = false;
             }
-            else if(playerInput.userInput == playerInput.InputLow && isBassPlayable == true)
+            else if(playerInput.userInput == playerInput.inputLow && isBassPlayable == true)
             {
                 beatMan.bassAudioSource.PlayOneShot(lowBass);
                 isBassPlayable = false;
@@ -474,11 +543,28 @@ public class MusicPlayer : MonoBehaviour
 
     void SetBassInput(UserInput userInput)
     {
-        bassInput.InputHigh = userInput.InputHigh;
-        bassInput.InputMid = userInput.InputMid;
-        bassInput.InputLow = userInput.InputLow;
+        bassInput.inputHigh = userInput.inputHigh;
+        bassInput.inputMid = userInput.inputMid;
+        bassInput.inputLow = userInput.inputLow;
         bassInput.userInput = userInput.userInput;
 
         bassInput.getInput = userInput.getInput;
     }
+
+    void GetMixers(UserInput player, AudioMixer mixer, string mixerGroup)
+    {
+
+        player.audioSource.outputAudioMixerGroup = mixer.FindMatchingGroups(mixerGroup)[0];
+        
+    }
+
+    void SetSnapshots()
+    {
+
+        snapshots[0] = EQMixer.FindSnapshot("Far");
+        snapshots[1] = EQMixer.FindSnapshot("Mid");
+        snapshots[2] = EQMixer.FindSnapshot("Close");
+
+    }
+
 }
