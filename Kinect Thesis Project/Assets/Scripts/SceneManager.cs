@@ -78,18 +78,18 @@ public class SceneManager : MonoBehaviour {
             else
             {
                 DetectDistance(spineMidPlayer1);
-                //if (spineMidPlayer1.transform.position.z <= zoneDistribution[0])
-                //{
-                //    print("zone: Close");
-                //}
-                //else if (spineMidPlayer1.transform.position.z > zoneDistribution[0] && spineMidPlayer1.transform.position.z <= zoneDistribution[0] * 2)
-                //{
-                //    print("zone: Neutral");
-                //}
-                //else if (spineMidPlayer1.transform.position.z > zoneDistribution[0] * 2)
-                //{
-                //    print("zone: Far");
-                //}
+                if (spineMidPlayer1.transform.position.z <= (minMaxDistance[0,0] + zoneDistribution[0])) //Put a restriction so it doesn't start from close. chacke the assigned boolean
+                {
+                    print("zone: Close");
+                }
+                else if (spineMidPlayer1.transform.position.z > (minMaxDistance[0, 0] + zoneDistribution[0]) && spineMidPlayer1.transform.position.z <= ((minMaxDistance[0, 0] + zoneDistribution[0]) + zoneDistribution[0]))
+                {
+                    print("zone: Neutral");
+                }
+                else if (spineMidPlayer1.transform.position.z > ((minMaxDistance[0, 0] + zoneDistribution[0]) + zoneDistribution[0]))
+                {
+                    print("zone: Far");
+                }
             }
         }
         if(spineMidPlayer2 != null)
@@ -101,18 +101,18 @@ public class SceneManager : MonoBehaviour {
             else
             {
                 DetectDistance(spineMidPlayer2);
-                //if (spineMidPlayer2.transform.position.z <= zoneDistribution[1])
-                //{
-                //    print("zone: Close");
-                //}
-                //else if (spineMidPlayer2.transform.position.z > zoneDistribution[1] && spineMidPlayer2.transform.position.z <= zoneDistribution[1] * 2)
-                //{
-                //    print("zone: Neutral");
-                //}
-                //else if (spineMidPlayer2.transform.position.z > zoneDistribution[1] * 2)
-                //{
-                //    print("zone: Far");
-                //}
+                if (spineMidPlayer2.transform.position.z <= (minMaxDistance[1, 0] + zoneDistribution[1]))
+                {
+                    print("zone: Close");
+                }
+                else if (spineMidPlayer2.transform.position.z > (minMaxDistance[1, 0] + zoneDistribution[1]) && spineMidPlayer2.transform.position.z <= ((minMaxDistance[1, 0] + zoneDistribution[1]) + zoneDistribution[1]))
+                {
+                    print("zone: Neutral");
+                }
+                else if (spineMidPlayer2.transform.position.z > ((minMaxDistance[1, 0] + zoneDistribution[1]) + zoneDistribution[1]))
+                {
+                    print("zone: Far");
+                }
             }
         }
 
@@ -124,16 +124,16 @@ public class SceneManager : MonoBehaviour {
                 {
                     //print(Mathf.Round(playersHandsSpeed[i]));
                     SortMax(i);
-                    distribution[i] = (maxSpeed[i] + minMovementSpeed) / 3;
-                    if (Mathf.Round(playersHandsSpeed[i]) <= distribution[i])   //////GOES TO LOW AND MID BEFORE IT GOES TO HIGH (Same problem for Mid, goes first to low) AND IT IS LOGICAL BECAUSE THE MOVEMENT OF THE HAND IT STARTS FROM LOW BEFORE IT REACHES HIGH. SOLUTION?
+                    distribution[i] = (maxSpeed[i] - minMovementSpeed) / 3;
+                    if (Mathf.Round(playersHandsSpeed[i]) <= (distribution[i] + minMovementSpeed))   //////GOES TO LOW AND MID BEFORE IT GOES TO HIGH (Same problem for Mid, goes first to low) AND IT IS LOGICAL BECAUSE THE MOVEMENT OF THE HAND IT STARTS FROM LOW BEFORE IT REACHES HIGH. SOLUTION?
                     {                                                           //////IS THIS A PROBLEM ACTUALLY? SHOULDN'T THE SOUNDS CHANGES BEING CONTINUOUSLY?    CALCULATE THE ACCELERATION ALSO IN ORDER TO CLARIFY THEIR HAND'S INTENTION.
                         print("Low sound effect");
                     }
-                    else if (Mathf.Round(playersHandsSpeed[i]) > distribution[i] && Mathf.Round(playersHandsSpeed[i]) <= distribution[i] * 2)
+                    else if (Mathf.Round(playersHandsSpeed[i]) > (distribution[i] + minMovementSpeed) && Mathf.Round(playersHandsSpeed[i]) <= ((distribution[i] + minMovementSpeed) + distribution[i]))
                     {
                         print("Mid sound effect");
                     }
-                    else if(Mathf.Round(playersHandsSpeed[i]) > distribution[i] * 2)
+                    else if (Mathf.Round(playersHandsSpeed[i]) > ((distribution[i] + minMovementSpeed) + distribution[i]))
                     {
                         print("High sound effect");
                     }
@@ -205,7 +205,7 @@ public class SceneManager : MonoBehaviour {
             {
                 minMaxDistance[0, 1] = spineMidPlayer1.transform.position.z;
             }
-            zoneDistribution[0] = (minMaxDistance[0, 0] + minMaxDistance[0, 1]) / 3;
+            zoneDistribution[0] = (minMaxDistance[0, 1] - minMaxDistance[0, 0]) / 3;
 
         }
         else if(obj = spineMidPlayer2)
@@ -218,7 +218,7 @@ public class SceneManager : MonoBehaviour {
             {
                 minMaxDistance[1, 1] = spineMidPlayer2.transform.position.z;
             }
-            zoneDistribution[1] = (minMaxDistance[1, 0] + minMaxDistance[1, 1]) / 3;
+            zoneDistribution[1] = (minMaxDistance[1, 1] - minMaxDistance[1, 0]) / 3;
         }
     }
 
