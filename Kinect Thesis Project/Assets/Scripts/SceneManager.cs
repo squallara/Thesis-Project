@@ -118,7 +118,7 @@ public class SceneManager : MonoBehaviour {
 
         if (player1HandLeft != null || player1HandRight != null || player2HandLeft != null || player2HandRight != null)
         {
-            for (int i = 0; i < 1; i++)     //I would like to replace later number 4 with a more dynamic option.
+            for (int i = 0; i < 4; i++)     //I would like to replace later number 4 with a more dynamic option.
             {
                 if (Mathf.Round(playersHandsSpeed[i]) >= minMovementSpeed && Mathf.Round(playersHandsSpeed[i]) < maxMovementSpeed)
                 {
