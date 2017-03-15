@@ -101,18 +101,18 @@ public class SceneManager : MonoBehaviour {
             else
             {
                 DetectDistance(spineMidPlayer2);
-                //if (spineMidPlayer2.transform.position.z <= (minMaxDistance[1, 0] + zoneDistribution[1]))
-                //{
-                //    print("zone: Close");
-                //}
-                //else if (spineMidPlayer2.transform.position.z > (minMaxDistance[1, 0] + zoneDistribution[1]) && spineMidPlayer2.transform.position.z <= ((minMaxDistance[1, 0] + zoneDistribution[1]) + zoneDistribution[1]))
-                //{
-                //    print("zone: Neutral");
-                //}
-                //else if (spineMidPlayer2.transform.position.z > ((minMaxDistance[1, 0] + zoneDistribution[1]) + zoneDistribution[1]))
-                //{
-                //    print("zone: Far");
-                //}
+                if (spineMidPlayer2.transform.position.z <= (minMaxDistance[1, 0] + zoneDistribution[1]))
+                {
+                    print("zone: Close");
+                }
+                else if (spineMidPlayer2.transform.position.z > (minMaxDistance[1, 0] + zoneDistribution[1]) && spineMidPlayer2.transform.position.z <= ((minMaxDistance[1, 0] + zoneDistribution[1]) + zoneDistribution[1]))
+                {
+                    print("zone: Neutral");
+                }
+                else if (spineMidPlayer2.transform.position.z > ((minMaxDistance[1, 0] + zoneDistribution[1]) + zoneDistribution[1]))
+                {
+                    print("zone: Far");
+                }
             }
         }
 
@@ -125,18 +125,18 @@ public class SceneManager : MonoBehaviour {
                     //print(Mathf.Round(playersHandsSpeed[i]));
                     SortMax(i);
                     distribution[i] = (maxSpeed[i] - minMovementSpeed) / 3;
-                    //if (Mathf.Round(playersHandsSpeed[i]) <= (distribution[i] + minMovementSpeed))   //////GOES TO LOW AND MID BEFORE IT GOES TO HIGH (Same problem for Mid, goes first to low) AND IT IS LOGICAL BECAUSE THE MOVEMENT OF THE HAND IT STARTS FROM LOW BEFORE IT REACHES HIGH. SOLUTION?
-                    //{                                                           //////IS THIS A PROBLEM ACTUALLY? SHOULDN'T THE SOUNDS CHANGES BEING CONTINUOUSLY?    CALCULATE THE ACCELERATION ALSO IN ORDER TO CLARIFY THEIR HAND'S INTENTION.
-                    //    print("Low sound effect");
-                    //}
-                    //else if (Mathf.Round(playersHandsSpeed[i]) > (distribution[i] + minMovementSpeed) && Mathf.Round(playersHandsSpeed[i]) <= ((distribution[i] + minMovementSpeed) + distribution[i]))
-                    //{
-                    //    print("Mid sound effect");
-                    //}
-                    //else if(Mathf.Round(playersHandsSpeed[i]) > ((distribution[i] + minMovementSpeed) + distribution[i]))
-                    //{
-                    //    print("High sound effect");
-                    //}
+                    if (Mathf.Round(playersHandsSpeed[i]) <= (distribution[i] + minMovementSpeed))   //////GOES TO LOW AND MID BEFORE IT GOES TO HIGH (Same problem for Mid, goes first to low) AND IT IS LOGICAL BECAUSE THE MOVEMENT OF THE HAND IT STARTS FROM LOW BEFORE IT REACHES HIGH. SOLUTION?
+                    {                                                           //////IS THIS A PROBLEM ACTUALLY? SHOULDN'T THE SOUNDS CHANGES BEING CONTINUOUSLY?    CALCULATE THE ACCELERATION ALSO IN ORDER TO CLARIFY THEIR HAND'S INTENTION.
+                        print("Low sound effect");
+                    }
+                    else if (Mathf.Round(playersHandsSpeed[i]) > (distribution[i] + minMovementSpeed) && Mathf.Round(playersHandsSpeed[i]) <= ((distribution[i] + minMovementSpeed) + distribution[i]))
+                    {
+                        print("Mid sound effect");
+                    }
+                    else if (Mathf.Round(playersHandsSpeed[i]) > ((distribution[i] + minMovementSpeed) + distribution[i]))
+                    {
+                        print("High sound effect");
+                    }
                 }
             }
         }
