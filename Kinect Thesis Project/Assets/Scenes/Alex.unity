@@ -158,10 +158,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41092cb317f7bae4b8512c340ad4fa8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player1HandLeft: {fileID: 0}
+  player1HandRight: {fileID: 0}
+  player2HandLeft: {fileID: 0}
+  player2HandRight: {fileID: 0}
+  playersHandsSpeed: []
+  maxSpeed: []
+  distribution: []
   player1: {fileID: 1412090686529800, guid: 9bf81831093ba7246bb7be14c028a388, type: 2}
   player2: {fileID: 1068183866558416, guid: 788a144802ab21f4f9d755f973491daa, type: 2}
   player1mat: {fileID: 2100000, guid: d813b785ee161fc4ebffc403e00eb2f0, type: 2}
   player2mat: {fileID: 2100000, guid: 30c4e8e231d1cc34fa26952052a271ae, type: 2}
+  minMovementSpeed: 20
+  maxMovementSpeed: 100
 --- !u!4 &114980952
 Transform:
   m_ObjectHideFlags: 0
