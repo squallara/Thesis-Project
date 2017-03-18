@@ -165,13 +165,19 @@ MonoBehaviour:
   spineMidPlayer1: {fileID: 0}
   spineMidPlayer2: {fileID: 0}
   playersHandsSpeed: []
+  playersHandsAcc: []
   maxSpeed: []
   distribution: []
   zoneDistribution: []
+  playersPrevSpeed: []
   player1: {fileID: 1412090686529800, guid: 9bf81831093ba7246bb7be14c028a388, type: 2}
   player2: {fileID: 1068183866558416, guid: 788a144802ab21f4f9d755f973491daa, type: 2}
   player1mat: {fileID: 2100000, guid: d813b785ee161fc4ebffc403e00eb2f0, type: 2}
   player2mat: {fileID: 2100000, guid: 30c4e8e231d1cc34fa26952052a271ae, type: 2}
+  player1HighMat: {fileID: 2100000, guid: 725ef19b509b58e4c92fff347f71f20f, type: 2}
+  player1LowMat: {fileID: 2100000, guid: b75244bc21df11e498c418a47e2c45e1, type: 2}
+  player2HighMat: {fileID: 2100000, guid: bb1daf64d283f7b41a5d4f694683a831, type: 2}
+  player2LowMat: {fileID: 2100000, guid: 19c0aab903ea1a74bb3aa03856ac0353, type: 2}
   minMovementSpeed: 20
   maxMovementSpeed: 100
   userInput1: {fileID: 2129519222}
@@ -337,7 +343,7 @@ Prefab:
     - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
         type: 2}
       propertyPath: timeLength
-      value: 2.398
+      value: 2.38
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
@@ -902,6 +908,26 @@ Prefab:
       propertyPath: bassTonesetObject
       value: 
       objectReference: {fileID: 432632629}
+    - target: {fileID: 114848014582460418, guid: 32bae8979b2f69449a6c617f36e2b0a0,
+        type: 2}
+      propertyPath: useBeat
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114848014582460418, guid: 32bae8979b2f69449a6c617f36e2b0a0,
+        type: 2}
+      propertyPath: rythmFollowBeat
+      value: 2.411
+      objectReference: {fileID: 0}
+    - target: {fileID: 114848014582460418, guid: 32bae8979b2f69449a6c617f36e2b0a0,
+        type: 2}
+      propertyPath: toneFollowBeat
+      value: 0.595
+      objectReference: {fileID: 0}
+    - target: {fileID: 114848014582460418, guid: 32bae8979b2f69449a6c617f36e2b0a0,
+        type: 2}
+      propertyPath: drumBeat
+      value: 
+      objectReference: {fileID: 8300000, guid: e188f8b64a1a8cc45ac5191d8bc79499, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 32bae8979b2f69449a6c617f36e2b0a0, type: 2}
   m_IsPrefabParent: 0
@@ -1002,7 +1028,7 @@ Prefab:
     - target: {fileID: 114847580689790630, guid: 522cd53fe3231754fb0f871eb91cf2d7,
         type: 2}
       propertyPath: player2rythm
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114847580689790630, guid: 522cd53fe3231754fb0f871eb91cf2d7,
         type: 2}

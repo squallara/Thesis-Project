@@ -121,10 +121,11 @@ public class BodyPartsDetection : MonoBehaviour
                         jointObj.GetComponent<MeshRenderer>().enabled = false;
                         jointObj.AddComponent<TrailRenderer>();
                         var trRend = jointObj.GetComponent<TrailRenderer>();
-                        trRend.time = 0.25f;
+                        trRend.time = 0.40f;
                         trRend.widthMultiplier = 0.35f;
                         trRend.numCapVertices = 5;
                         trRend.material = SceneManager.instance.player1mat;
+                        //trRend.enabled = false;
                         if(jt == Kinect.JointType.HandLeft)
                         {
                             SceneManager.instance.player1HandLeft = jointObj;
@@ -153,10 +154,11 @@ public class BodyPartsDetection : MonoBehaviour
                         jointObj.GetComponent<MeshRenderer>().enabled = false;
                         jointObj.AddComponent<TrailRenderer>();
                         var trRend = jointObj.GetComponent<TrailRenderer>();
-                        trRend.time = 0.25f;
+                        trRend.time = 0.40f;
                         trRend.widthMultiplier = 0.35f;
                         trRend.numCapVertices = 5;
                         trRend.material = SceneManager.instance.player2mat;
+                        //trRend.enabled = false;
                         if (jt == Kinect.JointType.HandLeft)
                         {
                             SceneManager.instance.player2HandLeft = jointObj;

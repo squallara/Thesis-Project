@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneManager : MonoBehaviour {
+public class SceneManagerV2 : MonoBehaviour {
 
-    public static SceneManager instance;
+    public static SceneManagerV2 instance;
 
     [HideInInspector]
     public GameObject player1HandLeft, player1HandRight, player2HandLeft, player2HandRight, spineMidPlayer1, spineMidPlayer2;
@@ -18,12 +18,12 @@ public class SceneManager : MonoBehaviour {
     public float[] distribution, zoneDistribution; //same order. For the zoneDistribution I using cell 0 for player1 and cell 1 for player2
     [HideInInspector]
     public float[] playersPrevSpeed;    //where 0-p1LeftPrevSpeed, 1-p1RightPrevSpeed, 2-p2LeftPrevSpeed, 3-p2RightPrevSpeed
-    
+
     public GameObject player1, player2;
     public Material player1mat, player2mat, player1HighMat, player1LowMat, player2HighMat, player2LowMat;
     public int minMovementSpeed, maxMovementSpeed; //we need a restriction to the max movement speed due to some jumps of the sensor that triggers huge speeds
 
-    private enum Zone {far, neutral, close};
+    private enum Zone { far, neutral, close };
     private Zone zone;
 
     private Vector3 p1LeftPrevPos, p1RightPrevPos, p2LeftPrevPos, p2RightPrevPos;
@@ -37,7 +37,7 @@ public class SceneManager : MonoBehaviour {
 
     void Start()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -57,7 +57,7 @@ public class SceneManager : MonoBehaviour {
 
     void Update()
     {
-        if(player1HandLeft != null && player1HandRight != null)
+        if (player1HandLeft != null && player1HandRight != null)
         {
             if (p1PosAssigned == false)
             {
@@ -76,7 +76,7 @@ public class SceneManager : MonoBehaviour {
                 playersHandsAcc[1] = AccDetection(player1HandRight);
             }
         }
-        if(player2HandLeft != null && player2HandRight != null)
+        if (player2HandLeft != null && player2HandRight != null)
         {
             if (p2PosAssigned == false)
             {
@@ -95,7 +95,7 @@ public class SceneManager : MonoBehaviour {
                 playersHandsAcc[3] = AccDetection(player2HandLeft);
             }
         }
-        if(spineMidPlayer1 != null)
+        if (spineMidPlayer1 != null)
         {
             if (p1ZoneAssigned == false)
             {
@@ -104,7 +104,7 @@ public class SceneManager : MonoBehaviour {
             else
             {
                 DetectDistance(spineMidPlayer1);
-                if (spineMidPlayer1.transform.position.z <= (minMaxDistance[0,0] + zoneDistribution[0])) //Put a restriction so it doesn't start from close. chacke the assigned boolean
+                if (spineMidPlayer1.transform.position.z <= (minMaxDistance[0, 0] + zoneDistribution[0])) //Put a restriction so it doesn't start from close. chacke the assigned boolean
                 {
                     //print("zone: Close");
                     userInput1.depthClose = "Close";
@@ -121,7 +121,7 @@ public class SceneManager : MonoBehaviour {
                 }
             }
         }
-        if(spineMidPlayer2 != null)
+        if (spineMidPlayer2 != null)
         {
             if (p2ZoneAssigned == false)
             {
@@ -184,13 +184,13 @@ public class SceneManager : MonoBehaviour {
                     //}
 
                     SortMax(i);
-                    distribution[i] = (maxSpeed[i] + minMovementSpeed) / 2;
-                    if (Mathf.Round(playersHandsSpeed[i]) <= distribution[i])
+                    distribution[i] = (maxSpeed[i] - minMovementSpeed) / 3;
+                    if (Mathf.Round(playersHandsSpeed[i]) <= (distribution[i] + minMovementSpeed) && playersHandsAcc[i] < 5000f)   //////CALCULATE THE ACCELERATION ALSO IN ORDER TO CLARIFY THEIR HAND'S INTENTION. Right now I am using observed numbers for limiting the acceleration, need to be dynamic
                     {
                         //print("Low sound effect");
                         if (i < 2)
                         {
-                            userInput1.userInput = "low";
+                            //userInput1.userInput = "low";
                             if (i == 0)
                             {
                                 player1HandLeft.GetComponent<TrailRenderer>().material = player1LowMat;
@@ -203,7 +203,7 @@ public class SceneManager : MonoBehaviour {
                         }
                         else
                         {
-                            userInput2.userInput = "low";
+                            //userInput2.userInput = "low";
                             if (i == 2)
                             {
                                 player2HandLeft.GetComponent<TrailRenderer>().material = player2LowMat;
@@ -214,12 +214,40 @@ public class SceneManager : MonoBehaviour {
                             }
                         }
                     }
-                    else if (Mathf.Round(playersHandsSpeed[i]) > distribution[i])
+                    else if (Mathf.Round(playersHandsSpeed[i]) > (distribution[i] + minMovementSpeed) && Mathf.Round(playersHandsSpeed[i]) <= ((distribution[i] + minMovementSpeed) + distribution[i]) && playersHandsAcc[i] < 10000f)
+                    {
+                        //print("Mid sound effect");
+                        if (i < 2)
+                        {
+                            //userInput1.userInput = "mid";
+                            if (i == 0)
+                            {
+                                player1HandLeft.GetComponent<TrailRenderer>().material = player1mat;
+                            }
+                            else
+                            {
+                                player1HandRight.GetComponent<TrailRenderer>().material = player1mat;
+                            }
+                        }
+                        else
+                        {
+                            //userInput2.userInput = "mid";
+                            if (i == 2)
+                            {
+                                player2HandLeft.GetComponent<TrailRenderer>().material = player2mat;
+                            }
+                            else
+                            {
+                                player2HandRight.GetComponent<TrailRenderer>().material = player2mat;
+                            }
+                        }
+                    }
+                    else if (Mathf.Round(playersHandsSpeed[i]) > ((distribution[i] + minMovementSpeed) + distribution[i]) && playersHandsAcc[i] >= 10000f)
                     {
                         //print("High sound effect");
                         if (i < 2)
                         {
-                            userInput1.userInput = "high";
+                            //userInput1.userInput = "high";
                             if (i == 0)
                             {
                                 player1HandLeft.GetComponent<TrailRenderer>().material = player1HighMat;
@@ -231,7 +259,7 @@ public class SceneManager : MonoBehaviour {
                         }
                         else
                         {
-                            userInput2.userInput = "high";
+                            //userInput2.userInput = "high";
                             if (i == 2)
                             {
                                 player2HandLeft.GetComponent<TrailRenderer>().material = player2HighMat;
@@ -287,12 +315,12 @@ public class SceneManager : MonoBehaviour {
     //Detect their mean speed by using simple physics.
     private float SpeedDetection(GameObject obj)
     {
-        if(obj == player1HandLeft)
+        if (obj == player1HandLeft)
         {
             currVel = (obj.transform.position - p1LeftPrevPos).magnitude / Time.deltaTime;
             p1LeftPrevPos = obj.transform.position;
         }
-        else if(obj == player1HandRight)
+        else if (obj == player1HandRight)
         {
             currVel = (obj.transform.position - p1RightPrevPos).magnitude / Time.deltaTime;
             p1RightPrevPos = obj.transform.position;
@@ -302,7 +330,7 @@ public class SceneManager : MonoBehaviour {
             currVel = (obj.transform.position - p2LeftPrevPos).magnitude / Time.deltaTime;
             p2LeftPrevPos = obj.transform.position;
         }
-        else if(obj == player2HandRight)
+        else if (obj == player2HandRight)
         {
             currVel = (obj.transform.position - p2RightPrevPos).magnitude / Time.deltaTime;
             p2RightPrevPos = obj.transform.position;
@@ -315,7 +343,7 @@ public class SceneManager : MonoBehaviour {
     //Sort only the maximum speed because min is defined always by the threshold that they have to overpass in order to register a movement.
     private void SortMax(int k)
     {
-        if(Mathf.Round(playersHandsSpeed[k]) > maxSpeed[k])
+        if (Mathf.Round(playersHandsSpeed[k]) > maxSpeed[k])
         {
             maxSpeed[k] = Mathf.Round(playersHandsSpeed[k]);
         }
@@ -352,20 +380,20 @@ public class SceneManager : MonoBehaviour {
     //Organize which is the min/max distance they can travel from kinect in order to arrange the zones.
     private void DetectDistance(GameObject obj)
     {
-        if(obj == spineMidPlayer1)
+        if (obj == spineMidPlayer1)
         {
-            if(spineMidPlayer1.transform.position.z < minMaxDistance[0,0])
+            if (spineMidPlayer1.transform.position.z < minMaxDistance[0, 0])
             {
                 minMaxDistance[0, 0] = spineMidPlayer1.transform.position.z;
             }
-            if(spineMidPlayer1.transform.position.z > minMaxDistance[0,1])
+            if (spineMidPlayer1.transform.position.z > minMaxDistance[0, 1])
             {
                 minMaxDistance[0, 1] = spineMidPlayer1.transform.position.z;
             }
             zoneDistribution[0] = (minMaxDistance[0, 1] - minMaxDistance[0, 0]) / 3;
 
         }
-        else if(obj = spineMidPlayer2)
+        else if (obj = spineMidPlayer2)
         {
             if (spineMidPlayer2.transform.position.z < minMaxDistance[1, 0])
             {
@@ -383,18 +411,17 @@ public class SceneManager : MonoBehaviour {
     //Initialize players max min distance from the kinect.
     private void AssignMinMaxZone(GameObject obj)
     {
-        if(obj == spineMidPlayer1)
+        if (obj == spineMidPlayer1)
         {
             minMaxDistance[0, 0] = spineMidPlayer1.transform.position.z;
             minMaxDistance[0, 1] = spineMidPlayer1.transform.position.z;
             p1ZoneAssigned = true;
         }
-        else if(obj == spineMidPlayer2)
+        else if (obj == spineMidPlayer2)
         {
             minMaxDistance[1, 0] = spineMidPlayer2.transform.position.z;
             minMaxDistance[1, 1] = spineMidPlayer2.transform.position.z;
             p2ZoneAssigned = true;
         }
     }
-
 }
