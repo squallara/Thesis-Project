@@ -16,9 +16,18 @@ public class MusicPlayer : MonoBehaviour
 
     string p2name;
 
-    public GameObject toneSetObject, rythmSetObject, bassSetObject;
+    /*
 
-    public toneHolder[] melodicToneSet, rythmToneSet, bassToneSet;
+        Use Gameobjects instead of tonesets to manage the possible toneHolders.
+        Use single tone holder objects instead of arrays, to initialize toneholders
+        TonePos might not be needed
+    */
+
+    public GameObject mainToneSetObject, mainRythmSetObject, mainBassSetObject;
+
+    GameObject[] melodicToneSetObject, rythmToneSetObject, bassToneSetObject;
+
+    toneHolder[] melodicToneSet, rythmToneSet, bassToneSet;
 
     float toneTimer, rythmTimer, beatManTime1, beatManTime2, toneLength, rythmLength;
 
@@ -39,11 +48,13 @@ public class MusicPlayer : MonoBehaviour
     AudioMixerSnapshot[] snapshots;
 
 
+
+
     // Use this for initialization
     void Start()
     {
 
-        InitializeToneSets();
+        InitializeToneSets(mainToneSetObject, mainRythmSetObject, mainBassSetObject);
 
         bassInput = beatMan.GetComponent<UserInput>();
 
@@ -190,6 +201,8 @@ public class MusicPlayer : MonoBehaviour
 
         AudioClip high, mid, low;
 
+        
+
         bool isRythmPlayer = false;
 
         if (player2rythm && playerInput.name == p2name)
@@ -237,7 +250,10 @@ public class MusicPlayer : MonoBehaviour
 
                 if (isRythmPlayer)
                 {
+
+                    //InitializeToneSets(melo, rythmToneSet, bassToneSet);
                     rythmLength = toneSet[tonePos].timeLength;
+
                 }
                 else
                 {
@@ -245,6 +261,8 @@ public class MusicPlayer : MonoBehaviour
                 }
 
                 playerInput.userInput = null;
+
+                
 
             }
 
@@ -317,9 +335,9 @@ public class MusicPlayer : MonoBehaviour
         {
             Debug.LogError("Missing Player GameObject. Player 1 = " + Player1.name + ". Player 2 = " + Player2.name + ".");
         }
-        if (toneSetObject == null || rythmSetObject == null)
+        if (mainToneSetObject == null || mainRythmSetObject == null)
         {
-            Debug.LogError("Missing Tone Set GameObject. Tone Set Object 1 = " + toneSetObject.name + ". Tone Set Object 2 = " + rythmSetObject.name + ".");
+            Debug.LogError("Missing Tone Set GameObject. Tone Set Object 1 = " + mainToneSetObject.name + ". Tone Set Object 2 = " + mainRythmSetObject.name + ".");
         }
 
     }
@@ -421,12 +439,12 @@ public class MusicPlayer : MonoBehaviour
 
     }
 
-    void InitializeToneSets()
+    void InitializeToneSets(GameObject tonesetObject, GameObject rythmObject, GameObject bassObject)
     {
 
-        toneSetAmount = toneSetObject.transform.childCount;
-        rythmToneSetAmount = rythmSetObject.transform.childCount;
-        bassSetAmount = bassSetObject.transform.childCount;
+        toneSetAmount = tonesetObject.transform.childCount;
+        rythmToneSetAmount = rythmObject.transform.childCount;
+        bassSetAmount = bassObject.transform.childCount;
 
         melodicToneSet = new toneHolder[toneSetAmount];
         rythmToneSet = new toneHolder[rythmToneSetAmount];
@@ -436,19 +454,19 @@ public class MusicPlayer : MonoBehaviour
         for (int i = 0; i < toneSetAmount; i++)
         {
 
-            melodicToneSet[i] = toneSetObject.transform.GetChild(i).gameObject.GetComponent<toneHolder>();
+            melodicToneSet[i] = tonesetObject.transform.GetChild(i).gameObject.GetComponent<toneHolder>();
 
         }
 
         for (int i = 0; i < rythmToneSetAmount; i++)
         {
 
-            rythmToneSet[i] = rythmSetObject.transform.GetChild(i).gameObject.GetComponent<toneHolder>();
+            rythmToneSet[i] = rythmObject.transform.GetChild(i).gameObject.GetComponent<toneHolder>();
 
         }
         for (int i = 0; i < bassSetAmount; i++)
         {
-            bassToneSet[i] = bassSetObject.transform.GetChild(i).gameObject.GetComponent<toneHolder>();
+            bassToneSet[i] = bassObject.transform.GetChild(i).gameObject.GetComponent<toneHolder>();
         }
 
     }
