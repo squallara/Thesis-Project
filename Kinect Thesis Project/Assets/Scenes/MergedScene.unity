@@ -165,19 +165,13 @@ MonoBehaviour:
   spineMidPlayer1: {fileID: 0}
   spineMidPlayer2: {fileID: 0}
   playersHandsSpeed: []
-  playersHandsAcc: []
   maxSpeed: []
   distribution: []
   zoneDistribution: []
-  playersPrevSpeed: []
   player1: {fileID: 1412090686529800, guid: 9bf81831093ba7246bb7be14c028a388, type: 2}
   player2: {fileID: 1068183866558416, guid: 788a144802ab21f4f9d755f973491daa, type: 2}
   player1mat: {fileID: 2100000, guid: d813b785ee161fc4ebffc403e00eb2f0, type: 2}
   player2mat: {fileID: 2100000, guid: 30c4e8e231d1cc34fa26952052a271ae, type: 2}
-  player1HighMat: {fileID: 2100000, guid: 725ef19b509b58e4c92fff347f71f20f, type: 2}
-  player1LowMat: {fileID: 2100000, guid: b75244bc21df11e498c418a47e2c45e1, type: 2}
-  player2HighMat: {fileID: 2100000, guid: bb1daf64d283f7b41a5d4f694683a831, type: 2}
-  player2LowMat: {fileID: 2100000, guid: 19c0aab903ea1a74bb3aa03856ac0353, type: 2}
   minMovementSpeed: 20
   maxMovementSpeed: 100
   userInput1: {fileID: 2129519222}
@@ -343,7 +337,7 @@ Prefab:
     - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
         type: 2}
       propertyPath: timeLength
-      value: 2.38
+      value: 2.398
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
@@ -457,6 +451,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92ab5bea6110edb4081e490c0982748d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &696400926
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 696400927}
+  m_Layer: 0
+  m_Name: FixedSong
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &696400927
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 696400926}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 891764786}
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &737287658 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114961946022812850, guid: 4187cb9ace099004aa2896c95f27c6d2,
@@ -497,6 +520,63 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &891764785
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 696400927}
+    m_Modifications:
+    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
+        type: 2}
+      propertyPath: low
+      value: 
+      objectReference: {fileID: 8300000, guid: 8dcf971df5aad2d48bd51a8434102874, type: 3}
+    - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
+        type: 2}
+      propertyPath: high
+      value: 
+      objectReference: {fileID: 8300000, guid: 8dcf971df5aad2d48bd51a8434102874, type: 3}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &891764786 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634,
+    type: 2}
+  m_PrefabInternal: {fileID: 891764785}
 --- !u!1 &902193084 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1763715597326056, guid: 4187cb9ace099004aa2896c95f27c6d2,
@@ -910,24 +990,9 @@ Prefab:
       objectReference: {fileID: 432632629}
     - target: {fileID: 114848014582460418, guid: 32bae8979b2f69449a6c617f36e2b0a0,
         type: 2}
-      propertyPath: useBeat
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114848014582460418, guid: 32bae8979b2f69449a6c617f36e2b0a0,
-        type: 2}
       propertyPath: rythmFollowBeat
-      value: 2.411
+      value: 300
       objectReference: {fileID: 0}
-    - target: {fileID: 114848014582460418, guid: 32bae8979b2f69449a6c617f36e2b0a0,
-        type: 2}
-      propertyPath: toneFollowBeat
-      value: 0.595
-      objectReference: {fileID: 0}
-    - target: {fileID: 114848014582460418, guid: 32bae8979b2f69449a6c617f36e2b0a0,
-        type: 2}
-      propertyPath: drumBeat
-      value: 
-      objectReference: {fileID: 8300000, guid: e188f8b64a1a8cc45ac5191d8bc79499, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 32bae8979b2f69449a6c617f36e2b0a0, type: 2}
   m_IsPrefabParent: 0
@@ -1014,7 +1079,7 @@ Prefab:
         type: 2}
       propertyPath: rythmSetObject
       value: 
-      objectReference: {fileID: 882749006}
+      objectReference: {fileID: 696400926}
     - target: {fileID: 114847580689790630, guid: 522cd53fe3231754fb0f871eb91cf2d7,
         type: 2}
       propertyPath: bassSetObject
