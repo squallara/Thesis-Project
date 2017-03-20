@@ -13,18 +13,17 @@ public class Manager : MonoBehaviour
     List<float[,]> bodyJoints;
     List<float[]> playersJointsHeight; // Heights of the joints per player
     List<float[,]> playersMinMaxHeight; // Min-Max height of joints per player
-    public List<ulong> playersId;       //Remove the public. Did only for observation.
+    List<ulong> playersId;       //Remove the public. Did only for observation.
     bool[] players;
     float[] jointsHeight;       //With the order of the prefJoints. (heights of the joints in general)
     float[,] minMaxHeight;
     int countBodies;
     bool foundId;
 
-    public Texture texture;
+    //public Texture texture;
+    public List<Texture> playersMat;
     Kinect.PointF point;
     public List<Kinect.JointType> prefJoints;       //Assign in the inspector the pref joints you want to detect. ALWAYS first the main body.
-    //bool assigned = false;
-    //int count = 0;
 
     void Start()
     {
@@ -108,7 +107,6 @@ public class Manager : MonoBehaviour
                                 {
                                     if (jt == joint)
                                     {
-                                        //print(body.Joints[jt].Position.Y);
                                         jointsHeight[k] = body.Joints[jt].Position.Y;
                                         for (int j = 0; j < playersId.Count; j++)       //j counts whos is the player
                                         {
@@ -141,7 +139,6 @@ public class Manager : MonoBehaviour
                                         {
                                             bodyJoints[j] = jointsPos;
                                             playersJointsHeight[j] = jointsHeight;
-                                            //playersMinMaxHeight[j] = minMaxHeight;
                                         }
                                     }
                                 }
@@ -186,8 +183,6 @@ public class Manager : MonoBehaviour
                 playersMinMaxHeight.RemoveAt(playersMinMaxHeight.Count - i);
             }
         }
-
-        //print(playersMinMaxHeight[0][1, 1]);
     }
 
 
@@ -213,13 +208,13 @@ public class Manager : MonoBehaviour
                                 {
                                     if (jt == prefJoints[0])
                                     {
-                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0], bodyJoints[k][i, 1], 70, 70), texture);
+                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0], bodyJoints[k][i, 1], 70, 70), playersMat[k]);
                                     }
                                     else
                                     {
                                         if (playersJointsHeight[k][p] > playersJointsHeight[k][0])
                                         {
-                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0], bodyJoints[k][i, 1], 20, 20), texture);
+                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0], bodyJoints[k][i, 1], 20, 20), playersMat[k]);
 
                                             if (useMidOutput == false)
                                             {
