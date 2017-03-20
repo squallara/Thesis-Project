@@ -403,8 +403,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useMidOutput: 0
-  playersId: 
-  texture: {fileID: 2800000, guid: ba681a170e767774dbe0ca4072317f54, type: 3}
+  playersMat:
+  - {fileID: 2800000, guid: 406fd598e4a715a448b47a7f8cb226ae, type: 3}
+  - {fileID: 2800000, guid: 3b91891d3b2d8f9499ccf7b825f35331, type: 3}
+  - {fileID: 2800000, guid: 3d0488cf578717a4ca9c90d67279ae62, type: 3}
+  - {fileID: 2800000, guid: ef364f0c8895e1f46932bbef09b7b3b5, type: 3}
+  - {fileID: 2800000, guid: 41364acf463b3ae42b62ba13416ceab5, type: 3}
+  - {fileID: 2800000, guid: f1cd1c0f7d7833345abe55c137ad4037, type: 3}
   prefJoints: 01000000070000000b000000
 --- !u!4 &2051844645
 Transform:
