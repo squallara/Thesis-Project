@@ -29,11 +29,13 @@ public class MusicPlayer : MonoBehaviour
 
     toneHolder[] melodicToneSet, rythmToneSet, bassToneSet;
 
+    float mainTrackTime, mainTrackTimer, chorusTime, vers2Time;
+
     float toneTimer, rythmTimer, beatManTime1, beatManTime2, toneLength, rythmLength;
 
     bool rythmPlayable, tonePlayable, bassPlayable;
 
-    public bool player2active, usingToneMatch, bassFollowsRythm, player2rythm;
+    public bool player2active, usingToneMatch, bassFollowsRythm, player2rythm, useSeperateBass, useMidInput;
 
     public float disableTime;
 
@@ -85,6 +87,8 @@ public class MusicPlayer : MonoBehaviour
     {
 
         StatusError();
+
+        mainTrackTimer = mainTrackTimer + Time.deltaTime;
 
         beatManTime1 = beatMan.melodicTimer;
         beatManTime2 = beatMan.rythmTimer;
@@ -138,9 +142,16 @@ public class MusicPlayer : MonoBehaviour
             Debug.Log("Player 1 Rythm");
             if (bassFollowsRythm)
             {
-                SetBassInput(Player1);
-                Debug.Log("Player 1 rythm, bass follows Rythm");
-                BassFollowRythm(Player1);
+                if (useSeperateBass)
+                {
+                    SetBassInput(Player1);
+                    Debug.Log("Player 1 rythm, bass follows Rythm");
+                    BassFollowRythm(Player1);
+                }
+                else
+                {
+                    PlayerIO(Player1, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
+                }
             }
             else
             {
@@ -160,9 +171,16 @@ public class MusicPlayer : MonoBehaviour
                 Debug.Log("Player 2 Rythm");
                 if (bassFollowsRythm)
                 {
-                    SetBassInput(Player2);
-                    Debug.Log("Player 2 Rythm, bass follows rythm");
-                    BassFollowRythm(Player2);
+                    if (useSeperateBass)
+                    {
+                        SetBassInput(Player2);
+                        Debug.Log("Player 2 Rythm, bass follows rythm");
+                        BassFollowRythm(Player2);
+                    }
+                    else
+                    {
+                        PlayerIO(Player2, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
+                    }
                 }
                 else
                 {
@@ -243,11 +261,6 @@ public class MusicPlayer : MonoBehaviour
 
                 playerInput.audioSource.PlayOneShot(high);
 
-                if (!usingToneMatch)
-                {
-                    tonePos++;
-                }
-
                 if (isRythmPlayer)
                 {
 
@@ -262,18 +275,15 @@ public class MusicPlayer : MonoBehaviour
 
                 playerInput.userInput = null;
 
+                tonePos = currentToneSet.tonesetRefHigh;
+
                 
 
             }
 
-            else if (playerInput.userInput == playerInput.inputMid && isPlayable == true)
+            else if (playerInput.userInput == playerInput.inputMid && isPlayable == true && useMidInput == true)
             {
                 playerInput.audioSource.PlayOneShot(mid);
-
-                if (!usingToneMatch)
-                {
-                    tonePos++;
-                }
 
                 isPlayable = false;
 
@@ -294,11 +304,6 @@ public class MusicPlayer : MonoBehaviour
             {
                 playerInput.audioSource.PlayOneShot(low);
 
-                if (!usingToneMatch)
-                {
-                    tonePos++;
-                }
-
                 isPlayable = false;
 
                 if (isRythmPlayer)
@@ -311,6 +316,8 @@ public class MusicPlayer : MonoBehaviour
                 }
 
                 playerInput.userInput = null;
+
+                tonePos = currentToneSet.tonesetRefLow;
 
             }
         }
@@ -582,6 +589,17 @@ public class MusicPlayer : MonoBehaviour
         snapshots[0] = EQMixer.FindSnapshot("Far");
         snapshots[1] = EQMixer.FindSnapshot("Mid");
         snapshots[2] = EQMixer.FindSnapshot("Close");
+
+    }
+
+    void SoundtrackTimeManager(float trackTime)
+    {
+
+        if(mainTrackTimer == chorusTime - 0.5f)
+        {
+            rythmPos = 0;
+        }
+
 
     }
 

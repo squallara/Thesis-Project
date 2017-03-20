@@ -6,7 +6,7 @@ public class toneHolder : MonoBehaviour {
 
     public AudioClip high, mid, low;
 
-    public string highString, midString, lowString;
+    public int tonesetRefHigh, tonesetRefLow;
 
     public float timeLength;
 
