@@ -275,6 +275,7 @@ public class Manager : MonoBehaviour
             {
                 for (int k = 0; k < playersId.Count; k++)       // K counts players
                 {
+                    
                     var i = -1;     //i Counts the joints. All of them. 25 in sum
 
                     for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
