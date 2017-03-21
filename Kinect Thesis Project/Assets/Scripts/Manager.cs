@@ -13,16 +13,16 @@ public class Manager : MonoBehaviour
     List<float[,]> bodyJoints;
     List<float[]> playersJointsHeight; // Heights of the joints per player
     List<float[,]> playersMinMaxHeight; // Min-Max height of joints per player
-    List<ulong> playersId;       //Remove the public. Did only for observation.
+    public List<ulong> playersId;       //Remove the public. Did only for observation.
     bool[] players;
     float[] jointsHeight;       //With the order of the prefJoints. (heights of the joints in general)
     float[,] minMaxHeight;
-    int countBodies;
+    int countBodies;        //Counts how many bodies are active at the same frame.
     bool foundId;
 
     //public Texture texture;
     public List<Texture> playersMat;
-    Kinect.PointF point;
+    public List<Texture> LowHighMats; //2 cells per player.
     public List<Kinect.JointType> prefJoints;       //Assign in the inspector the pref joints you want to detect. ALWAYS first the main body.
 
     void Start()
@@ -36,7 +36,6 @@ public class Manager : MonoBehaviour
 
         reader = sensor.OpenMultiSourceFrameReader(Kinect.FrameSourceTypes.Body | Kinect.FrameSourceTypes.Color | Kinect.FrameSourceTypes.Depth | Kinect.FrameSourceTypes.Infrared);
         reader.MultiSourceFrameArrived += Reader_MultiSourceFrameArrived;
-        point = new Kinect.PointF();
         playersId = new List<ulong>();
         bodyJoints = new List<float[,]>();
         playersJointsHeight = new List<float[]>();
@@ -124,9 +123,6 @@ public class Manager : MonoBehaviour
 
                                 Kinect.ColorSpacePoint colorPoint = sensor.CoordinateMapper.MapCameraPointToColorSpace(skeletonPoint);
 
-                                point.X = colorPoint.X;
-                                point.Y = colorPoint.Y;
-
                                 jointsPos[i, 0] = colorPoint.X;
                                 jointsPos[i, 1] = colorPoint.Y;
                                 i++;
@@ -165,23 +161,30 @@ public class Manager : MonoBehaviour
             {
                 countBodies++;
             }
-
-            //if(i==5)
-            //{
-            //    print(countBodies);
-            //}
         }
 
         if (countBodies != playersId.Count)
         {
-            var diff = playersId.Count - countBodies;
-            for (int i = 1; i <= diff; i++)
+            //var diff = playersId.Count - countBodies;
+            //for (int i = 1; i <= diff; i++)
+            //{
+            //    bodyJoints.RemoveAt(bodyJoints.Count - i);
+            //    playersJointsHeight.RemoveAt(playersJointsHeight.Count - i);
+            //    playersMinMaxHeight.RemoveAt(playersMinMaxHeight.Count - i);
+            //    playersId.RemoveAt(playersId.Count - i);
+            //}
+
+            for (int i = 0; i < playersId.Count; i++)
             {
-                bodyJoints.RemoveAt(bodyJoints.Count - i);
-                playersId.RemoveAt(playersId.Count - i);
-                playersJointsHeight.RemoveAt(playersJointsHeight.Count - i);
-                playersMinMaxHeight.RemoveAt(playersMinMaxHeight.Count - i);
+                if (players[i] == false)
+                {
+                    bodyJoints.RemoveAt(i);
+                    playersJointsHeight.RemoveAt(i);
+                    playersMinMaxHeight.RemoveAt(i);
+                    playersId.RemoveAt(i);
+                }
             }
+
         }
     }
 
@@ -212,25 +215,41 @@ public class Manager : MonoBehaviour
                                     }
                                     else
                                     {
-                                        if (playersJointsHeight[k][p] > playersJointsHeight[k][0])
+                                        if (playersJointsHeight[k][p] > playersJointsHeight[k][0] && k<2)          //K will be restricted to 2 for only two players.
                                         {
-                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0], bodyJoints[k][i, 1], 20, 20), playersMat[k]);
-
                                             if (useMidOutput == false)
                                             {
                                                 if (playersJointsHeight[k][p] > (playersMinMaxHeight[k][p, 0] + playersMinMaxHeight[k][p, 1]) / 2)
                                                 {
                                                     print("High");
+                                                    switch (k)
+                                                    {
+                                                        case 0:
+                                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0], bodyJoints[k][i, 1], 20, 20), LowHighMats[1]);
+                                                            break;
+                                                        case 1:
+                                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0], bodyJoints[k][i, 1], 20, 20), LowHighMats[3]);
+                                                            break;
+                                                    }
                                                 }
                                                 else
                                                 {
                                                     print("Low");
+                                                    switch (k)
+                                                    {
+                                                        case 0:
+                                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0], bodyJoints[k][i, 1], 20, 20), LowHighMats[0]);
+                                                            break;
+                                                        case 1:
+                                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0], bodyJoints[k][i, 1], 20, 20), LowHighMats[2]);
+                                                            break;
+                                                    }
                                                 }
                                             }
                                             else
                                             {
                                                 /////////////////CODE FOR THE 3RD OUTPUT. NEEDS TESTINGS. WORKS BUT NOT PERFECT//////////////
-                                                if(playersJointsHeight[k][1] > (playersMinMaxHeight[k][1, 0] + playersMinMaxHeight[k][1, 1]) / 2 
+                                                if (playersJointsHeight[k][1] > (playersMinMaxHeight[k][1, 0] + playersMinMaxHeight[k][1, 1]) / 2
                                                     && playersJointsHeight[k][2] > (playersMinMaxHeight[k][2, 0] + playersMinMaxHeight[k][2, 1]) / 2)
                                                 {
                                                     print("High");
@@ -240,7 +259,7 @@ public class Manager : MonoBehaviour
                                                 {
                                                     print("Low");
                                                 }
-                                                else if(playersJointsHeight[k][1] > playersJointsHeight[k][0] && playersJointsHeight[k][2] > playersJointsHeight[k][0])
+                                                else if (playersJointsHeight[k][1] > playersJointsHeight[k][0] && playersJointsHeight[k][2] > playersJointsHeight[k][0])
                                                 {
                                                     print("Mid");
                                                 }
@@ -268,7 +287,7 @@ public class Manager : MonoBehaviour
         }
         else
         {
-            if(height < playersMinMaxHeight[player][joint, 0] && height > jointsHeight[0])
+            if (height < playersMinMaxHeight[player][joint, 0] && height > jointsHeight[0])
             {
                 playersMinMaxHeight[player][joint, 0] = height;
             }
