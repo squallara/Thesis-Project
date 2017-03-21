@@ -13,17 +13,21 @@ public class Manager : MonoBehaviour
     List<float[,]> bodyJoints;
     List<float[]> playersJointsHeight; // Heights of the joints per player
     List<float[,]> playersMinMaxHeight; // Min-Max height of joints per player
-    List<ulong> playersId;       //Remove the public. Did only for observation.
+    //List<Kinect.ColorSpacePoint> colorPoints;   //The pixels position for every pref bodyJoint;
+    List<Kinect.ColorSpacePoint> player1TrailHandLeft, player1TrailHandRight, player2TrailHandLeft, player2TrailHandRight; //The trails of 2 players and their two hands. FIXED THING.
+    public List<ulong> playersId;       //Remove the public. Did only for observation.
     bool[] players;
     float[] jointsHeight;       //With the order of the prefJoints. (heights of the joints in general)
     float[,] minMaxHeight;
-    int countBodies;
+    int countBodies;        //Counts how many bodies are active at the same frame.
     bool foundId;
 
     //public Texture texture;
     public List<Texture> playersMat;
-    Kinect.PointF point;
+    public List<Texture> LowHighMats; //2 cells per player.
     public List<Kinect.JointType> prefJoints;       //Assign in the inspector the pref joints you want to detect. ALWAYS first the main body.
+    public int trailAmount;
+    public int textureWidth, textureHeight;
 
     void Start()
     {
@@ -36,11 +40,14 @@ public class Manager : MonoBehaviour
 
         reader = sensor.OpenMultiSourceFrameReader(Kinect.FrameSourceTypes.Body | Kinect.FrameSourceTypes.Color | Kinect.FrameSourceTypes.Depth | Kinect.FrameSourceTypes.Infrared);
         reader.MultiSourceFrameArrived += Reader_MultiSourceFrameArrived;
-        point = new Kinect.PointF();
         playersId = new List<ulong>();
         bodyJoints = new List<float[,]>();
         playersJointsHeight = new List<float[]>();
         playersMinMaxHeight = new List<float[,]>();
+        player1TrailHandLeft = new List<Kinect.ColorSpacePoint>();
+        player1TrailHandRight = new List<Kinect.ColorSpacePoint>();
+        player2TrailHandLeft = new List<Kinect.ColorSpacePoint>();
+        player2TrailHandRight = new List<Kinect.ColorSpacePoint>();
         players = new bool[6];
         countBodies = 0;
     }
@@ -102,6 +109,13 @@ public class Manager : MonoBehaviour
 
                             for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
                             {
+
+                                //3d coordinates in meters
+                                Kinect.CameraSpacePoint skeletonPoint = body.Joints[jt].Position;
+
+                                Kinect.ColorSpacePoint colorPoint = sensor.CoordinateMapper.MapCameraPointToColorSpace(skeletonPoint);
+
+
                                 var k = 0;  //k counts the which joint in the jointHeight matrix corresponding to the amount of the prefJoints
                                 foreach (Kinect.JointType joint in prefJoints)
                                 {
@@ -114,18 +128,69 @@ public class Manager : MonoBehaviour
                                             {
                                                 SortMinMax(body.Joints[jt].Position.Y, j, k);
                                             }
+
+                                            ///////////FIXED CODE FOR THE TRAILRENDERER. IT RELIES HARD TO THE PREFJOINTS TO BE 3 SPINEMIDM,HANDLEFT,HANDRIGHT
+
+                                            if (k == 1)
+                                            {
+                                                if (j == 0)
+                                                {
+                                                    if (player1TrailHandLeft.Count < trailAmount)
+                                                    {
+                                                        player1TrailHandLeft.Add(colorPoint);
+                                                    }
+                                                    else
+                                                    {
+                                                        player1TrailHandLeft.Clear();
+                                                    }
+                                                }
+
+                                                if (j == 1)
+                                                {
+                                                    if (player2TrailHandLeft.Count < trailAmount)
+                                                    {
+                                                        player2TrailHandLeft.Add(colorPoint);
+                                                    }
+                                                    else
+                                                    {
+                                                        player2TrailHandLeft.Clear();
+                                                    }
+                                                }
+                                            }
+
+                                            if (k == 2)
+                                            {
+                                                if (j == 0)
+                                                {
+                                                    if (player1TrailHandRight.Count < trailAmount)
+                                                    {
+                                                        player1TrailHandRight.Add(colorPoint);
+                                                    }
+                                                    else
+                                                    {
+                                                        player1TrailHandRight.Clear();
+                                                    }
+                                                }
+
+                                                if (j == 1)
+                                                {
+                                                    if (player2TrailHandRight.Count < trailAmount)
+                                                    {
+                                                        player2TrailHandRight.Add(colorPoint);
+                                                    }
+                                                    else
+                                                    {
+                                                        player2TrailHandRight.Clear();
+                                                    }
+                                                }
+                                            }
+
+                                            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                         }
                                     }
                                     k++;
                                 }
 
-                                //3d coordinates in meters
-                                Kinect.CameraSpacePoint skeletonPoint = body.Joints[jt].Position;
-
-                                Kinect.ColorSpacePoint colorPoint = sensor.CoordinateMapper.MapCameraPointToColorSpace(skeletonPoint);
-
-                                point.X = colorPoint.X;
-                                point.Y = colorPoint.Y;
 
                                 jointsPos[i, 0] = colorPoint.X;
                                 jointsPos[i, 1] = colorPoint.Y;
@@ -165,23 +230,30 @@ public class Manager : MonoBehaviour
             {
                 countBodies++;
             }
-
-            //if(i==5)
-            //{
-            //    print(countBodies);
-            //}
         }
 
         if (countBodies != playersId.Count)
         {
-            var diff = playersId.Count - countBodies;
-            for (int i = 1; i <= diff; i++)
+            //var diff = playersId.Count - countBodies;
+            //for (int i = 1; i <= diff; i++)
+            //{
+            //    bodyJoints.RemoveAt(bodyJoints.Count - i);
+            //    playersJointsHeight.RemoveAt(playersJointsHeight.Count - i);
+            //    playersMinMaxHeight.RemoveAt(playersMinMaxHeight.Count - i);
+            //    playersId.RemoveAt(playersId.Count - i);
+            //}
+
+            for (int i = 0; i < playersId.Count; i++)
             {
-                bodyJoints.RemoveAt(bodyJoints.Count - i);
-                playersId.RemoveAt(playersId.Count - i);
-                playersJointsHeight.RemoveAt(playersJointsHeight.Count - i);
-                playersMinMaxHeight.RemoveAt(playersMinMaxHeight.Count - i);
+                if (players[i] == false)
+                {
+                    bodyJoints.RemoveAt(i);
+                    playersJointsHeight.RemoveAt(i);
+                    playersMinMaxHeight.RemoveAt(i);
+                    playersId.RemoveAt(i);
+                }
             }
+
         }
     }
 
@@ -206,31 +278,111 @@ public class Manager : MonoBehaviour
                             {
                                 if (bodyJoints[k][i, 0] != 0 && bodyJoints[k][i, 1] != 0)
                                 {
-                                    if (jt == prefJoints[0])
+                                    if (jt == prefJoints[0]) //the base bodyjoint like spinemid needs to be at the first place ALWAYS!!!!!!
                                     {
-                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0], bodyJoints[k][i, 1], 70, 70), playersMat[k]);
+                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - 70/2, bodyJoints[k][i, 1] - 70/2, 70, 70), playersMat[k]);
                                     }
                                     else
                                     {
-                                        if (playersJointsHeight[k][p] > playersJointsHeight[k][0])
+                                        if (playersJointsHeight[k][p] > playersJointsHeight[k][0] && k < 2)          //K will be restricted to 2 for only two players.
                                         {
-                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0], bodyJoints[k][i, 1], 20, 20), playersMat[k]);
-
                                             if (useMidOutput == false)
                                             {
                                                 if (playersJointsHeight[k][p] > (playersMinMaxHeight[k][p, 0] + playersMinMaxHeight[k][p, 1]) / 2)
                                                 {
-                                                    print("High");
+                                                    print("High");      ////////////////////////////////////  HERE IS THE HIGH INPUT////////////////////////////////////
+                                                    switch (k)
+                                                    {
+                                                        case 0:
+                                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth/2, bodyJoints[k][i, 1] - textureHeight/2, textureWidth, textureHeight), LowHighMats[1]);
+
+                                                            if(p==1)
+                                                            {
+                                                                foreach(Kinect.ColorSpacePoint point in player1TrailHandLeft)
+                                                                {
+                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth/2, point.Y - textureHeight/2, textureWidth, textureHeight), LowHighMats[1]);
+                                                                }
+                                                            }
+                                                            else if(p==2)
+                                                            {
+                                                                foreach (Kinect.ColorSpacePoint point in player1TrailHandRight)
+                                                                {
+                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[1]);
+                                                                }
+                                                            }
+
+                                                            break;
+                                                        case 1:
+                                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth/2, bodyJoints[k][i, 1] - textureHeight/2, textureWidth, textureHeight), LowHighMats[3]);
+
+                                                            if (p == 1)
+                                                            {
+                                                                foreach (Kinect.ColorSpacePoint point in player2TrailHandLeft)
+                                                                {
+                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[3]);
+                                                                }
+                                                            }
+                                                            else if (p == 2)
+                                                            {
+                                                                foreach (Kinect.ColorSpacePoint point in player2TrailHandRight)
+                                                                {
+                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[3]);
+                                                                }
+                                                            }
+
+                                                            break;
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                    print("Low");
+                                                    print("Low"); ////////////////////////////////////  HERE IS THE LOW INPUT////////////////////////////////////
+                                                    switch (k)
+                                                    {
+                                                        case 0:
+                                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth/2, bodyJoints[k][i, 1] - textureHeight/2, textureWidth, textureHeight), LowHighMats[0]);
+
+                                                            if (p == 1)
+                                                            {
+                                                                foreach (Kinect.ColorSpacePoint point in player1TrailHandLeft)
+                                                                {
+                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[0]);
+                                                                }
+                                                            }
+                                                            else if (p == 2)
+                                                            {
+                                                                foreach (Kinect.ColorSpacePoint point in player1TrailHandRight)
+                                                                {
+                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[0]);
+                                                                }
+                                                            }
+
+                                                            break;
+                                                        case 1:
+                                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth/2, bodyJoints[k][i, 1] - textureHeight/2, textureWidth, textureHeight), LowHighMats[2]);
+
+                                                            if (p == 1)
+                                                            {
+                                                                foreach (Kinect.ColorSpacePoint point in player2TrailHandLeft)
+                                                                {
+                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[2]);
+                                                                }
+                                                            }
+                                                            else if (p == 2)
+                                                            {
+                                                                foreach (Kinect.ColorSpacePoint point in player2TrailHandRight)
+                                                                {
+                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[2]);
+                                                                }
+                                                            }
+
+                                                            break;
+                                                    }
                                                 }
                                             }
                                             else
                                             {
                                                 /////////////////CODE FOR THE 3RD OUTPUT. NEEDS TESTINGS. WORKS BUT NOT PERFECT//////////////
-                                                if(playersJointsHeight[k][1] > (playersMinMaxHeight[k][1, 0] + playersMinMaxHeight[k][1, 1]) / 2 
+                                                if (playersJointsHeight[k][1] > (playersMinMaxHeight[k][1, 0] + playersMinMaxHeight[k][1, 1]) / 2
                                                     && playersJointsHeight[k][2] > (playersMinMaxHeight[k][2, 0] + playersMinMaxHeight[k][2, 1]) / 2)
                                                 {
                                                     print("High");
@@ -240,7 +392,7 @@ public class Manager : MonoBehaviour
                                                 {
                                                     print("Low");
                                                 }
-                                                else if(playersJointsHeight[k][1] > playersJointsHeight[k][0] && playersJointsHeight[k][2] > playersJointsHeight[k][0])
+                                                else if (playersJointsHeight[k][1] > playersJointsHeight[k][0] && playersJointsHeight[k][2] > playersJointsHeight[k][0])
                                                 {
                                                     print("Mid");
                                                 }
@@ -268,7 +420,7 @@ public class Manager : MonoBehaviour
         }
         else
         {
-            if(height < playersMinMaxHeight[player][joint, 0] && height > jointsHeight[0])
+            if (height < playersMinMaxHeight[player][joint, 0] && height > jointsHeight[0])
             {
                 playersMinMaxHeight[player][joint, 0] = height;
             }
