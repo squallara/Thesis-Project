@@ -67,6 +67,7 @@ public class Manager : MonoBehaviour
 
                 foreach (var body in bodies)
                 {
+                    
                     var i = 0;
                     jointsPos = new float[25, 2];
                     jointsHeight = new float[prefJoints.Count];
@@ -254,6 +255,11 @@ public class Manager : MonoBehaviour
                 }
             }
 
+            for(int i=0; i<playersId.Count; i++)
+            {
+                players[i] = true;
+            }
+
         }
     }
 
@@ -296,39 +302,39 @@ public class Manager : MonoBehaviour
                                                         case 0:
                                                             Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth/2, bodyJoints[k][i, 1] - textureHeight/2, textureWidth, textureHeight), LowHighMats[1]);
 
-                                                            if(p==1)
-                                                            {
-                                                                foreach(Kinect.ColorSpacePoint point in player1TrailHandLeft)
-                                                                {
-                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth/2, point.Y - textureHeight/2, textureWidth, textureHeight), LowHighMats[1]);
-                                                                }
-                                                            }
-                                                            else if(p==2)
-                                                            {
-                                                                foreach (Kinect.ColorSpacePoint point in player1TrailHandRight)
-                                                                {
-                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[1]);
-                                                                }
-                                                            }
+                                                            //if (p == 1)
+                                                            //{
+                                                            //    foreach (Kinect.ColorSpacePoint point in player1TrailHandLeft)
+                                                            //    {
+                                                            //        Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[1]);
+                                                            //    }
+                                                            //}
+                                                            //else if (p == 2)
+                                                            //{
+                                                            //    foreach (Kinect.ColorSpacePoint point in player1TrailHandRight)
+                                                            //    {
+                                                            //        Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[1]);
+                                                            //    }
+                                                            //}
 
                                                             break;
                                                         case 1:
                                                             Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth/2, bodyJoints[k][i, 1] - textureHeight/2, textureWidth, textureHeight), LowHighMats[3]);
 
-                                                            if (p == 1)
-                                                            {
-                                                                foreach (Kinect.ColorSpacePoint point in player2TrailHandLeft)
-                                                                {
-                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[3]);
-                                                                }
-                                                            }
-                                                            else if (p == 2)
-                                                            {
-                                                                foreach (Kinect.ColorSpacePoint point in player2TrailHandRight)
-                                                                {
-                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[3]);
-                                                                }
-                                                            }
+                                                            //if (p == 1)
+                                                            //{
+                                                            //    foreach (Kinect.ColorSpacePoint point in player2TrailHandLeft)
+                                                            //    {
+                                                            //        Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[3]);
+                                                            //    }
+                                                            //}
+                                                            //else if (p == 2)
+                                                            //{
+                                                            //    foreach (Kinect.ColorSpacePoint point in player2TrailHandRight)
+                                                            //    {
+                                                            //        Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[3]);
+                                                            //    }
+                                                            //}
 
                                                             break;
                                                     }
@@ -341,39 +347,39 @@ public class Manager : MonoBehaviour
                                                         case 0:
                                                             Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth/2, bodyJoints[k][i, 1] - textureHeight/2, textureWidth, textureHeight), LowHighMats[0]);
 
-                                                            if (p == 1)
-                                                            {
-                                                                foreach (Kinect.ColorSpacePoint point in player1TrailHandLeft)
-                                                                {
-                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[0]);
-                                                                }
-                                                            }
-                                                            else if (p == 2)
-                                                            {
-                                                                foreach (Kinect.ColorSpacePoint point in player1TrailHandRight)
-                                                                {
-                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[0]);
-                                                                }
-                                                            }
+                                                            //if (p == 1)
+                                                            //{
+                                                            //    foreach (Kinect.ColorSpacePoint point in player1TrailHandLeft)
+                                                            //    {
+                                                            //        Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[0]);
+                                                            //    }
+                                                            //}
+                                                            //else if (p == 2)
+                                                            //{
+                                                            //    foreach (Kinect.ColorSpacePoint point in player1TrailHandRight)
+                                                            //    {
+                                                            //        Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[0]);
+                                                            //    }
+                                                            //}
 
                                                             break;
                                                         case 1:
                                                             Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth/2, bodyJoints[k][i, 1] - textureHeight/2, textureWidth, textureHeight), LowHighMats[2]);
 
-                                                            if (p == 1)
-                                                            {
-                                                                foreach (Kinect.ColorSpacePoint point in player2TrailHandLeft)
-                                                                {
-                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[2]);
-                                                                }
-                                                            }
-                                                            else if (p == 2)
-                                                            {
-                                                                foreach (Kinect.ColorSpacePoint point in player2TrailHandRight)
-                                                                {
-                                                                    Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[2]);
-                                                                }
-                                                            }
+                                                            //if (p == 1)
+                                                            //{
+                                                            //    foreach (Kinect.ColorSpacePoint point in player2TrailHandLeft)
+                                                            //    {
+                                                            //        Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[2]);
+                                                            //    }
+                                                            //}
+                                                            //else if (p == 2)
+                                                            //{
+                                                            //    foreach (Kinect.ColorSpacePoint point in player2TrailHandRight)
+                                                            //    {
+                                                            //        Graphics.DrawTexture(new Rect(point.X - textureWidth / 2, point.Y - textureHeight / 2, textureWidth, textureHeight), LowHighMats[2]);
+                                                            //    }
+                                                            //}
 
                                                             break;
                                                     }
