@@ -29,7 +29,7 @@ public class MusicPlayer : MonoBehaviour
 
     toneHolder[] melodicToneSet, rythmToneSet, bassToneSet;
 
-    float mainTrackTime, mainTrackTimer, chorusTime, vers2Time;
+    float mainTrackTimer;
 
     float toneTimer, rythmTimer, beatManTime1, beatManTime2, toneLength, rythmLength;
 
@@ -39,6 +39,10 @@ public class MusicPlayer : MonoBehaviour
 
     public float disableTime;
 
+    public float mainTrackTime, introTime, versTime, bridgeTime, chorusTime, vers2Time, bridge2Time;
+
+    public int rythmIntroPos, rythmVersPos, rythmBridgePos, rythmChorPos, rythmVers2Pos, rythmBridge2Pos, rythmChor2Pos;
+
     public AudioMixer EQMixer;
 
     string rythmMixGroup = "Rythm", toneMixGroup = "Tone";
@@ -46,6 +50,8 @@ public class MusicPlayer : MonoBehaviour
     bool MixerSet;
 
     bool P2isRythm;
+
+    public bool repeatTrack;
 
     AudioMixerSnapshot[] snapshots;
 
@@ -88,7 +94,11 @@ public class MusicPlayer : MonoBehaviour
 
         StatusError();
 
+        SoundtrackTimeManager();
+
         mainTrackTimer = mainTrackTimer + Time.deltaTime;
+
+        //Debug.Log("Main track time = " + mainTrackTimer);
 
         beatManTime1 = beatMan.melodicTimer;
         beatManTime2 = beatMan.rythmTimer;
@@ -219,7 +229,7 @@ public class MusicPlayer : MonoBehaviour
 
         AudioClip high, mid, low;
 
-        
+        Debug.Log("Looking for input " + playerInput.userInput);
 
         bool isRythmPlayer = false;
 
@@ -260,6 +270,8 @@ public class MusicPlayer : MonoBehaviour
                 isPlayable = false;
 
                 playerInput.audioSource.PlayOneShot(high);
+                mainTrackTimer = 0;
+                ActivateDrums();
 
                 if (isRythmPlayer)
                 {
@@ -284,6 +296,8 @@ public class MusicPlayer : MonoBehaviour
             else if (playerInput.userInput == playerInput.inputMid && isPlayable == true && useMidInput == true)
             {
                 playerInput.audioSource.PlayOneShot(mid);
+                mainTrackTimer = 0;
+                ActivateDrums();
 
                 isPlayable = false;
 
@@ -303,6 +317,8 @@ public class MusicPlayer : MonoBehaviour
             else if (playerInput.userInput == playerInput.inputLow && isPlayable == true)
             {
                 playerInput.audioSource.PlayOneShot(low);
+                mainTrackTimer = 0;
+                ActivateDrums();
 
                 isPlayable = false;
 
@@ -592,15 +608,41 @@ public class MusicPlayer : MonoBehaviour
 
     }
 
-    void SoundtrackTimeManager(float trackTime)
+    void SoundtrackTimeManager()
     {
+        float offset = 0.5f;
 
-        if(mainTrackTimer == chorusTime - 0.5f)
+        if(mainTrackTimer >= mainTrackTime)
         {
-            rythmPos = 0;
+            mainTrackTimer = 0;
+            beatMan.bassAudioSource.Stop();
         }
 
+        if(mainTrackTimer == introTime - offset && introTime != 0)
+        {
+            rythmPos = rythmIntroPos;
+        }
+        else if(introTime == 0 && mainTrackTimer == introTime)
+        {
+            rythmPos = rythmIntroPos;
+        }
+        if(mainTrackTimer == versTime - offset && versTime != 0)
+        {
+            rythmPos = rythmVersPos;
+        }
+        else if(versTime == 0 && mainTrackTimer == versTime)
+        {
+            rythmPos = rythmVersPos;
+        }
 
+        
+
+
+    }
+
+    void ActivateDrums()
+    {
+        beatMan.useBeat = true;
     }
 
 }

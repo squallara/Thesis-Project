@@ -29,6 +29,9 @@ public class Manager : MonoBehaviour
     public int trailAmount;
     public int textureWidth, textureHeight;
 
+    public GameObject player1, player2;
+    UserInput p1UInput, p2UInput;
+
     void Start()
     {
         sensor = Kinect.KinectSensor.GetDefault();
@@ -50,6 +53,12 @@ public class Manager : MonoBehaviour
         player2TrailHandRight = new List<Kinect.ColorSpacePoint>();
         players = new bool[6];
         countBodies = 0;
+
+        p1UInput = player1.GetComponent<UserInput>();
+        p2UInput = player2.GetComponent<UserInput>();
+
+
+
     }
 
     private void Reader_MultiSourceFrameArrived(object sender, Kinect.MultiSourceFrameArrivedEventArgs e)
@@ -291,6 +300,16 @@ public class Manager : MonoBehaviour
                                                 if (playersJointsHeight[k][p] > (playersMinMaxHeight[k][p, 0] + playersMinMaxHeight[k][p, 1]) / 2)
                                                 {
                                                     print("High");      ////////////////////////////////////  HERE IS THE HIGH INPUT////////////////////////////////////
+
+                                                    if (k == 0)
+                                                    {
+                                                        p1UInput.userInput = "high";
+                                                    }
+                                                    else if (k == 1)
+                                                    {
+                                                        p2UInput.userInput = "high";
+                                                    }
+
                                                     switch (k)
                                                     {
                                                         case 0:
@@ -336,6 +355,16 @@ public class Manager : MonoBehaviour
                                                 else
                                                 {
                                                     print("Low"); ////////////////////////////////////  HERE IS THE LOW INPUT////////////////////////////////////
+
+                                                    if (k == 0)
+                                                    {
+                                                        p1UInput.userInput = "low";
+                                                    }
+                                                    else if (k == 1)
+                                                    {
+                                                        p2UInput.userInput = "low";
+                                                    }
+
                                                     switch (k)
                                                     {
                                                         case 0:
@@ -386,11 +415,14 @@ public class Manager : MonoBehaviour
                                                     && playersJointsHeight[k][2] > (playersMinMaxHeight[k][2, 0] + playersMinMaxHeight[k][2, 1]) / 2)
                                                 {
                                                     print("High");
+                                                    
+
                                                 }
                                                 else if (playersJointsHeight[k][1] <= (playersMinMaxHeight[k][1, 0] + playersMinMaxHeight[k][1, 1]) / 2
                                                     && playersJointsHeight[k][2] <= (playersMinMaxHeight[k][2, 0] + playersMinMaxHeight[k][2, 1]) / 2)
                                                 {
                                                     print("Low");
+                                                    
                                                 }
                                                 else if (playersJointsHeight[k][1] > playersJointsHeight[k][0] && playersJointsHeight[k][2] > playersJointsHeight[k][0])
                                                 {
