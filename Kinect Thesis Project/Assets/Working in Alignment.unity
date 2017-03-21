@@ -417,7 +417,9 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 9b19df33fa0ca45449653668c61d2113, type: 3}
   - {fileID: 2800000, guid: 3b91891d3b2d8f9499ccf7b825f35331, type: 3}
   prefJoints: 01000000070000000b000000
-  trailAmount: 50
+  trailAmount: 10
+  textureWidth: 50
+  textureHeight: 50
 --- !u!4 &2051844645
 Transform:
   m_ObjectHideFlags: 0
