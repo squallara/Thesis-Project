@@ -53,6 +53,8 @@ public class MusicPlayer : MonoBehaviour
 
     public bool repeatTrack;
 
+    string lastPlayed;
+
     AudioMixerSnapshot[] snapshots;
 
 
@@ -83,7 +85,7 @@ public class MusicPlayer : MonoBehaviour
 
         P2isRythm = player2rythm;
         snapshots = new AudioMixerSnapshot[3];
-        
+
 
 
     }
@@ -108,10 +110,10 @@ public class MusicPlayer : MonoBehaviour
 
         if (player2rythm)
         {
-            
+
             if (!MixerSet)
             {
-                GetMixers(Player2, EQMixer,rythmMixGroup);
+                GetMixers(Player2, EQMixer, rythmMixGroup);
                 GetMixers(Player1, EQMixer, toneMixGroup);
                 MixerSet = true;
             }
@@ -126,10 +128,10 @@ public class MusicPlayer : MonoBehaviour
                 GetMixers(Player2, EQMixer, toneMixGroup);
                 MixerSet = true;
             }
-            
+
         }
 
-        if(player2rythm != P2isRythm)
+        if (player2rythm != P2isRythm)
         {
             MixerSet = false;
             P2isRythm = player2rythm;
@@ -155,7 +157,7 @@ public class MusicPlayer : MonoBehaviour
                 if (useSeperateBass)
                 {
                     SetBassInput(Player1);
-                    Debug.Log("Player 1 rythm, bass follows Rythm");
+                    // Debug.Log("Player 1 rythm, bass follows Rythm");
                     BassFollowRythm(Player1);
                 }
                 else
@@ -165,7 +167,7 @@ public class MusicPlayer : MonoBehaviour
             }
             else
             {
-                Debug.Log("Player 1 Rythm, bass follows beat");
+                //Debug.Log("Player 1 Rythm, bass follows beat");
                 PlayerIO(Player1, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
 
             }
@@ -184,7 +186,7 @@ public class MusicPlayer : MonoBehaviour
                     if (useSeperateBass)
                     {
                         SetBassInput(Player2);
-                        Debug.Log("Player 2 Rythm, bass follows rythm");
+                        // Debug.Log("Player 2 Rythm, bass follows rythm");
                         BassFollowRythm(Player2);
                     }
                     else
@@ -194,16 +196,16 @@ public class MusicPlayer : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Player 2 Rythm, bass follows beat");
+                    // Debug.Log("Player 2 Rythm, bass follows beat");
                     PlayerIO(Player2, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
 
                 }
             }
             else
             {
-                Debug.Log("Player 2 Melodic");
+                // Debug.Log("Player 2 Melodic");
                 PlayerIO(Player2, melodicToneSet, toneSetAmount, ref tonePos, ref tonePlayable);
-                Debug.Log("Userinput P2 = " + Player2.userInput);
+                //Debug.Log("Userinput P2 = " + Player2.userInput);
 
             }
 
@@ -252,11 +254,29 @@ public class MusicPlayer : MonoBehaviour
             tonePos = 0;
         }
 
+
+        if (playerInput.userInput == lastPlayed)
+        {
+            if (lastPlayed == playerInput.inputHigh)
+            {
+                tonePos = toneSet[tonePos].tonesetRefHigh;
+            }
+            else if (lastPlayed == playerInput.inputLow)
+            {
+                tonePos = toneSet[tonePos].tonesetRefLow;
+            }
+        }
+
+
         toneHolder currentToneSet = toneSet[tonePos];
+
+        Debug.Log("TonePos = " + tonePos);
 
         high = currentToneSet.high;
         mid = currentToneSet.mid;
         low = currentToneSet.low;
+
+
 
         if (playerInput.inputHigh == "" && playerInput.inputMid == "" && playerInput.inputLow == "")
         {
@@ -286,10 +306,12 @@ public class MusicPlayer : MonoBehaviour
                 }
 
                 playerInput.userInput = null;
+                lastPlayed = "high";
 
-                tonePos = currentToneSet.tonesetRefHigh;
-
-                
+                if (tonePos == 0)
+                {
+                    tonePos = toneSet[tonePos].tonesetRefHigh;
+                }
 
             }
 
@@ -332,8 +354,12 @@ public class MusicPlayer : MonoBehaviour
                 }
 
                 playerInput.userInput = null;
-
-                tonePos = currentToneSet.tonesetRefLow;
+                lastPlayed = "low";
+                if (tonePos == 0)
+                {
+                    tonePos = toneSet[tonePos].tonesetRefLow;
+                }
+                //tonePos = currentToneSet.tonesetRefLow;
 
             }
         }
@@ -343,11 +369,11 @@ public class MusicPlayer : MonoBehaviour
     public void PlayerDepth(UserInput P1Input, UserInput P2Input)
     {
 
-        if(P1Input.userDepth == P1Input.depthFar)
+        if (P1Input.userDepth == P1Input.depthFar)
         {
             //Player1.audioSource.outputAudioMixerGroup.audioMixer.TransitionToSnapshots(snapshots[0],25,1);
         }
-        
+
 
     }
 
@@ -497,7 +523,7 @@ public class MusicPlayer : MonoBehaviour
     void BassFollowRythm(UserInput playerInput)
     {
 
-        BassPlayer(playerInput, bassToneSet,bassSetAmount, ref bassPos, ref bassPlayable);
+        BassPlayer(playerInput, bassToneSet, bassSetAmount, ref bassPos, ref bassPlayable);
 
         PlayerIO(playerInput, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
 
@@ -544,7 +570,7 @@ public class MusicPlayer : MonoBehaviour
 
         AudioClip highBass, midBass, lowBass;
 
-        if(tonesetPos >= toneSetAmount)
+        if (tonesetPos >= toneSetAmount)
         {
             tonesetPos = 0;
         }
@@ -561,17 +587,17 @@ public class MusicPlayer : MonoBehaviour
         }
         else
         {
-            if(playerInput.userInput == playerInput.inputHigh && isBassPlayable == true)
+            if (playerInput.userInput == playerInput.inputHigh && isBassPlayable == true)
             {
                 beatMan.bassAudioSource.PlayOneShot(highBass);
                 isBassPlayable = false;
             }
-            else if(playerInput.userInput == playerInput.inputMid && isBassPlayable == true)
+            else if (playerInput.userInput == playerInput.inputMid && isBassPlayable == true)
             {
                 beatMan.bassAudioSource.PlayOneShot(midBass);
                 isBassPlayable = false;
             }
-            else if(playerInput.userInput == playerInput.inputLow && isBassPlayable == true)
+            else if (playerInput.userInput == playerInput.inputLow && isBassPlayable == true)
             {
                 beatMan.bassAudioSource.PlayOneShot(lowBass);
                 isBassPlayable = false;
@@ -580,7 +606,7 @@ public class MusicPlayer : MonoBehaviour
 
 
     }
-    
+
 
     void SetBassInput(UserInput userInput)
     {
@@ -596,7 +622,7 @@ public class MusicPlayer : MonoBehaviour
     {
 
         player.audioSource.outputAudioMixerGroup = mixer.FindMatchingGroups(mixerGroup)[0];
-        
+
     }
 
     void SetSnapshots()
@@ -612,30 +638,30 @@ public class MusicPlayer : MonoBehaviour
     {
         float offset = 0.5f;
 
-        if(mainTrackTimer >= mainTrackTime)
+        if (mainTrackTimer >= mainTrackTime)
         {
             mainTrackTimer = 0;
             beatMan.bassAudioSource.Stop();
         }
 
-        if(mainTrackTimer == introTime - offset && introTime != 0)
+        if (mainTrackTimer == introTime - offset && introTime != 0)
         {
             rythmPos = rythmIntroPos;
         }
-        else if(introTime == 0 && mainTrackTimer == introTime)
+        else if (introTime == 0 && mainTrackTimer == introTime)
         {
             rythmPos = rythmIntroPos;
         }
-        if(mainTrackTimer == versTime - offset && versTime != 0)
+        if (mainTrackTimer == versTime - offset && versTime != 0)
         {
             rythmPos = rythmVersPos;
         }
-        else if(versTime == 0 && mainTrackTimer == versTime)
+        else if (versTime == 0 && mainTrackTimer == versTime)
         {
             rythmPos = rythmVersPos;
         }
 
-        
+
 
 
     }
@@ -644,5 +670,6 @@ public class MusicPlayer : MonoBehaviour
     {
         beatMan.useBeat = true;
     }
+
 
 }

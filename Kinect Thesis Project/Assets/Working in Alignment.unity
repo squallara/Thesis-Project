@@ -153,7 +153,7 @@ Prefab:
     - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
         type: 2}
       propertyPath: timeLength
-      value: 1.9
+      value: 1.95
       objectReference: {fileID: 0}
     - target: {fileID: 1958904349720914, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
       propertyPath: m_Name
@@ -234,7 +234,7 @@ Prefab:
     - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
         type: 2}
       propertyPath: timeLength
-      value: 1.9
+      value: 1.95
       objectReference: {fileID: 0}
     - target: {fileID: 1958904349720914, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
       propertyPath: m_Name
@@ -745,7 +745,7 @@ Prefab:
     - target: {fileID: 114848014582460418, guid: 32bae8979b2f69449a6c617f36e2b0a0,
         type: 2}
       propertyPath: rythmFollowBeat
-      value: 1.9
+      value: 1.96
       objectReference: {fileID: 0}
     - target: {fileID: 114848014582460418, guid: 32bae8979b2f69449a6c617f36e2b0a0,
         type: 2}
@@ -755,7 +755,7 @@ Prefab:
     - target: {fileID: 114848014582460418, guid: 32bae8979b2f69449a6c617f36e2b0a0,
         type: 2}
       propertyPath: toneFollowBeat
-      value: 2
+      value: 3.96
       objectReference: {fileID: 0}
     - target: {fileID: 114848014582460418, guid: 32bae8979b2f69449a6c617f36e2b0a0,
         type: 2}
@@ -1082,7 +1082,7 @@ Prefab:
     - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
         type: 2}
       propertyPath: timeLength
-      value: 0.24
+      value: 3.96
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
@@ -1149,7 +1149,7 @@ Prefab:
     - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
         type: 2}
       propertyPath: timeLength
-      value: 1.9
+      value: 1.95
       objectReference: {fileID: 0}
     - target: {fileID: 1958904349720914, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
       propertyPath: m_Name
