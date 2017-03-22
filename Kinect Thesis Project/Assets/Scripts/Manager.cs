@@ -431,6 +431,17 @@ public class Manager : MonoBehaviour
                                                 }
                                             }
                                         }
+                                        else
+                                        {
+                                            if (k == 0)
+                                            {
+                                                p1UInput.userInput = null;
+                                            }
+                                            else if (k == 1)
+                                            {
+                                                p2UInput.userInput = null;
+                                            }
+                                        }
                                     }
                                 }
                             }
