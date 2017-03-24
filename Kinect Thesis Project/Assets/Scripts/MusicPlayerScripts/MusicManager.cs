@@ -26,26 +26,79 @@ public class MusicManager : MonoBehaviour
     public float mainTrackTime;
     float mainTrackTimer;
 
-    public float melodicBeatTime, rythmBeatTime, beatTime;
-    public float beatTimer;
+    float melodicBeatTimer, rythmBeatTimer, beatTimer;
+    public float melodicBeatInterval, rythmBeatInterval, beatInterval;
+    public float timeOffset;
+
+    [HideInInspector]
+    public bool melodyPlayable, rythmPlayable, inputReady;
 
     
+
+
 
     // Use this for initialization
     void Start()
     {
+
+        inputReady = false;
+        GetToneSets();
+        AudioSetup();
+
         startMusic = false;
-        
+
+        mainTrackTime = drumClip.length;
+
+        mainTrackTimer = 0;
+        beatTimer = beatInterval;
+        melodicBeatTimer = melodicBeatInterval;
+        rythmBeatTimer = rythmBeatInterval;
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
+        mainTrackTimer = mainTrackTimer + Time.deltaTime;
+        beatTimer = beatTimer - Time.deltaTime;
+        melodicBeatTimer = melodicBeatTimer - Time.deltaTime;
+        rythmBeatTimer = rythmBeatTimer - Time.deltaTime;
+
+        DisableSounds();
+        EnableSounds();
+        ResetBeatTime();
+
+        /*
+        TimeCheck(beatTimer, beatInterval);
+        TimeCheck(melodicBeatTimer, melodicBeatInterval);
+        TimeCheck(rythmBeatTimer, rythmBeatInterval);
+        */
+
+        /*
+        CheckPlayability(melodyPlayable, beatTimer, melodicBeatTimer);
+        CheckPlayability(rythmPlayable, beatTimer, rythmBeatTimer);
+        */
+
+
         if (startMusic)
         {
-            MutePlayers();
-            StartMusic();
+            
+            if (!drumSource.isPlaying)
+            {
+                if (!inputReady)
+                {
+                    ResetTimers();
+                    MutePlayers();
+                    inputReady = true;
+                }
+                StartMusic();
+            }
+            
+        }
+        else if (!startMusic && drumSource.isPlaying)
+        {
+            StopMusic();
         }
 
     }
@@ -272,7 +325,7 @@ public class MusicManager : MonoBehaviour
         rythmSourceTwoLow.mute = true;
     }
 
-    public void ResetMusic()
+    public void StopMusic()
     {
 
         startMusic = false;
@@ -291,6 +344,78 @@ public class MusicManager : MonoBehaviour
 
     }
 
+    public float TimeCheck(float timer, float interval)
+    {
+        if (timer >= interval - timeOffset)
+        {
+            timer = 0;
+        }
+        return timer;
+    }
+
+    public void ResetTimers()
+    {
+        mainTrackTimer = 0;
+        beatTimer = beatInterval;
+        melodicBeatTimer = melodicBeatInterval;
+        rythmBeatTimer = rythmBeatInterval;
+    }
+
+    public bool CheckPlayability(bool soundPlayable, float beatOnTime, float instrumentOnTime)
+    {
+
+        if (instrumentOnTime <= 0 + timeOffset)
+        {
+            soundPlayable = true;
+        }
+
+
+        return soundPlayable;
+    }
+
+    void DisableSounds()
+    {
+        float beatThreshold1 = melodicBeatInterval;
+        float beatThreshold2 = rythmBeatInterval;
+
+        if(melodicBeatTimer < beatThreshold1)
+        {
+            melodyPlayable = false;
+        }
+        if(rythmBeatTimer < beatThreshold2)
+        {
+            rythmPlayable = false;
+        }
+
+    }
+
+    void EnableSounds()
+    {
+        if(melodicBeatTimer <= 0 + timeOffset)
+        {
+            melodyPlayable = true;
+        }
+        if(rythmBeatTimer <= 0 + timeOffset)
+        {
+            rythmPlayable = true;
+        }
+    }
+
+    void ResetBeatTime()
+    {
+        if(beatTimer <= 0)
+        {
+            beatTimer = beatInterval;
+        }
+        if(melodicBeatTimer <= 0)
+        {
+            melodicBeatTimer = melodicBeatInterval;
+        }
+        if(rythmBeatTimer <= 0)
+        {
+            rythmBeatTimer = rythmBeatInterval;
+        }
+    }
 }
 
 
