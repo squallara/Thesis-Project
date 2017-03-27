@@ -16,9 +16,12 @@ public class Manager : MonoBehaviour
     //List<Kinect.ColorSpacePoint> colorPoints;   //The pixels position for every pref bodyJoint;
     List<Kinect.ColorSpacePoint> player1TrailHandLeft, player1TrailHandRight, player2TrailHandLeft, player2TrailHandRight; //The trails of 2 players and their two hands. FIXED THING.
     public List<ulong> playersId;       //Remove the public. Did only for observation.
+    List<float[,]> playersMinMaxHeightInPixels;
     bool[] players;
-    float[] jointsHeight;       //With the order of the prefJoints. (heights of the joints in general)
+    float[] jointsHeight;       //With the order of the prefJoints. (heights of the joints in general) (the y variable nto the actual y in pixels)
     float[,] minMaxHeight;
+    float[,] minMaxHeightInPixels;
+    List<float> spineMidHeightInPixels;   //The spineMid position of each player in pixels
     int countBodies;        //Counts how many bodies are active at the same frame.
     bool foundId;
 
@@ -47,10 +50,12 @@ public class Manager : MonoBehaviour
         bodyJoints = new List<float[,]>();
         playersJointsHeight = new List<float[]>();
         playersMinMaxHeight = new List<float[,]>();
+        playersMinMaxHeightInPixels = new List<float[,]>();
         player1TrailHandLeft = new List<Kinect.ColorSpacePoint>();
         player1TrailHandRight = new List<Kinect.ColorSpacePoint>();
         player2TrailHandLeft = new List<Kinect.ColorSpacePoint>();
         player2TrailHandRight = new List<Kinect.ColorSpacePoint>();
+        spineMidHeightInPixels = new List<float>();
         players = new bool[6];
         countBodies = 0;
 
@@ -80,10 +85,13 @@ public class Manager : MonoBehaviour
                     jointsPos = new float[25, 2];
                     jointsHeight = new float[prefJoints.Count];
                     minMaxHeight = new float[prefJoints.Count, 2];
+                    minMaxHeightInPixels = new float[prefJoints.Count, 2];
                     for (int j = 0; j < prefJoints.Count; j++)
                     {
                         minMaxHeight[j, 0] = 1;
                         minMaxHeight[j, 1] = -1;
+                        minMaxHeightInPixels[j, 0] = 1080;
+                        minMaxHeightInPixels[j, 1] = 1080;
                     }
                     foundId = false;
                     if (body != null)
@@ -95,9 +103,11 @@ public class Manager : MonoBehaviour
                             if (playersId.Count == 0)
                             {
                                 playersId.Add(body.TrackingId);
+                                spineMidHeightInPixels.Add(0);
                                 bodyJoints.Add(null);
                                 playersJointsHeight.Add(null);
                                 playersMinMaxHeight.Add(minMaxHeight);
+                                playersMinMaxHeightInPixels.Add(minMaxHeightInPixels);
                             }
 
                             foreach (ulong id in playersId)
@@ -111,9 +121,11 @@ public class Manager : MonoBehaviour
                             if (foundId == false)
                             {
                                 playersId.Add(body.TrackingId);
+                                spineMidHeightInPixels.Add(0);
                                 bodyJoints.Add(null);
                                 playersJointsHeight.Add(null);
                                 playersMinMaxHeight.Add(minMaxHeight);
+                                playersMinMaxHeightInPixels.Add(minMaxHeightInPixels);
                             }
 
                             for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
@@ -124,6 +136,10 @@ public class Manager : MonoBehaviour
 
                                 Kinect.ColorSpacePoint colorPoint = sensor.CoordinateMapper.MapCameraPointToColorSpace(skeletonPoint);
 
+                                if(jt == Kinect.JointType.SpineMid)
+                                {
+                                    print(Mathf.Ceil(body.Joints[jt].Position.Z));
+                                }
 
                                 var k = 0;  //k counts the which joint in the jointHeight matrix corresponding to the amount of the prefJoints
                                 foreach (Kinect.JointType joint in prefJoints)
@@ -135,7 +151,13 @@ public class Manager : MonoBehaviour
                                         {
                                             if (body.TrackingId == playersId[j])
                                             {
+                                                if (k == 0)
+                                                {
+                                                    spineMidHeightInPixels[j] = colorPoint.Y;
+                                                }
                                                 SortMinMax(body.Joints[jt].Position.Y, j, k);
+                                                SortLine(colorPoint.Y, j, k);
+
                                                 ///////////FIXED CODE FOR THE TRAILRENDERER. IT RELIES HARD TO THE PREFJOINTS TO BE 3 SPINEMIDM,HANDLEFT,HANDRIGHT
 
                                                 if (k == 1)
@@ -259,6 +281,8 @@ public class Manager : MonoBehaviour
                     bodyJoints.RemoveAt(i);
                     playersJointsHeight.RemoveAt(i);
                     playersMinMaxHeight.RemoveAt(i);
+                    playersMinMaxHeightInPixels.RemoveAt(i);
+                    spineMidHeightInPixels.RemoveAt(i);
                     playersId.RemoveAt(i);
                 }
             }
@@ -275,7 +299,7 @@ public class Manager : MonoBehaviour
             {
                 for (int k = 0; k < playersId.Count; k++)       // K counts players
                 {
-                    
+
                     var i = -1;     //i Counts the joints. All of them. 25 in sum
 
                     for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
@@ -296,6 +320,9 @@ public class Manager : MonoBehaviour
                                     {
                                         if (playersJointsHeight[k][p] > playersJointsHeight[k][0] && k < 2)          //K will be restricted to 2 for only two players.
                                         {
+
+                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - 125 / 2, ((playersMinMaxHeightInPixels[k][p, 0] + playersMinMaxHeightInPixels[k][p, 1])/2) - 15 / 2, 125, 15), playersMat[k]);
+
                                             if (useMidOutput == false)
                                             {
                                                 if (playersJointsHeight[k][p] > (playersMinMaxHeight[k][p, 0] + playersMinMaxHeight[k][p, 1]) / 2)
@@ -455,24 +482,38 @@ public class Manager : MonoBehaviour
 
     void SortMinMax(float height, int player, int joint)
     {
-        if (joint == 0)
-        {
-            if (height < playersMinMaxHeight[player][joint, 0])
-            {
-                playersMinMaxHeight[player][joint, 0] = height;
-            }
-        }
-        else
-        {
-            if (height < playersMinMaxHeight[player][joint, 0] && height > jointsHeight[0])
-            {
-                playersMinMaxHeight[player][joint, 0] = height;
-            }
-        }
+        //if (joint == 0)
+        //{
+        //    if (height < playersMinMaxHeight[player][joint, 0])
+        //    {
+        //        playersMinMaxHeight[player][joint, 0] = height;
+        //    }
+        //}
+        //else
+        //{
+        //    if (height < playersMinMaxHeight[player][joint, 0] && height > jointsHeight[0])
+        //    {
+        //        playersMinMaxHeight[player][joint, 0] = height;
+        //    }
+        //}
+
+        playersMinMaxHeight[player][joint, 0] = jointsHeight[0];
 
         if (height > playersMinMaxHeight[player][joint, 1])
         {
             playersMinMaxHeight[player][joint, 1] = height;
         }
     }
+
+
+    void SortLine(float height, int player, int joint)
+    {
+        playersMinMaxHeightInPixels[player][joint, 0] = spineMidHeightInPixels[player];
+
+        if (height < playersMinMaxHeightInPixels[player][joint, 1])
+        {
+            playersMinMaxHeightInPixels[player][joint, 1] = height;
+        }
+    }
+
 }
