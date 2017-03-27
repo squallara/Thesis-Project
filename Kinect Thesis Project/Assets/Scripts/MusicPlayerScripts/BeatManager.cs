@@ -83,7 +83,7 @@ public class BeatManager : MonoBehaviour
             isPlaying = false;
         }
 
-    
+        
 
 
     }

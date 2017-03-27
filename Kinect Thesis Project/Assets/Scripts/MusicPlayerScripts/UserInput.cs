@@ -9,6 +9,9 @@ public class UserInput : MonoBehaviour {
     [HideInInspector]
     public string userInput, userDepth, getInput, depthInput;
 
+    [HideInInspector]
+    public bool isPlayer2;
+
     public AudioSource audioSource;
 
     // Use this for initialization
