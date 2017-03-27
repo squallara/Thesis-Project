@@ -296,6 +296,119 @@ public class MusicManager : MonoBehaviour
 
     }
 
+    public void MuteOthersMelodic(int setPos, UserInput userInput)
+    {
+        if (setPos == 0 && userInput.userInput == userInput.inputHigh)
+        {
+            
+
+            melodicSourceOneHigh.mute = false;
+            melodicSourceOneLow.mute = true;
+
+            if (melodicUseTwoSets)
+            {
+                melodicSourceTwoHigh.mute = true;
+                melodicSourceTwoLow.mute = true;
+            }
+        }
+        else if (setPos == 0 && userInput.userInput == userInput.inputLow)
+        {
+            
+            melodicSourceOneHigh.mute = true;
+            melodicSourceOneLow.mute = false;
+
+            if (melodicUseTwoSets)
+            {
+                melodicSourceTwoHigh.mute = true;
+                melodicSourceTwoLow.mute = true;
+            }
+        }
+        else if (setPos == 1 && userInput.userInput == userInput.inputHigh)
+        {
+            
+            melodicSourceOneHigh.mute = true;
+            melodicSourceOneLow.mute = true;
+
+            melodicSourceTwoHigh.mute = false;
+            melodicSourceTwoLow.mute = true;
+
+        }
+        else if (setPos == 1 && userInput.userInput == userInput.inputLow)
+        {
+            
+            melodicSourceOneHigh.mute = true;
+            melodicSourceOneLow.mute = true;
+
+            melodicSourceTwoHigh.mute = true;
+            melodicSourceTwoLow.mute = false;
+        }
+        else
+        {
+            melodicSourceOneHigh.mute = true;
+            melodicSourceOneLow.mute = true;
+
+            melodicSourceTwoHigh.mute = true;
+            melodicSourceTwoLow.mute = true;
+        }
+    }
+
+    public void MuteOthersRythm(int setPos, UserInput userInput)
+    {
+        if (setPos == 0 && userInput.userInput == userInput.inputHigh)
+        {
+
+            rythmSourceOneHigh.mute = false;
+            rythmSourceOneLow.mute = true;
+
+            if (rythmUseTwoSets)
+            {
+                rythmSourceTwoHigh.mute = true;
+                rythmSourceTwoLow.mute = true;
+            }
+        }
+        else if (setPos == 0 && userInput.userInput == userInput.inputLow)
+        {
+
+            rythmSourceOneHigh.mute = true;
+            rythmSourceOneLow.mute = false;
+
+            if (rythmUseTwoSets)
+            {
+                rythmSourceTwoHigh.mute = true;
+                rythmSourceTwoLow.mute = true;
+            }
+        }
+        else if (setPos == 1 && userInput.userInput == userInput.inputHigh)
+        {
+           
+            rythmSourceOneHigh.mute = true;
+            rythmSourceOneLow.mute = true;
+
+            rythmSourceTwoHigh.mute = false;
+            rythmSourceTwoLow.mute = true;
+
+
+        }
+        else if (setPos == 1 && userInput.userInput == userInput.inputLow)
+        {
+         
+            rythmSourceOneHigh.mute = true;
+            rythmSourceOneLow.mute = true;
+
+            rythmSourceTwoHigh.mute = true;
+            rythmSourceTwoLow.mute = false;
+        }
+        else
+        {
+            
+            rythmSourceOneHigh.mute = true;
+            rythmSourceOneLow.mute = true;
+
+            rythmSourceTwoHigh.mute = true;
+            rythmSourceTwoLow.mute = true;
+        }
+    }
+
     public void MuteAll()
     {
 

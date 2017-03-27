@@ -866,9 +866,10 @@ MonoBehaviour:
   melodicBeatInterval: 2
   rythmBeatInterval: 2
   beatInterval: 2
-  timeOffset: 0.5
+  timeOffset: 0
   melodyPlayable: 0
   rythmPlayable: 0
+  inputReady: 0
 --- !u!114 &1604948083
 MonoBehaviour:
   m_ObjectHideFlags: 0

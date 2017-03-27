@@ -17,6 +17,8 @@ public class PlayerManager : MonoBehaviour
 
     int melodicSetPos, rythmSetPos;
 
+    bool canSetLastInputP1, canSetLastInputP2;
+
     // Use this for initialization
     void Start()
     {
@@ -32,6 +34,9 @@ public class PlayerManager : MonoBehaviour
         melodicSetPos = 0;
         rythmSetPos = 0;
 
+        canSetLastInputP1 = false;
+        canSetLastInputP2 = false;
+        
     }
 
     // Update is called once per frame
@@ -42,6 +47,32 @@ public class PlayerManager : MonoBehaviour
 
         PlayerIO(player1Input, ref melodicSetPos);
         PlayerIO(player2Input, ref rythmSetPos);
+
+        Debug.Log("last played P1 = " + P1lastPlayed);
+
+        if (!musicManager.melodyPlayable)
+        {
+            if (!player2rythm)
+            {
+                canSetLastInputP2 = true;
+            }
+            else if (player2rythm)
+            {
+                canSetLastInputP1 = true;
+            }
+        }
+        if (!musicManager.rythmPlayable)
+        {
+            if (!player2rythm)
+            {
+                canSetLastInputP1 = true;
+            }
+            else if (player2rythm)
+            {
+                canSetLastInputP2 = true;
+            }
+        }
+
     }
 
     public void PlayerIO(UserInput playerInput, ref int setPos)
@@ -49,7 +80,7 @@ public class PlayerManager : MonoBehaviour
 
         if (playerInput.inputHigh == "" && playerInput.inputMid == "" && playerInput.inputLow == "")
         {
-           // Debug.LogError("Assign input controls");
+           Debug.LogError("Assign input controls");
         }
         else
         {
@@ -63,82 +94,154 @@ public class PlayerManager : MonoBehaviour
                 }
             }
 
-            if (!playerInput.isPlayer2 && musicManager.melodicUseTwoSets)
-            {
-              //  Debug.Log("Player 1");
-                if (P1lastPlayed == null)
-                {
-                    P1lastPlayed = playerInput.userInput;
-                   // Debug.Log("P1 Last input = "+P1lastPlayed);
-                }
-                else if (playerInput.userInput == P1lastPlayed)
-                {
-                    if (setPos == 0)
-                    {
-                        setPos = 1;
-                    }
-                    else
-                    {
-                        setPos = 0;
-                    }
-                }
-                else
-                {
-                    P1lastPlayed = playerInput.userInput;
-                    //Debug.Log("P1 Last input = " + P1lastPlayed);
-                }
-
-            }
-            else if (playerInput.isPlayer2 && musicManager.rythmUseTwoSets)
-            {
-                if (P2lastPlayed == null)
-                {
-                    P2lastPlayed = playerInput.userInput;
-                    //Debug.Log("P2 Last input = " + P2lastPlayed);
-                }
-                else if (playerInput.userInput == P2lastPlayed)
-                {
-                    if (setPos == 0)
-                    {
-                        setPos = 1;
-                    }
-                    else
-                    {
-                        setPos = 0;
-                    }
-                }
-                else
-                {
-                    P2lastPlayed = playerInput.userInput;
-                    //Debug.Log("P2 Last input = " + P2lastPlayed);
-                }
-            }
 
             if (!playerInput.isPlayer2)
             {
-               // Debug.Log("Player 1 playing");
-                if (musicManager.melodyPlayable)
+                // Debug.Log("Player 1 playing");
+
+                if (player2rythm)
                 {
-                    //Debug.Log("Player 1 sending to MusicManager");
-                    musicManager.MuteOthers(setPos, playerInput);
-                    musicManager.melodyPlayable = false;
+                    
+                    if (musicManager.melodyPlayable)
+                    {
+                        
+                        if (musicManager.melodicUseTwoSets && canSetLastInputP1)
+                        {
+                            canSetLastInputP1 = false;
+                            if (P1lastPlayed == null)
+                            {
+                                P1lastPlayed = playerInput.userInput;
+                                Debug.Log("Last input = " + P1lastPlayed);
+                            }
+                            else if (playerInput.userInput == P1lastPlayed)
+                            {
+                                if (setPos == 0)
+                                {
+                                    setPos = 1;
+                                }
+                                else
+                                {
+                                    setPos = 0;
+                                }
+                            }
+                            else
+                            {
+                                P1lastPlayed = playerInput.userInput;
+                                //Debug.Log("P1 Last input = " + P1lastPlayed);
+                            }
+                        }
+                        //Debug.Log("Player 1 sending to MusicManager");
+                        musicManager.MuteOthersMelodic(setPos, playerInput);
+                        musicManager.melodyPlayable = false;
+                    }
+                }
+                else if (!player2rythm)
+                {
+                    if (musicManager.rythmPlayable)
+                    {
+                        
+                        if (musicManager.rythmUseTwoSets && canSetLastInputP1)
+                        {
+                            canSetLastInputP1 = false;
+                            if (P1lastPlayed == null)
+                            {
+                                P1lastPlayed = playerInput.userInput;
+                                Debug.Log("Last input = " + P1lastPlayed);
+                            }
+                            else if (playerInput.userInput == P1lastPlayed)
+                            {
+                                if (setPos == 0)
+                                {
+                                    setPos = 1;
+                                }
+                                else
+                                {
+                                    setPos = 0;
+                                }
+                            }
+                            else
+                            {
+                                P1lastPlayed = playerInput.userInput;
+                                //Debug.Log("P1 Last input = " + P1lastPlayed);
+                            }
+                        }
+                        //Debug.Log("Player 1 sending to MusicManager");
+                        musicManager.MuteOthersRythm(setPos, playerInput);
+                        musicManager.rythmPlayable = false;
+                    }
                 }
             }
             else if (playerInput.isPlayer2)
             {
-               // Debug.Log("Player 2 playing");
-                if (musicManager.rythmPlayable)
+                if (player2rythm)
                 {
-                   // Debug.Log("Player 2 sending to MusicManager");
-                    musicManager.MuteOthers(setPos, playerInput);
-                    musicManager.rythmPlayable = false;
+                    if (musicManager.rythmPlayable)
+                    {
+                        if (musicManager.rythmUseTwoSets && canSetLastInputP2)
+                        {
+                            canSetLastInputP2 = false;
+                            if (P2lastPlayed == null)
+                            {
+                                P2lastPlayed = playerInput.userInput;
+                                Debug.Log("Last input = " + P2lastPlayed);
+                            }
+                            else if (playerInput.userInput == P2lastPlayed)
+                            {
+                                if (setPos == 0)
+                                {
+                                    setPos = 1;
+                                }
+                                else
+                                {
+                                    setPos = 0;
+                                }
+                            }
+                            else
+                            {
+                                P2lastPlayed = playerInput.userInput;
+                                //Debug.Log("P1 Last input = " + P1lastPlayed);
+                            }
+                        }
+                        //Debug.Log("Player 1 sending to MusicManager");
+                        musicManager.MuteOthersRythm(setPos, playerInput);
+                        musicManager.rythmPlayable = false;
+                    }
+                }
+                else if (!player2rythm)
+                {
+                    if (musicManager.melodyPlayable)
+                    {
+                        if (musicManager.melodicUseTwoSets && canSetLastInputP2)
+                        {
+                            canSetLastInputP2 = false;
+                            if (P2lastPlayed == null)
+                            {
+                                P2lastPlayed = playerInput.userInput;
+                                Debug.Log("Last input = " + P2lastPlayed);
+                            }
+                            else if (playerInput.userInput == P2lastPlayed)
+                            {
+                                if (setPos == 0)
+                                {
+                                    setPos = 1;
+                                }
+                                else
+                                {
+                                    setPos = 0;
+                                }
+                            }
+                            else
+                            {
+                                P2lastPlayed = playerInput.userInput;
+                                //Debug.Log("P1 Last input = " + P1lastPlayed);
+                            }
+                        }
+                        //Debug.Log("Player 1 sending to MusicManager");
+                        musicManager.MuteOthersMelodic(setPos, playerInput);
+                        musicManager.melodyPlayable = false;
+                    }
                 }
             }
-
-
-
         }
-
     }
-
 }
