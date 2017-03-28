@@ -909,7 +909,7 @@ MonoBehaviour:
   melodicBeatInterval: 2
   rythmBeatInterval: 2
   beatInterval: 2
-  timeOffset: 0
+  timeOffset: 0.5
   melodyPlayable: 0
   rythmPlayable: 0
   inputReady: 0
