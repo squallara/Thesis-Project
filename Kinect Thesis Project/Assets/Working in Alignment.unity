@@ -139,6 +139,49 @@ GameObject:
   m_PrefabParentObject: {fileID: 1763715597326056, guid: 4187cb9ace099004aa2896c95f27c6d2,
     type: 2}
   m_PrefabInternal: {fileID: 1172423974}
+--- !u!1 &478422607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 478422609}
+  - component: {fileID: 478422608}
+  m_Layer: 0
+  m_Name: AutoPlayer (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &478422608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 478422607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db32bf736248ff742bc5e01dbd574b6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerReplaceObject: {fileID: 324958586}
+  timeTillGenerate: 2
+  useAutoPlayer: 1
+--- !u!4 &478422609
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 478422607}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &517020276
 Prefab:
   m_ObjectHideFlags: 0
@@ -902,6 +945,7 @@ MonoBehaviour:
   melodicObject: {fileID: 929940645}
   rythmObject: {fileID: 882749006}
   drumClip: {fileID: 8300000, guid: 6276166ca919bce4390aee4441e92f70, type: 3}
+  applause: {fileID: 8300000, guid: 9ffa05968400c074caac1260dab597b4, type: 3}
   rythmUseTwoSets: 1
   melodicUseTwoSets: 0
   startMusic: 0
@@ -913,6 +957,7 @@ MonoBehaviour:
   melodyPlayable: 0
   rythmPlayable: 0
   inputReady: 0
+  drumPlaying: 0
 --- !u!114 &1604948083
 MonoBehaviour:
   m_ObjectHideFlags: 0

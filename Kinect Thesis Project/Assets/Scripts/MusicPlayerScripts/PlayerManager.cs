@@ -99,9 +99,13 @@ public class PlayerManager : MonoBehaviour
                         musicManager.startMusic = true;
                         firstRun = false;
                     }
-                    else if (repeatTrack)
+                    else if (!firstRun && repeatTrack)
                     {
                         musicManager.startMusic = true;
+                    }
+                    else if(!firstRun)
+                    {
+                        //musicManager.PlayApplause();
                     }
                 }
             }

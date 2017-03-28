@@ -10,7 +10,7 @@ public class MusicManager : MonoBehaviour
     toneHolder[] melodicSets, rythmSets;
     int melodicSetAmount, rythmSetAmount;
 
-    public AudioClip drumClip;
+    public AudioClip drumClip, applause;
     AudioClip rythmSetOneHigh, rythmSetOneLow, rythmSetTwoHigh, rythmSetTwoLow;
     AudioClip melodicSetOneHigh, melodicSetOneLow, melodicSetTwoHigh, melodicSetTwoLow;
 
@@ -31,7 +31,7 @@ public class MusicManager : MonoBehaviour
     public float timeOffset;
 
     [HideInInspector]
-    public bool melodyPlayable, rythmPlayable, inputReady;
+    public bool melodyPlayable, rythmPlayable, inputReady, playApplause;
 
     timeManager timeSetter;
 
@@ -54,6 +54,8 @@ public class MusicManager : MonoBehaviour
         melodicBeatTimer = melodicBeatInterval;
         rythmBeatTimer = rythmBeatInterval;
 
+        playApplause = false;
+
         timeSetter = GetComponent<timeManager>();
 
     }
@@ -62,20 +64,37 @@ public class MusicManager : MonoBehaviour
     void Update()
     {
 
-        mainTrackTimer = mainTrackTimer + Time.deltaTime;
+        if (startMusic)
+        {
+            mainTrackTimer = mainTrackTimer + Time.deltaTime;
 
-        int maintrackSeconds = (int)mainTrackTimer;
+            int maintrackSeconds = (int)mainTrackTimer;
 
-        Debug.Log("main track time = " + maintrackSeconds);
-        beatTimer = beatTimer - Time.deltaTime;
-        melodicBeatTimer = melodicBeatTimer - Time.deltaTime;
-        rythmBeatTimer = rythmBeatTimer - Time.deltaTime;
+            Debug.Log("main track time = " + maintrackSeconds);
+            beatTimer = beatTimer - Time.deltaTime;
+            melodicBeatTimer = melodicBeatTimer - Time.deltaTime;
+            rythmBeatTimer = rythmBeatTimer - Time.deltaTime;
+        }
 
         ManageTime();
 
         DisableSounds();
         EnableSounds();
         ResetBeatTime();
+
+
+        if (mainTrackTimer >= mainTrackTime)
+        {
+            startMusic = false;
+            StopMusic();
+            mainTrackTimer = 0;
+            PlayApplause();
+            playApplause = true;
+        }
+        if (!drumSource.isPlaying && playApplause)
+        {
+            drumSource.mute = true;
+        }
 
         /*
         TimeCheck(beatTimer, beatInterval);
@@ -104,7 +123,7 @@ public class MusicManager : MonoBehaviour
             }
             
         }
-        else if (!startMusic && drumSource.isPlaying)
+        else if (!startMusic && drumSource.isPlaying && !playApplause)
         {
             StopMusic();
         }
@@ -571,6 +590,14 @@ public class MusicManager : MonoBehaviour
 
     }
 
+    public void PlayApplause()
+    {
+
+        drumSource.mute = false;
+        drumSource.PlayOneShot(applause);
+        
+
+    }
 }
 
 
