@@ -107,23 +107,23 @@ public class MusicPlayer : MonoBehaviour
 
         if (player2rythm)
         {
-            Debug.Log("Player 1 Melodic");
+            //Debug.Log("Player 1 Melodic");
             PlayerIO(Player1, melodicToneSet, toneSetAmount, ref tonePos, ref tonePlayable);
 
         }
         else
         {
-            Debug.Log("Player 1 Rythm");
+            //Debug.Log("Player 1 Rythm");
             PlayerIO(Player1, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
         }
 
 
         if (player2active)
         {
-            Debug.Log("Player 2 active");
+            //Debug.Log("Player 2 active");
             if (player2rythm)
             {
-                Debug.Log("Player 2 Rythm");
+                //Debug.Log("Player 2 Rythm");
 
                 PlayerIO(Player2, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
 
@@ -149,7 +149,7 @@ public class MusicPlayer : MonoBehaviour
 
         AudioClip high, mid, low;
 
-        Debug.Log("Looking for input " + playerInput.userInput);
+        //Debug.Log("Looking for input " + playerInput.userInput);
 
         bool isRythmPlayer = false;
 
@@ -188,7 +188,7 @@ public class MusicPlayer : MonoBehaviour
 
         toneHolder currentToneSet = toneSet[tonePos];
 
-        Debug.Log("TonePos = " + tonePos);
+        //Debug.Log("TonePos = " + tonePos);
 
         high = currentToneSet.high;
         mid = currentToneSet.mid;
@@ -198,7 +198,7 @@ public class MusicPlayer : MonoBehaviour
 
         if (playerInput.inputHigh == "" && playerInput.inputMid == "" && playerInput.inputLow == "")
         {
-            Debug.LogError("Assign input controls");
+            //Debug.LogError("Assign input controls");
         }
         else
         {
@@ -275,11 +275,11 @@ public class MusicPlayer : MonoBehaviour
 
         if (Player1 == null || Player2 == null)
         {
-            Debug.LogError("Missing Player GameObject. Player 1 = " + Player1.name + ". Player 2 = " + Player2.name + ".");
+            //Debug.LogError("Missing Player GameObject. Player 1 = " + Player1.name + ". Player 2 = " + Player2.name + ".");
         }
         if (mainToneSetObject == null || mainRythmSetObject == null)
         {
-            Debug.LogError("Missing Tone Set GameObject. Tone Set Object 1 = " + mainToneSetObject.name + ". Tone Set Object 2 = " + mainRythmSetObject.name + ".");
+            //Debug.LogError("Missing Tone Set GameObject. Tone Set Object 1 = " + mainToneSetObject.name + ". Tone Set Object 2 = " + mainRythmSetObject.name + ".");
         }
 
     }
@@ -291,17 +291,17 @@ public class MusicPlayer : MonoBehaviour
         {
             if (Player2.userInput == Player2.inputHigh)
             {
-                Debug.Log("Input High Matched");
+                //Debug.Log("Input High Matched");
                 tonePos = 0;
             }
             if (Player2.userInput == Player2.inputMid)
             {
-                Debug.Log("Input Mid Matched");
+                //Debug.Log("Input Mid Matched");
                 tonePos = 1;
             }
             if (Player2.userInput == Player2.inputLow)
             {
-                Debug.Log("Input Low Matched");
+                //Debug.Log("Input Low Matched");
                 tonePos = 2;
             }
         }
@@ -309,17 +309,17 @@ public class MusicPlayer : MonoBehaviour
         {
             if (Player1.userInput == Player1.inputHigh)
             {
-                Debug.Log("Input High Matched");
+                //Debug.Log("Input High Matched");
                 tonePos = 0;
             }
             if (Player1.userInput == Player1.inputMid)
             {
-                Debug.Log("Input Mid Matched");
+                //Debug.Log("Input Mid Matched");
                 tonePos = 1;
             }
             if (Player1.userInput == Player1.inputLow)
             {
-                Debug.Log("Input Low Matched");
+                //Debug.Log("Input Low Matched");
                 tonePos = 2;
             }
         }

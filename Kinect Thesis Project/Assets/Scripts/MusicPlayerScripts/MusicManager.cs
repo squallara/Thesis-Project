@@ -182,10 +182,10 @@ public class MusicManager : MonoBehaviour
         if (!userInput.isPlayer2)
         {
 
-            Debug.Log("Player 1");
+            //Debug.Log("Player 1");
             if (setPos == 0 && userInput.userInput == userInput.inputHigh)
             {
-                Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
+                //Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
 
                 melodicSourceOneHigh.mute = false;
                 melodicSourceOneLow.mute = true;
@@ -198,7 +198,7 @@ public class MusicManager : MonoBehaviour
             }
             else if (setPos == 0 && userInput.userInput == userInput.inputLow)
             {
-                Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
+               // Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
                 melodicSourceOneHigh.mute = true;
                 melodicSourceOneLow.mute = false;
 
@@ -210,7 +210,7 @@ public class MusicManager : MonoBehaviour
             }
             else if (setPos == 1 && userInput.userInput == userInput.inputHigh)
             {
-                Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
+               // Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
                 melodicSourceOneHigh.mute = true;
                 melodicSourceOneLow.mute = true;
 
@@ -220,7 +220,7 @@ public class MusicManager : MonoBehaviour
             }
             else if (setPos == 1 && userInput.userInput == userInput.inputLow)
             {
-                Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
+               // Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
                 melodicSourceOneHigh.mute = true;
                 melodicSourceOneLow.mute = true;
 
@@ -241,7 +241,7 @@ public class MusicManager : MonoBehaviour
         {
             if (setPos == 0 && userInput.userInput == userInput.inputHigh)
             {
-                Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
+                //Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
                 rythmSourceOneHigh.mute = false;
                 rythmSourceOneLow.mute = true;
 
@@ -253,7 +253,7 @@ public class MusicManager : MonoBehaviour
             }
             else if (setPos == 0 && userInput.userInput == userInput.inputLow)
             {
-                Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
+                //Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
                 rythmSourceOneHigh.mute = true;
                 rythmSourceOneLow.mute = false;
 
@@ -265,7 +265,7 @@ public class MusicManager : MonoBehaviour
             }
             else if (setPos == 1 && userInput.userInput == userInput.inputHigh)
             {
-                Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
+                //Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
                 rythmSourceOneHigh.mute = true;
                 rythmSourceOneLow.mute = true;
 
@@ -276,7 +276,7 @@ public class MusicManager : MonoBehaviour
             }
             else if (setPos == 1 && userInput.userInput == userInput.inputLow)
             {
-                Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
+                //Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
                 rythmSourceOneHigh.mute = true;
                 rythmSourceOneLow.mute = true;
 
@@ -285,7 +285,7 @@ public class MusicManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
+                //Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
                 rythmSourceOneHigh.mute = true;
                 rythmSourceOneLow.mute = true;
 

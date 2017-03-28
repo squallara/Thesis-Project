@@ -869,6 +869,7 @@ MonoBehaviour:
   timeOffset: 0.5
   melodyPlayable: 0
   rythmPlayable: 0
+  inputReady: 0
 --- !u!114 &1604948083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1196,6 +1197,7 @@ MonoBehaviour:
   trailAmount: 10
   textureWidth: 50
   textureHeight: 50
+  timeToStopInputs: 10
   player1: {fileID: 324958586}
   player2: {fileID: 902193084}
 --- !u!4 &2051844645

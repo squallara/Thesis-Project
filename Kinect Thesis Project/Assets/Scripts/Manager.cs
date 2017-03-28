@@ -22,8 +22,10 @@ public class Manager : MonoBehaviour
     float[,] minMaxHeight;
     float[,] minMaxHeightInPixels;
     List<float> spineMidHeightInPixels;   //The spineMid position of each player in pixels
+    List<float> spineMidPos;
+    List<Texture> playersMidHighLowMat;
     int countBodies;        //Counts how many bodies are active at the same frame.
-    bool foundId;
+    bool foundId, initializeMidPos, zoneChanged;
 
     //public Texture texture;
     public List<Texture> playersMat;
@@ -31,6 +33,7 @@ public class Manager : MonoBehaviour
     public List<Kinect.JointType> prefJoints;       //Assign in the inspector the pref joints you want to detect. ALWAYS first the main body.
     public int trailAmount;
     public int textureWidth, textureHeight;
+    public float timeToStopInputs;
 
     public GameObject player1, player2;
     UserInput p1UInput, p2UInput;
@@ -56,8 +59,12 @@ public class Manager : MonoBehaviour
         player2TrailHandLeft = new List<Kinect.ColorSpacePoint>();
         player2TrailHandRight = new List<Kinect.ColorSpacePoint>();
         spineMidHeightInPixels = new List<float>();
+        spineMidPos = new List<float>();
+        playersMidHighLowMat = new List<Texture>();
         players = new bool[6];
         countBodies = 0;
+        initializeMidPos = false;
+        zoneChanged = false;
 
         p1UInput = player1.GetComponent<UserInput>();
         p2UInput = player2.GetComponent<UserInput>();
@@ -104,8 +111,10 @@ public class Manager : MonoBehaviour
                             {
                                 playersId.Add(body.TrackingId);
                                 spineMidHeightInPixels.Add(0);
+                                spineMidPos.Add(0);
                                 bodyJoints.Add(null);
                                 playersJointsHeight.Add(null);
+                                playersMidHighLowMat.Add(null);
                                 playersMinMaxHeight.Add(minMaxHeight);
                                 playersMinMaxHeightInPixels.Add(minMaxHeightInPixels);
                             }
@@ -122,8 +131,10 @@ public class Manager : MonoBehaviour
                             {
                                 playersId.Add(body.TrackingId);
                                 spineMidHeightInPixels.Add(0);
+                                spineMidPos.Add(0);
                                 bodyJoints.Add(null);
                                 playersJointsHeight.Add(null);
+                                playersMidHighLowMat.Add(null);
                                 playersMinMaxHeight.Add(minMaxHeight);
                                 playersMinMaxHeightInPixels.Add(minMaxHeightInPixels);
                             }
@@ -138,7 +149,7 @@ public class Manager : MonoBehaviour
 
                                 if(jt == Kinect.JointType.SpineMid)
                                 {
-                                    print(Mathf.Ceil(body.Joints[jt].Position.Z));
+                                    print(Mathf.Floor(body.Joints[jt].Position.Z));
                                 }
 
                                 var k = 0;  //k counts the which joint in the jointHeight matrix corresponding to the amount of the prefJoints
@@ -154,6 +165,70 @@ public class Manager : MonoBehaviour
                                                 if (k == 0)
                                                 {
                                                     spineMidHeightInPixels[j] = colorPoint.Y;
+                                                    if (initializeMidPos == false)
+                                                    {
+                                                        spineMidPos[j] = Mathf.Floor(body.Joints[jt].Position.Z);
+                                                        initializeMidPos = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        if(Mathf.Floor(body.Joints[jt].Position.Z) != spineMidPos[j])
+                                                        {
+                                                            print("body changed zone");
+                                                            //StopAllCoroutines();
+                                                            zoneChanged = true;
+                                                            for(int l=1; l<prefJoints.Count; l++)
+                                                            {
+                                                                playersMinMaxHeight[j][l, 0] = 1;
+                                                                playersMinMaxHeight[j][l, 1] = -1;
+                                                                playersMinMaxHeightInPixels[j][l, 0] = 1080;
+                                                                playersMinMaxHeightInPixels[j][l, 1] = 1080;
+                                                            }
+
+                                                            if (Mathf.Floor(body.Joints[jt].Position.Z) > spineMidPos[j])
+                                                            {
+                                                                //further away from kinect (Low)
+                                                                if (j == 0)
+                                                                {
+                                                                    //p1UInput.userInput = "high";
+                                                                    playersMidHighLowMat[j] = LowHighMats[0];
+                                                                }
+                                                                else if (j == 1)
+                                                                {
+                                                                    //p2UInput.userInput = "high";
+                                                                    playersMidHighLowMat[j] = LowHighMats[2];
+                                                                }
+                                                            }
+                                                            else if (Mathf.Floor(body.Joints[jt].Position.Z) < spineMidPos[j])
+                                                            {
+                                                                //closer to kinect (High)
+                                                                if (j == 0)
+                                                                {
+                                                                    //p1UInput.userInput = "low";
+                                                                    playersMidHighLowMat[j] = LowHighMats[1];
+                                                                }
+                                                                else if (j == 1)
+                                                                {
+                                                                    //p2UInput.userInput = "low";
+                                                                    playersMidHighLowMat[j] = LowHighMats[3];
+                                                                }
+                                                            }
+
+                                                            spineMidPos[j] = Mathf.Floor(body.Joints[jt].Position.Z);
+                                                        }
+                                                        else
+                                                        {
+                                                            //if (j == 0)
+                                                            //{
+                                                            //    p1UInput.userInput = null;
+                                                            //}
+                                                            //else if (j == 1)
+                                                            //{
+                                                            //    p2UInput.userInput = null;
+                                                            //}
+                                                            //StartCoroutine(StopInput(j));
+                                                        }
+                                                    }
                                                 }
                                                 SortMinMax(body.Joints[jt].Position.Y, j, k);
                                                 SortLine(colorPoint.Y, j, k);
@@ -283,6 +358,8 @@ public class Manager : MonoBehaviour
                     playersMinMaxHeight.RemoveAt(i);
                     playersMinMaxHeightInPixels.RemoveAt(i);
                     spineMidHeightInPixels.RemoveAt(i);
+                    spineMidPos.RemoveAt(i);
+                    playersMidHighLowMat.RemoveAt(i);
                     playersId.RemoveAt(i);
                 }
             }
@@ -314,7 +391,40 @@ public class Manager : MonoBehaviour
                                 {
                                     if (jt == prefJoints[0]) //the base bodyjoint like spinemid needs to be at the first place ALWAYS!!!!!!
                                     {
-                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - 70 / 2, bodyJoints[k][i, 1] - 70 / 2, 70, 70), playersMat[k]);
+                                        if (zoneChanged == false && k < 2)
+                                        {
+                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - 70 / 2, bodyJoints[k][i, 1] - 70 / 2, 70, 70), playersMat[k]);
+                                        }
+                                        //else if (zoneChanged == true && k < 2)
+                                        //{
+                                        //    if (playersMidHighLowMat[k] != null)
+                                        //    {
+                                        //        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - 70 / 2, bodyJoints[k][i, 1] - 70 / 2, 70, 70), playersMidHighLowMat[k]);
+
+                                        //        if(playersMidHighLowMat[k] == LowHighMats[0] || playersMidHighLowMat[k] == LowHighMats[2])
+                                        //        {
+                                        //            if( k== 0)
+                                        //            {
+                                        //                p1UInput.userInput = "low";
+                                        //            }
+                                        //            else if (k == 1)
+                                        //            {
+                                        //                p2UInput.userInput = "low";
+                                        //            }
+                                        //        }
+                                        //        else if(playersMidHighLowMat[k] == LowHighMats[1] || playersMidHighLowMat[k] == LowHighMats[3])
+                                        //        {
+                                        //            if (k == 0)
+                                        //            {
+                                        //                p1UInput.userInput = "high";
+                                        //            }
+                                        //            else if (k == 1)
+                                        //            {
+                                        //                p2UInput.userInput = "high";
+                                        //            }
+                                        //        }
+                                        //    }
+                                        //}
                                     }
                                     else
                                     {
@@ -327,7 +437,7 @@ public class Manager : MonoBehaviour
                                             {
                                                 if (playersJointsHeight[k][p] > (playersMinMaxHeight[k][p, 0] + playersMinMaxHeight[k][p, 1]) / 2)
                                                 {
-                                                    print("High");      ////////////////////////////////////  HERE IS THE HIGH INPUT////////////////////////////////////
+                                                    //print("High");      ////////////////////////////////////  HERE IS THE HIGH INPUT////////////////////////////////////
 
                                                     if (k == 0)
                                                     {
@@ -382,7 +492,7 @@ public class Manager : MonoBehaviour
                                                 }
                                                 else
                                                 {
-                                                    print("Low"); ////////////////////////////////////  HERE IS THE LOW INPUT////////////////////////////////////
+                                                    //print("Low"); ////////////////////////////////////  HERE IS THE LOW INPUT////////////////////////////////////
 
                                                     if (k == 0)
                                                     {
@@ -513,6 +623,20 @@ public class Manager : MonoBehaviour
         if (height < playersMinMaxHeightInPixels[player][joint, 1])
         {
             playersMinMaxHeightInPixels[player][joint, 1] = height;
+        }
+    }
+
+
+    IEnumerator StopInput(int j)
+    {
+        yield return new WaitForSeconds(timeToStopInputs);
+        if (j == 0)
+        {
+            p1UInput.userInput = null;
+        }
+        else if (j == 1)
+        {
+            p2UInput.userInput = null;
         }
     }
 
