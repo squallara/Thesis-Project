@@ -10,7 +10,7 @@ public class MusicManager : MonoBehaviour
     toneHolder[] melodicSets, rythmSets;
     int melodicSetAmount, rythmSetAmount;
 
-    public AudioClip drumClip;
+    public AudioClip drumClip, applause;
     AudioClip rythmSetOneHigh, rythmSetOneLow, rythmSetTwoHigh, rythmSetTwoLow;
     AudioClip melodicSetOneHigh, melodicSetOneLow, melodicSetTwoHigh, melodicSetTwoLow;
 
@@ -31,9 +31,9 @@ public class MusicManager : MonoBehaviour
     public float timeOffset;
 
     [HideInInspector]
-    public bool melodyPlayable, rythmPlayable, inputReady;
+    public bool melodyPlayable, rythmPlayable, inputReady, playApplause;
 
-    
+    timeManager timeSetter;
 
 
 
@@ -54,20 +54,47 @@ public class MusicManager : MonoBehaviour
         melodicBeatTimer = melodicBeatInterval;
         rythmBeatTimer = rythmBeatInterval;
 
+        playApplause = false;
+
+        timeSetter = GetComponent<timeManager>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        mainTrackTimer = mainTrackTimer + Time.deltaTime;
-        beatTimer = beatTimer - Time.deltaTime;
-        melodicBeatTimer = melodicBeatTimer - Time.deltaTime;
-        rythmBeatTimer = rythmBeatTimer - Time.deltaTime;
+        if (startMusic)
+        {
+            mainTrackTimer = mainTrackTimer + Time.deltaTime;
+
+            int maintrackSeconds = (int)mainTrackTimer;
+
+            Debug.Log("main track time = " + maintrackSeconds);
+            beatTimer = beatTimer - Time.deltaTime;
+            melodicBeatTimer = melodicBeatTimer - Time.deltaTime;
+            rythmBeatTimer = rythmBeatTimer - Time.deltaTime;
+        }
+
+        ManageTime();
 
         DisableSounds();
         EnableSounds();
         ResetBeatTime();
+
+
+        if (mainTrackTimer >= mainTrackTime)
+        {
+            startMusic = false;
+            StopMusic();
+            mainTrackTimer = 0;
+            PlayApplause();
+            playApplause = true;
+        }
+        if (!drumSource.isPlaying && playApplause)
+        {
+            drumSource.mute = true;
+        }
 
         /*
         TimeCheck(beatTimer, beatInterval);
@@ -96,7 +123,7 @@ public class MusicManager : MonoBehaviour
             }
             
         }
-        else if (!startMusic && drumSource.isPlaying)
+        else if (!startMusic && drumSource.isPlaying && !playApplause)
         {
             StopMusic();
         }
@@ -296,6 +323,119 @@ public class MusicManager : MonoBehaviour
 
     }
 
+    public void MuteOthersMelodic(int setPos, UserInput userInput)
+    {
+        if (setPos == 0 && userInput.userInput == userInput.inputHigh)
+        {
+            
+
+            melodicSourceOneHigh.mute = false;
+            melodicSourceOneLow.mute = true;
+
+            if (melodicUseTwoSets)
+            {
+                melodicSourceTwoHigh.mute = true;
+                melodicSourceTwoLow.mute = true;
+            }
+        }
+        else if (setPos == 0 && userInput.userInput == userInput.inputLow)
+        {
+            
+            melodicSourceOneHigh.mute = true;
+            melodicSourceOneLow.mute = false;
+
+            if (melodicUseTwoSets)
+            {
+                melodicSourceTwoHigh.mute = true;
+                melodicSourceTwoLow.mute = true;
+            }
+        }
+        else if (setPos == 1 && userInput.userInput == userInput.inputHigh)
+        {
+            
+            melodicSourceOneHigh.mute = true;
+            melodicSourceOneLow.mute = true;
+
+            melodicSourceTwoHigh.mute = false;
+            melodicSourceTwoLow.mute = true;
+
+        }
+        else if (setPos == 1 && userInput.userInput == userInput.inputLow)
+        {
+            
+            melodicSourceOneHigh.mute = true;
+            melodicSourceOneLow.mute = true;
+
+            melodicSourceTwoHigh.mute = true;
+            melodicSourceTwoLow.mute = false;
+        }
+        else
+        {
+            melodicSourceOneHigh.mute = true;
+            melodicSourceOneLow.mute = true;
+
+            melodicSourceTwoHigh.mute = true;
+            melodicSourceTwoLow.mute = true;
+        }
+    }
+
+    public void MuteOthersRythm(int setPos, UserInput userInput)
+    {
+        if (setPos == 0 && userInput.userInput == userInput.inputHigh)
+        {
+
+            rythmSourceOneHigh.mute = false;
+            rythmSourceOneLow.mute = true;
+
+            if (rythmUseTwoSets)
+            {
+                rythmSourceTwoHigh.mute = true;
+                rythmSourceTwoLow.mute = true;
+            }
+        }
+        else if (setPos == 0 && userInput.userInput == userInput.inputLow)
+        {
+
+            rythmSourceOneHigh.mute = true;
+            rythmSourceOneLow.mute = false;
+
+            if (rythmUseTwoSets)
+            {
+                rythmSourceTwoHigh.mute = true;
+                rythmSourceTwoLow.mute = true;
+            }
+        }
+        else if (setPos == 1 && userInput.userInput == userInput.inputHigh)
+        {
+           
+            rythmSourceOneHigh.mute = true;
+            rythmSourceOneLow.mute = true;
+
+            rythmSourceTwoHigh.mute = false;
+            rythmSourceTwoLow.mute = true;
+
+
+        }
+        else if (setPos == 1 && userInput.userInput == userInput.inputLow)
+        {
+         
+            rythmSourceOneHigh.mute = true;
+            rythmSourceOneLow.mute = true;
+
+            rythmSourceTwoHigh.mute = true;
+            rythmSourceTwoLow.mute = false;
+        }
+        else
+        {
+            
+            rythmSourceOneHigh.mute = true;
+            rythmSourceOneLow.mute = true;
+
+            rythmSourceTwoHigh.mute = true;
+            rythmSourceTwoLow.mute = true;
+        }
+    }
+
     public void MuteAll()
     {
 
@@ -415,6 +555,48 @@ public class MusicManager : MonoBehaviour
         {
             rythmBeatTimer = rythmBeatInterval;
         }
+    }
+
+    void ManageTime()
+    {
+        if(mainTrackTimer <= timeSetter.verseTimeStart+0.5f)
+        {
+            Debug.Log("Verse 1");
+            melodicBeatInterval = timeSetter.melodicBeatVerse;
+            rythmBeatInterval = timeSetter.rythmBeatVerse;
+        }
+        if(mainTrackTimer >= timeSetter.bridgeTimeStart- 0.5f && mainTrackTimer <= timeSetter.bridgeTimeStart + 0.5f)
+        {
+            Debug.Log("Bridge");
+        }
+        if(mainTrackTimer >= timeSetter.chorusTimeStart- 1 && mainTrackTimer <= timeSetter.chorusTimeStart + 1)
+        {
+            Debug.Log("Chorus");
+            melodicBeatInterval = timeSetter.melodicBeatChorus;
+            rythmBeatInterval = timeSetter.rythmBeatChorus;
+        }
+        if(mainTrackTimer >= timeSetter.bridge2TimeStart- 1 && mainTrackTimer <= timeSetter.bridge2TimeStart+1)
+        {
+            Debug.Log("Bridge 2");
+            melodicBeatInterval = timeSetter.melodicBeatVerse;
+            rythmBeatInterval = timeSetter.rythmBeatVerse;
+        }
+        if(mainTrackTimer >= timeSetter.verse2TimeStart - 1 && mainTrackTimer <= timeSetter.verse2TimeStart + 1)
+        {
+            Debug.Log("Verse 2");
+            melodicBeatInterval = timeSetter.melodicBeatVerse;
+            rythmBeatInterval = timeSetter.rythmBeatVerse;
+        }
+
+    }
+
+    public void PlayApplause()
+    {
+
+        drumSource.mute = false;
+        drumSource.PlayOneShot(applause);
+        
+
     }
 }
 

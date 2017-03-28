@@ -91,11 +91,97 @@ NavMeshSettings:
     cellSize: 0.16666666
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &259747730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 259747732}
+  - component: {fileID: 259747731}
+  m_Layer: 0
+  m_Name: AutoPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &259747731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 259747730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db32bf736248ff742bc5e01dbd574b6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerReplaceObject: {fileID: 902193084}
+  timeTillGenerate: 2
+  useAutoPlayer: 0
+--- !u!4 &259747732
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 259747730}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &324958586 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1763715597326056, guid: 4187cb9ace099004aa2896c95f27c6d2,
     type: 2}
   m_PrefabInternal: {fileID: 1172423974}
+--- !u!1 &478422607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 478422609}
+  - component: {fileID: 478422608}
+  m_Layer: 0
+  m_Name: AutoPlayer (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &478422608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 478422607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db32bf736248ff742bc5e01dbd574b6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerReplaceObject: {fileID: 324958586}
+  timeTillGenerate: 2
+  useAutoPlayer: 0
+--- !u!4 &478422609
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 478422607}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &517020276
 Prefab:
   m_ObjectHideFlags: 0
@@ -859,6 +945,7 @@ MonoBehaviour:
   melodicObject: {fileID: 929940645}
   rythmObject: {fileID: 882749006}
   drumClip: {fileID: 8300000, guid: 6276166ca919bce4390aee4441e92f70, type: 3}
+  applause: {fileID: 8300000, guid: 9ffa05968400c074caac1260dab597b4, type: 3}
   rythmUseTwoSets: 1
   melodicUseTwoSets: 0
   startMusic: 0
@@ -866,10 +953,11 @@ MonoBehaviour:
   melodicBeatInterval: 2
   rythmBeatInterval: 2
   beatInterval: 2
-  timeOffset: 0.5
+  timeOffset: 0
   melodyPlayable: 0
   rythmPlayable: 0
   inputReady: 0
+  playApplause: 0
 --- !u!114 &1604948083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -884,8 +972,28 @@ MonoBehaviour:
   player1InputObject: {fileID: 324958586}
   player2InputObject: {fileID: 902193084}
   player2active: 0
-  player2rythm: 0
+  player2rythm: 1
   repeatTrack: 0
+--- !u!114 &1604948084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1604948081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e088119e3fa87334cb3ca43a384ad4b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  melodicBeatVerse: 2
+  rythmBeatVerse: 2
+  melodicBeatChorus: 4
+  rythmBeatChorus: 4
+  verseTimeStart: 0
+  verse2TimeStart: 80
+  bridgeTimeStart: 40
+  bridge2TimeStart: 72
+  chorusTimeStart: 56
 --- !u!4 &1721709364 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634,
@@ -978,6 +1086,47 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1849966261
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1849966262}
+  - component: {fileID: 1849966263}
+  m_Layer: 0
+  m_Name: ApplauseManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1849966262
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1849966261}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1849966263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1849966261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4762e41aa822c48439ac0f8c76fe1fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  applause: {fileID: 8300000, guid: 3cff9b4181cfa0c49ba0a42e998d2537, type: 3}
 --- !u!1001 &1876246142
 Prefab:
   m_ObjectHideFlags: 0
@@ -1197,7 +1346,6 @@ MonoBehaviour:
   trailAmount: 10
   textureWidth: 50
   textureHeight: 50
-  timeToStopInputs: 10
   player1: {fileID: 324958586}
   player2: {fileID: 902193084}
 --- !u!4 &2051844645
