@@ -33,7 +33,7 @@ public class MusicManager : MonoBehaviour
     [HideInInspector]
     public bool melodyPlayable, rythmPlayable, inputReady;
 
-    
+    timeManager timeSetter;
 
 
 
@@ -54,6 +54,8 @@ public class MusicManager : MonoBehaviour
         melodicBeatTimer = melodicBeatInterval;
         rythmBeatTimer = rythmBeatInterval;
 
+        timeSetter = GetComponent<timeManager>();
+
     }
 
     // Update is called once per frame
@@ -61,9 +63,15 @@ public class MusicManager : MonoBehaviour
     {
 
         mainTrackTimer = mainTrackTimer + Time.deltaTime;
+
+        int maintrackSeconds = (int)mainTrackTimer;
+
+        Debug.Log("main track time = " + maintrackSeconds);
         beatTimer = beatTimer - Time.deltaTime;
         melodicBeatTimer = melodicBeatTimer - Time.deltaTime;
         rythmBeatTimer = rythmBeatTimer - Time.deltaTime;
+
+        ManageTime();
 
         DisableSounds();
         EnableSounds();
@@ -529,6 +537,40 @@ public class MusicManager : MonoBehaviour
             rythmBeatTimer = rythmBeatInterval;
         }
     }
+
+    void ManageTime()
+    {
+        if(mainTrackTimer <= timeSetter.verseTimeStart+0.5f)
+        {
+            Debug.Log("Verse 1");
+            melodicBeatInterval = timeSetter.melodicBeatVerse;
+            rythmBeatInterval = timeSetter.rythmBeatVerse;
+        }
+        if(mainTrackTimer >= timeSetter.bridgeTimeStart- 0.5f && mainTrackTimer <= timeSetter.bridgeTimeStart + 0.5f)
+        {
+            Debug.Log("Bridge");
+        }
+        if(mainTrackTimer >= timeSetter.chorusTimeStart- 1 && mainTrackTimer <= timeSetter.chorusTimeStart + 1)
+        {
+            Debug.Log("Chorus");
+            melodicBeatInterval = timeSetter.melodicBeatChorus;
+            rythmBeatInterval = timeSetter.rythmBeatChorus;
+        }
+        if(mainTrackTimer >= timeSetter.bridge2TimeStart- 1 && mainTrackTimer <= timeSetter.bridge2TimeStart+1)
+        {
+            Debug.Log("Bridge 2");
+            melodicBeatInterval = timeSetter.melodicBeatVerse;
+            rythmBeatInterval = timeSetter.rythmBeatVerse;
+        }
+        if(mainTrackTimer >= timeSetter.verse2TimeStart - 1 && mainTrackTimer <= timeSetter.verse2TimeStart + 1)
+        {
+            Debug.Log("Verse 2");
+            melodicBeatInterval = timeSetter.melodicBeatVerse;
+            rythmBeatInterval = timeSetter.rythmBeatVerse;
+        }
+
+    }
+
 }
 
 

@@ -37,7 +37,7 @@ public class AutoPlayer : MonoBehaviour {
 
             randomNumber = Random.Range(1, 20);
 
-            Debug.Log("Random = " + randomNumber);
+           // Debug.Log("Random = " + randomNumber);
 
             generationTime = timeTillGenerate;
         }
@@ -57,12 +57,12 @@ public class AutoPlayer : MonoBehaviour {
             {
                 playerInput.userInput = "low";
 
-                print(playerInput.userInput);
+               // print(playerInput.userInput);
             }
             else if (decisionNumber == 1)
             {
                 playerInput.userInput = "high";
-                print(playerInput.userInput);
+               // print(playerInput.userInput);
             }
         }
         

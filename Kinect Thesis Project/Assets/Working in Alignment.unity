@@ -120,7 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerReplaceObject: {fileID: 902193084}
   timeTillGenerate: 2
-  useAutoPlayer: 0
+  useAutoPlayer: 1
 --- !u!4 &259747732
 Transform:
   m_ObjectHideFlags: 0
@@ -909,7 +909,7 @@ MonoBehaviour:
   melodicBeatInterval: 2
   rythmBeatInterval: 2
   beatInterval: 2
-  timeOffset: 0.5
+  timeOffset: 0
   melodyPlayable: 0
   rythmPlayable: 0
   inputReady: 0
@@ -929,6 +929,26 @@ MonoBehaviour:
   player2active: 0
   player2rythm: 1
   repeatTrack: 0
+--- !u!114 &1604948084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1604948081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e088119e3fa87334cb3ca43a384ad4b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  melodicBeatVerse: 2
+  rythmBeatVerse: 2
+  melodicBeatChorus: 4
+  rythmBeatChorus: 4
+  verseTimeStart: 0
+  verse2TimeStart: 80
+  bridgeTimeStart: 40
+  bridge2TimeStart: 72
+  chorusTimeStart: 56
 --- !u!4 &1721709364 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634,
