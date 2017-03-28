@@ -19,6 +19,8 @@ public class PlayerManager : MonoBehaviour
 
     bool canSetLastInputP1, canSetLastInputP2;
 
+    bool firstRun;
+
     // Use this for initialization
     void Start()
     {
@@ -36,6 +38,8 @@ public class PlayerManager : MonoBehaviour
 
         canSetLastInputP1 = false;
         canSetLastInputP2 = false;
+
+        firstRun = true;
         
     }
 
@@ -89,8 +93,16 @@ public class PlayerManager : MonoBehaviour
             {
                 if (!musicManager.startMusic)
                 {
-                  //  Debug.Log("Player Starting Music");
-                    musicManager.startMusic = true;
+                    //  Debug.Log("Player Starting Music");
+                    if (firstRun)
+                    {
+                        musicManager.startMusic = true;
+                        firstRun = false;
+                    }
+                    else if (repeatTrack)
+                    {
+                        musicManager.startMusic = true;
+                    }
                 }
             }
 
