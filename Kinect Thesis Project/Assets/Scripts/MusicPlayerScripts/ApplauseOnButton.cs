@@ -6,18 +6,18 @@ public class ApplauseOnButton : MonoBehaviour {
 
     public AudioClip feedback;
    // public Particle fireworks;
-    public GameObject fireworksSystem;
+    public GameObject visualFeedback;
     public string inputKey;
+    public float visualDisplayTime;
     AudioSource applauseSource;
-    bool fireworkCountdown;
-    float fireworkTimer;
+    bool visualCountdown;
+    float visualTimer;
 
 	// Use this for initialization
 	void Start () {
         applauseSource = gameObject.AddComponent<AudioSource>();
-        fireworksSystem.SetActive(false);
-        fireworkCountdown = false;
-        fireworkTimer = 5;
+        visualFeedback.SetActive(false);
+        visualCountdown = false;
 	}
 	
 	// Update is called once per frame
@@ -26,21 +26,21 @@ public class ApplauseOnButton : MonoBehaviour {
         if (Input.GetButtonDown(inputKey) && !applauseSource.isPlaying)
         {
             applauseSource.PlayOneShot(feedback);
-            fireworksSystem.SetActive(true);
-            fireworkCountdown = true;
+            visualFeedback.SetActive(true);
+            visualCountdown = true;
         }
 
-        if (fireworkCountdown)
+        if (visualCountdown)
         {
-            fireworkTimer = fireworkTimer - Time.deltaTime;
+            visualTimer = visualTimer - Time.deltaTime;
         }
         
 
-        if (fireworkTimer <= 0)
+        if (visualTimer <= 0)
         {
-            fireworksSystem.SetActive(false);
-            fireworkCountdown = false;
-            fireworkTimer = 5;
+            visualFeedback.SetActive(false);
+            visualCountdown = false;
+            visualTimer = visualDisplayTime;
         }
 
 	}
