@@ -584,7 +584,7 @@ public class Manager : MonoBehaviour
                                                 }
                                             }
                                         }
-                                        else if (k < 2 && playersJointsHeight[k][1] <= playersJointsHeight[k][0] && playersJointsHeight[k][2] <= playersJointsHeight[k][0] && moveHands == true)
+                                        else if (k < 2 && playersJointsHeight[k][1] <= playersJointsHeight[k][0] && playersJointsHeight[k][2] <= playersJointsHeight[k][0] /*&& moveHands == true*/)
                                         {
                                             if (k == 0)
                                             {
@@ -595,7 +595,7 @@ public class Manager : MonoBehaviour
                                                 p2UInput.userInput = null;
                                             }
 
-                                            moveHands = false;
+                                            //moveHands = false;
                                         }
                                     }
                                 }
