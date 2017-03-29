@@ -367,6 +367,63 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 2042731338}
   m_Script: {fileID: 11500000, guid: 9305bc764c25fa74c83db3c84b38415d, type: 3}
+--- !u!1001 &768565695
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4652510983124450, guid: cfbad4efb2af38d4382cfac8d6da3a25, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4652510983124450, guid: cfbad4efb2af38d4382cfac8d6da3a25, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4652510983124450, guid: cfbad4efb2af38d4382cfac8d6da3a25, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 4652510983124450, guid: cfbad4efb2af38d4382cfac8d6da3a25, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4652510983124450, guid: cfbad4efb2af38d4382cfac8d6da3a25, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4652510983124450, guid: cfbad4efb2af38d4382cfac8d6da3a25, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4652510983124450, guid: cfbad4efb2af38d4382cfac8d6da3a25, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4652510983124450, guid: cfbad4efb2af38d4382cfac8d6da3a25, type: 2}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 198945032395724016, guid: cfbad4efb2af38d4382cfac8d6da3a25,
+        type: 2}
+      propertyPath: simulationSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 198945032395724016, guid: cfbad4efb2af38d4382cfac8d6da3a25,
+        type: 2}
+      propertyPath: randomSeed
+      value: -749951865
+      objectReference: {fileID: 0}
+    - target: {fileID: 198945032395724016, guid: cfbad4efb2af38d4382cfac8d6da3a25,
+        type: 2}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: cfbad4efb2af38d4382cfac8d6da3a25, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &882749006
 GameObject:
   m_ObjectHideFlags: 0
@@ -762,6 +819,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4187cb9ace099004aa2896c95f27c6d2, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1543865660 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1257131933547688, guid: cfbad4efb2af38d4382cfac8d6da3a25,
+    type: 2}
+  m_PrefabInternal: {fileID: 768565695}
 --- !u!1001 &1604948080
 Prefab:
   m_ObjectHideFlags: 0
@@ -994,6 +1056,49 @@ MonoBehaviour:
   bridgeTimeStart: 40
   bridge2TimeStart: 72
   chorusTimeStart: 56
+--- !u!1 &1687112401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1687112403}
+  - component: {fileID: 1687112402}
+  m_Layer: 0
+  m_Name: Feedback Godt Samarbejde
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1687112402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1687112401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4762e41aa822c48439ac0f8c76fe1fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  feedback: {fileID: 8300000, guid: 0b1b49e51989d8746b72c0ab97ea47fe, type: 3}
+  fireworksSystem: {fileID: 1543865660}
+  inputKey: Fire1
+--- !u!4 &1687112403
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1687112401}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1721709364 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634,
@@ -1096,7 +1201,7 @@ GameObject:
   - component: {fileID: 1849966262}
   - component: {fileID: 1849966263}
   m_Layer: 0
-  m_Name: ApplauseManager
+  m_Name: Feedback applause
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1126,7 +1231,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4762e41aa822c48439ac0f8c76fe1fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  applause: {fileID: 8300000, guid: 3cff9b4181cfa0c49ba0a42e998d2537, type: 3}
+  feedback: {fileID: 8300000, guid: 3cff9b4181cfa0c49ba0a42e998d2537, type: 3}
+  fireworksSystem: {fileID: 1543865660}
+  inputKey: Jump
 --- !u!1001 &1876246142
 Prefab:
   m_ObjectHideFlags: 0
