@@ -70,7 +70,7 @@ public class MusicManager : MonoBehaviour
 
             int maintrackSeconds = (int)mainTrackTimer;
 
-            Debug.Log("main track time = " + maintrackSeconds);
+            //Debug.Log("main track time = " + maintrackSeconds);
             beatTimer = beatTimer - Time.deltaTime;
             melodicBeatTimer = melodicBeatTimer - Time.deltaTime;
             rythmBeatTimer = rythmBeatTimer - Time.deltaTime;
@@ -209,10 +209,10 @@ public class MusicManager : MonoBehaviour
         if (!userInput.isPlayer2)
         {
 
-            Debug.Log("Player 1");
+            //Debug.Log("Player 1");
             if (setPos == 0 && userInput.userInput == userInput.inputHigh)
             {
-                Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
+                //Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
 
                 melodicSourceOneHigh.mute = false;
                 melodicSourceOneLow.mute = true;
@@ -225,7 +225,7 @@ public class MusicManager : MonoBehaviour
             }
             else if (setPos == 0 && userInput.userInput == userInput.inputLow)
             {
-                Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
+               // Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
                 melodicSourceOneHigh.mute = true;
                 melodicSourceOneLow.mute = false;
 
@@ -237,7 +237,7 @@ public class MusicManager : MonoBehaviour
             }
             else if (setPos == 1 && userInput.userInput == userInput.inputHigh)
             {
-                Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
+               // Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
                 melodicSourceOneHigh.mute = true;
                 melodicSourceOneLow.mute = true;
 
@@ -247,7 +247,7 @@ public class MusicManager : MonoBehaviour
             }
             else if (setPos == 1 && userInput.userInput == userInput.inputLow)
             {
-                Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
+               // Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
                 melodicSourceOneHigh.mute = true;
                 melodicSourceOneLow.mute = true;
 
@@ -268,7 +268,7 @@ public class MusicManager : MonoBehaviour
         {
             if (setPos == 0 && userInput.userInput == userInput.inputHigh)
             {
-                Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
+                //Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
                 rythmSourceOneHigh.mute = false;
                 rythmSourceOneLow.mute = true;
 
@@ -280,7 +280,7 @@ public class MusicManager : MonoBehaviour
             }
             else if (setPos == 0 && userInput.userInput == userInput.inputLow)
             {
-                Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
+                //Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
                 rythmSourceOneHigh.mute = true;
                 rythmSourceOneLow.mute = false;
 
@@ -292,7 +292,7 @@ public class MusicManager : MonoBehaviour
             }
             else if (setPos == 1 && userInput.userInput == userInput.inputHigh)
             {
-                Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
+                //Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
                 rythmSourceOneHigh.mute = true;
                 rythmSourceOneLow.mute = true;
 
@@ -303,7 +303,7 @@ public class MusicManager : MonoBehaviour
             }
             else if (setPos == 1 && userInput.userInput == userInput.inputLow)
             {
-                Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
+                //Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
                 rythmSourceOneHigh.mute = true;
                 rythmSourceOneLow.mute = true;
 
@@ -312,7 +312,7 @@ public class MusicManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
+                //Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
                 rythmSourceOneHigh.mute = true;
                 rythmSourceOneLow.mute = true;
 
@@ -561,29 +561,29 @@ public class MusicManager : MonoBehaviour
     {
         if(mainTrackTimer <= timeSetter.verseTimeStart+0.5f)
         {
-            Debug.Log("Verse 1");
+            //Debug.Log("Verse 1");
             melodicBeatInterval = timeSetter.melodicBeatVerse;
             rythmBeatInterval = timeSetter.rythmBeatVerse;
         }
         if(mainTrackTimer >= timeSetter.bridgeTimeStart- 0.5f && mainTrackTimer <= timeSetter.bridgeTimeStart + 0.5f)
         {
-            Debug.Log("Bridge");
+            //Debug.Log("Bridge");
         }
         if(mainTrackTimer >= timeSetter.chorusTimeStart- 1 && mainTrackTimer <= timeSetter.chorusTimeStart + 1)
         {
-            Debug.Log("Chorus");
+            //Debug.Log("Chorus");
             melodicBeatInterval = timeSetter.melodicBeatChorus;
             rythmBeatInterval = timeSetter.rythmBeatChorus;
         }
         if(mainTrackTimer >= timeSetter.bridge2TimeStart- 1 && mainTrackTimer <= timeSetter.bridge2TimeStart+1)
         {
-            Debug.Log("Bridge 2");
+            //Debug.Log("Bridge 2");
             melodicBeatInterval = timeSetter.melodicBeatVerse;
             rythmBeatInterval = timeSetter.rythmBeatVerse;
         }
         if(mainTrackTimer >= timeSetter.verse2TimeStart - 1 && mainTrackTimer <= timeSetter.verse2TimeStart + 1)
         {
-            Debug.Log("Verse 2");
+            //Debug.Log("Verse 2");
             melodicBeatInterval = timeSetter.melodicBeatVerse;
             rythmBeatInterval = timeSetter.rythmBeatVerse;
         }

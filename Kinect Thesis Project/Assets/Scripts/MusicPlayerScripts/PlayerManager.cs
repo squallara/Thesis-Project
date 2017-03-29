@@ -52,7 +52,7 @@ public class PlayerManager : MonoBehaviour
         PlayerIO(player1Input, ref melodicSetPos);
         PlayerIO(player2Input, ref rythmSetPos);
 
-        Debug.Log("last played P1 = " + P1lastPlayed);
+        //Debug.Log("last played P1 = " + P1lastPlayed);
 
         if (!musicManager.melodyPlayable)
         {
@@ -84,7 +84,7 @@ public class PlayerManager : MonoBehaviour
 
         if (playerInput.inputHigh == "" && playerInput.inputMid == "" && playerInput.inputLow == "")
         {
-           Debug.LogError("Assign input controls");
+           //Debug.LogError("Assign input controls");
         }
         else
         {
@@ -127,7 +127,7 @@ public class PlayerManager : MonoBehaviour
                             if (P1lastPlayed == null)
                             {
                                 P1lastPlayed = playerInput.userInput;
-                                Debug.Log("Last input = " + P1lastPlayed);
+                                //Debug.Log("Last input = " + P1lastPlayed);
                             }
                             else if (playerInput.userInput == P1lastPlayed)
                             {
@@ -162,7 +162,7 @@ public class PlayerManager : MonoBehaviour
                             if (P1lastPlayed == null)
                             {
                                 P1lastPlayed = playerInput.userInput;
-                                Debug.Log("Last input = " + P1lastPlayed);
+                                //Debug.Log("Last input = " + P1lastPlayed);
                             }
                             else if (playerInput.userInput == P1lastPlayed)
                             {
@@ -199,7 +199,7 @@ public class PlayerManager : MonoBehaviour
                             if (P2lastPlayed == null)
                             {
                                 P2lastPlayed = playerInput.userInput;
-                                Debug.Log("Last input = " + P2lastPlayed);
+                                //Debug.Log("Last input = " + P2lastPlayed);
                             }
                             else if (playerInput.userInput == P2lastPlayed)
                             {
@@ -233,7 +233,7 @@ public class PlayerManager : MonoBehaviour
                             if (P2lastPlayed == null)
                             {
                                 P2lastPlayed = playerInput.userInput;
-                                Debug.Log("Last input = " + P2lastPlayed);
+                                //Debug.Log("Last input = " + P2lastPlayed);
                             }
                             else if (playerInput.userInput == P2lastPlayed)
                             {
