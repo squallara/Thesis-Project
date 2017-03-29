@@ -25,7 +25,8 @@ public class Manager : MonoBehaviour
     List<float> spineMidPos;
     List<Texture> playersMidHighLowMat;
     int countBodies;        //Counts how many bodies are active at the same frame.
-    bool foundId, initializeMidPos, zoneChanged;
+    bool foundId, initializeMidPos, zoneChanged, moveHands;
+    float countDown;
 
     //public Texture texture;
     public List<Texture> playersMat;
@@ -65,6 +66,8 @@ public class Manager : MonoBehaviour
         countBodies = 0;
         initializeMidPos = false;
         zoneChanged = false;
+        moveHands = false;
+        countDown = 0;
 
         p1UInput = player1.GetComponent<UserInput>();
         p2UInput = player2.GetComponent<UserInput>();
@@ -147,7 +150,7 @@ public class Manager : MonoBehaviour
 
                                 Kinect.ColorSpacePoint colorPoint = sensor.CoordinateMapper.MapCameraPointToColorSpace(skeletonPoint);
 
-                                if(jt == Kinect.JointType.SpineMid)
+                                if (jt == Kinect.JointType.SpineMid)
                                 {
                                     print(Mathf.Floor(body.Joints[jt].Position.Z));
                                 }
@@ -185,46 +188,52 @@ public class Manager : MonoBehaviour
                                                                 playersMinMaxHeightInPixels[j][l, 1] = 1080;
                                                             }
 
-                                                            if (Mathf.Floor(body.Joints[jt].Position.Z) > spineMidPos[j])
-                                                            {
-                                                                //further away from kinect (Low)
-                                                                if (j == 0)
-                                                                {
-                                                                    //p1UInput.userInput = "high";
-                                                                    playersMidHighLowMat[j] = LowHighMats[0];
-                                                                }
-                                                                else if (j == 1)
-                                                                {
-                                                                    //p2UInput.userInput = "high";
-                                                                    playersMidHighLowMat[j] = LowHighMats[2];
-                                                                }
-                                                            }
-                                                            else if (Mathf.Floor(body.Joints[jt].Position.Z) < spineMidPos[j])
-                                                            {
-                                                                //closer to kinect (High)
-                                                                if (j == 0)
-                                                                {
-                                                                    //p1UInput.userInput = "low";
-                                                                    playersMidHighLowMat[j] = LowHighMats[1];
-                                                                }
-                                                                else if (j == 1)
-                                                                {
-                                                                    //p2UInput.userInput = "low";
-                                                                    playersMidHighLowMat[j] = LowHighMats[3];
-                                                                }
-                                                            }
+                                                            //if (Mathf.Floor(body.Joints[jt].Position.Z) > spineMidPos[j])
+                                                            //{
+                                                            //    //further away from kinect (Low)
+                                                            //    if (j == 0)
+                                                            //    {
+                                                            //        p1UInput.userInput = "low";
+                                                            //        playersMidHighLowMat[j] = LowHighMats[0];
+                                                            //    }
+                                                            //    else if (j == 1)
+                                                            //    {
+                                                            //        p2UInput.userInput = "low";
+                                                            //        playersMidHighLowMat[j] = LowHighMats[2];
+                                                            //    }
+                                                            //}
+                                                            //else if (Mathf.Floor(body.Joints[jt].Position.Z) < spineMidPos[j])
+                                                            //{
+                                                            //    //closer to kinect (High)
+                                                            //    if (j == 0)
+                                                            //    {
+                                                            //        p1UInput.userInput = "high";
+                                                            //        playersMidHighLowMat[j] = LowHighMats[1];
+                                                            //    }
+                                                            //    else if (j == 1)
+                                                            //    {
+                                                            //        p2UInput.userInput = "high";
+                                                            //        playersMidHighLowMat[j] = LowHighMats[3];
+                                                            //    }
+                                                            //}
 
                                                             spineMidPos[j] = Mathf.Floor(body.Joints[jt].Position.Z);
                                                         }
                                                         else
                                                         {
-                                                            //if (j == 0)
+                                                            //if (countDown >= timeToStopInputs)
                                                             //{
-                                                            //    p1UInput.userInput = null;
-                                                            //}
-                                                            //else if (j == 1)
-                                                            //{
-                                                            //    p2UInput.userInput = null;
+                                                            //    if (j == 0)
+                                                            //    {
+                                                            //    print("I am here");
+                                                            //        p1UInput.userInput = null;
+                                                            //    }
+                                                            //    else if (j == 1)
+                                                            //    {
+                                                            //        p2UInput.userInput = null;
+                                                            //    }
+
+                                                            //    countDown = 0;
                                                             //}
                                                             //StartCoroutine(StopInput(j));
                                                         }
@@ -329,6 +338,9 @@ public class Manager : MonoBehaviour
 
     void Update()
     {
+        //print(p1UInput.userInput);
+        countDown += Time.deltaTime;
+
         countBodies = 0;
         for (int i = 0; i < 6; i++)
         {
@@ -391,7 +403,7 @@ public class Manager : MonoBehaviour
                                 {
                                     if (jt == prefJoints[0]) //the base bodyjoint like spinemid needs to be at the first place ALWAYS!!!!!!
                                     {
-                                        if (zoneChanged == false && k < 2)
+                                        if (/*zoneChanged == false &&*/ k < 2)
                                         {
                                             Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - 70 / 2, bodyJoints[k][i, 1] - 70 / 2, 70, 70), playersMat[k]);
                                         }
@@ -401,28 +413,28 @@ public class Manager : MonoBehaviour
                                         //    {
                                         //        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - 70 / 2, bodyJoints[k][i, 1] - 70 / 2, 70, 70), playersMidHighLowMat[k]);
 
-                                        //        if(playersMidHighLowMat[k] == LowHighMats[0] || playersMidHighLowMat[k] == LowHighMats[2])
-                                        //        {
-                                        //            if( k== 0)
-                                        //            {
-                                        //                p1UInput.userInput = "low";
-                                        //            }
-                                        //            else if (k == 1)
-                                        //            {
-                                        //                p2UInput.userInput = "low";
-                                        //            }
-                                        //        }
-                                        //        else if(playersMidHighLowMat[k] == LowHighMats[1] || playersMidHighLowMat[k] == LowHighMats[3])
-                                        //        {
-                                        //            if (k == 0)
-                                        //            {
-                                        //                p1UInput.userInput = "high";
-                                        //            }
-                                        //            else if (k == 1)
-                                        //            {
-                                        //                p2UInput.userInput = "high";
-                                        //            }
-                                        //        }
+                                        //        //if (playersMidHighLowMat[k] == LowHighMats[0] || playersMidHighLowMat[k] == LowHighMats[2])
+                                        //        //{
+                                        //        //    if (k == 0)
+                                        //        //    {
+                                        //        //        p1UInput.userInput = "low";
+                                        //        //    }
+                                        //        //    else if (k == 1)
+                                        //        //    {
+                                        //        //        p2UInput.userInput = "low";
+                                        //        //    }
+                                        //        //}
+                                        //        //else if (playersMidHighLowMat[k] == LowHighMats[1] || playersMidHighLowMat[k] == LowHighMats[3])
+                                        //        //{
+                                        //        //    if (k == 0)
+                                        //        //    {
+                                        //        //        p1UInput.userInput = "high";
+                                        //        //    }
+                                        //        //    else if (k == 1)
+                                        //        //    {
+                                        //        //        p2UInput.userInput = "high";
+                                        //        //    }
+                                        //        //}
                                         //    }
                                         //}
                                     }
@@ -430,6 +442,7 @@ public class Manager : MonoBehaviour
                                     {
                                         if (playersJointsHeight[k][p] > playersJointsHeight[k][0] && k < 2)          //K will be restricted to 2 for only two players.
                                         {
+                                            moveHands = true;
 
                                             Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - 125 / 2, ((playersMinMaxHeightInPixels[k][p, 0] + playersMinMaxHeightInPixels[k][p, 1])/2) - 15 / 2, 125, 15), playersMat[k]);
 
@@ -441,7 +454,10 @@ public class Manager : MonoBehaviour
 
                                                     if (k == 0)
                                                     {
+                                                        //print("I am here");
                                                         p1UInput.userInput = "high";
+                                                        //print(p1UInput.userInput);
+                                                        
                                                     }
                                                     else if (k == 1)
                                                     {
@@ -568,7 +584,7 @@ public class Manager : MonoBehaviour
                                                 }
                                             }
                                         }
-                                        else
+                                        else if (k < 2 && playersJointsHeight[k][1] <= playersJointsHeight[k][0] && playersJointsHeight[k][2] <= playersJointsHeight[k][0] && moveHands == true)
                                         {
                                             if (k == 0)
                                             {
@@ -578,6 +594,8 @@ public class Manager : MonoBehaviour
                                             {
                                                 p2UInput.userInput = null;
                                             }
+
+                                            moveHands = false;
                                         }
                                     }
                                 }

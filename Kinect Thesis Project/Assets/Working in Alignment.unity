@@ -1346,6 +1346,7 @@ MonoBehaviour:
   trailAmount: 10
   textureWidth: 50
   textureHeight: 50
+  timeToStopInputs: 10
   player1: {fileID: 324958586}
   player2: {fileID: 902193084}
 --- !u!4 &2051844645
