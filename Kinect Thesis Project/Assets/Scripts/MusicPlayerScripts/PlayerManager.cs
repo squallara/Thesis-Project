@@ -49,8 +49,8 @@ public class PlayerManager : MonoBehaviour
 
        // Debug.Log("Player Manager Running");
 
-        PlayerIO(player1Input, ref melodicSetPos);
-        PlayerIO(player2Input, ref rythmSetPos);
+        PlayerIO(ref player1Input, ref melodicSetPos);
+        PlayerIO(ref player2Input, ref rythmSetPos);
 
         //Debug.Log("last played P1 = " + P1lastPlayed);
 
@@ -79,7 +79,7 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-    public void PlayerIO(UserInput playerInput, ref int setPos)
+    public void PlayerIO(ref UserInput playerInput, ref int setPos)
     {
 
         if (playerInput.inputHigh == "" && playerInput.inputMid == "" && playerInput.inputLow == "")
@@ -149,6 +149,8 @@ public class PlayerManager : MonoBehaviour
                         //Debug.Log("Player 1 sending to MusicManager");
                         musicManager.MuteOthersMelodic(setPos, playerInput);
                         musicManager.melodyPlayable = false;
+                        playerInput.userInput = null;
+                        
                     }
                 }
                 else if (!player2rythm)
@@ -184,6 +186,7 @@ public class PlayerManager : MonoBehaviour
                         //Debug.Log("Player 1 sending to MusicManager");
                         musicManager.MuteOthersRythm(setPos, playerInput);
                         musicManager.rythmPlayable = false;
+                        playerInput.userInput = null;
                     }
                 }
             }
@@ -221,6 +224,7 @@ public class PlayerManager : MonoBehaviour
                         //Debug.Log("Player 1 sending to MusicManager");
                         musicManager.MuteOthersRythm(setPos, playerInput);
                         musicManager.rythmPlayable = false;
+                        playerInput.userInput = null;
                     }
                 }
                 else if (!player2rythm)
@@ -255,6 +259,7 @@ public class PlayerManager : MonoBehaviour
                         //Debug.Log("Player 1 sending to MusicManager");
                         musicManager.MuteOthersMelodic(setPos, playerInput);
                         musicManager.melodyPlayable = false;
+                        playerInput.userInput = null;
                     }
                 }
             }
