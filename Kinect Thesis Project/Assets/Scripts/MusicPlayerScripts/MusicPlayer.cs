@@ -16,34 +16,49 @@ public class MusicPlayer : MonoBehaviour
 
     string p2name;
 
-    public GameObject toneSetObject, rythmSetObject, bassSetObject;
+    /*
 
-    public toneHolder[] melodicToneSet, rythmToneSet, bassToneSet;
+        Use Gameobjects instead of tonesets to manage the possible toneHolders.
+        Use single tone holder objects instead of arrays, to initialize toneholders
+        TonePos might not be needed
+    */
+
+    public GameObject mainToneSetObject, mainRythmSetObject, mainBassSetObject;
+
+    GameObject[] melodicToneSetObject, rythmToneSetObject, bassToneSetObject;
+
+    toneHolder[] melodicToneSet, rythmToneSet, bassToneSet;
+
+    float mainTrackTimer;
 
     float toneTimer, rythmTimer, beatManTime1, beatManTime2, toneLength, rythmLength;
 
     bool rythmPlayable, tonePlayable, bassPlayable;
 
-    public bool player2active, usingToneMatch, bassFollowsRythm, player2rythm;
+    public bool player2active, usingToneMatch, bassFollowsRythm, player2rythm, useSeperateBass, useMidInput;
 
     public float disableTime;
 
-    public AudioMixer EQMixer;
+    public float mainTrackTime, introTime, versTime, bridgeTime, chorusTime, vers2Time, bridge2Time;
 
-    string rythmMixGroup = "Rythm", toneMixGroup = "Tone";
-
-    bool MixerSet;
+    public int rythmIntroPos, rythmVersPos, rythmBridgePos, rythmChorPos, rythmVers2Pos, rythmBridge2Pos, rythmChor2Pos;
 
     bool P2isRythm;
 
+    public bool repeatTrack;
+
+    string lastPlayed;
+
     AudioMixerSnapshot[] snapshots;
+
+
 
 
     // Use this for initialization
     void Start()
     {
 
-        InitializeToneSets();
+        InitializeToneSets(mainToneSetObject, mainRythmSetObject, mainBassSetObject);
 
         bassInput = beatMan.GetComponent<UserInput>();
 
@@ -51,8 +66,7 @@ public class MusicPlayer : MonoBehaviour
         rythmPos = 0;
         bassPos = 0;
 
-        toneLength = melodicToneSet[tonePos].timeLength;
-        rythmLength = rythmToneSet[rythmPos].timeLength;
+    
 
         tonePlayable = true;
         rythmPlayable = true;
@@ -60,11 +74,9 @@ public class MusicPlayer : MonoBehaviour
 
         p2name = Player2.name;
 
-        MixerSet = false;
-
         P2isRythm = player2rythm;
         snapshots = new AudioMixerSnapshot[3];
-        
+
 
 
     }
@@ -75,40 +87,17 @@ public class MusicPlayer : MonoBehaviour
 
         StatusError();
 
+        SoundtrackTimeManager();
+
+        mainTrackTimer = mainTrackTimer + Time.deltaTime;
+
+        //Debug.Log("Main track time = " + mainTrackTimer);
+
         beatManTime1 = beatMan.melodicTimer;
         beatManTime2 = beatMan.rythmTimer;
 
         rythmTimer = rythmTimer - Time.deltaTime;
         toneTimer = toneTimer - Time.deltaTime;
-
-        if (player2rythm)
-        {
-            
-            if (!MixerSet)
-            {
-                GetMixers(Player2, EQMixer,rythmMixGroup);
-                GetMixers(Player1, EQMixer, toneMixGroup);
-                MixerSet = true;
-            }
-
-        }
-        else
-        {
-
-            if (!MixerSet)
-            {
-                GetMixers(Player1, EQMixer, rythmMixGroup);
-                GetMixers(Player2, EQMixer, toneMixGroup);
-                MixerSet = true;
-            }
-            
-        }
-
-        if(player2rythm != P2isRythm)
-        {
-            MixerSet = false;
-            P2isRythm = player2rythm;
-        }
 
         DisableTones();
 
@@ -125,19 +114,7 @@ public class MusicPlayer : MonoBehaviour
         else
         {
             //Debug.Log("Player 1 Rythm");
-            if (bassFollowsRythm)
-            {
-                SetBassInput(Player1);
-                //Debug.Log("Player 1 rythm, bass follows Rythm");
-                BassFollowRythm(Player1);
-            }
-            else
-            {
-                //Debug.Log("Player 1 Rythm, bass follows beat");
-                PlayerIO(Player1, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
-
-            }
-
+            PlayerIO(Player1, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
         }
 
 
@@ -147,40 +124,22 @@ public class MusicPlayer : MonoBehaviour
             if (player2rythm)
             {
                 //Debug.Log("Player 2 Rythm");
-                if (bassFollowsRythm)
-                {
-                    SetBassInput(Player2);
-                    //Debug.Log("Player 2 Rythm, bass follows rythm");
-                    BassFollowRythm(Player2);
-                }
-                else
-                {
-                    //Debug.Log("Player 2 Rythm, bass follows beat");
-                    PlayerIO(Player2, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
 
-                }
+                PlayerIO(Player2, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
+
+
+
             }
             else
             {
-                //Debug.Log("Player 2 Melodic");
+                // Debug.Log("Player 2 Melodic");
                 PlayerIO(Player2, melodicToneSet, toneSetAmount, ref tonePos, ref tonePlayable);
                 //Debug.Log("Userinput P2 = " + Player2.userInput);
 
             }
 
         }
-        if (!bassFollowsRythm)
-        {
-            //Debug.Log("Bass Follows Beat");
-            if (player2rythm)
-            {
-                BassFollowBeat(Player2, bassToneSet, bassSetAmount, ref rythmPos);
-            }
-            else
-            {
-                BassFollowBeat(Player1, bassToneSet, bassSetAmount, ref rythmPos);
-            }
-        }
+
 
 
     }
@@ -189,6 +148,8 @@ public class MusicPlayer : MonoBehaviour
     {
 
         AudioClip high, mid, low;
+
+        //Debug.Log("Looking for input " + playerInput.userInput);
 
         bool isRythmPlayer = false;
 
@@ -211,11 +172,29 @@ public class MusicPlayer : MonoBehaviour
             tonePos = 0;
         }
 
+
+        if (playerInput.userInput == lastPlayed)
+        {
+            if (lastPlayed == playerInput.inputHigh)
+            {
+                tonePos = toneSet[tonePos].tonesetRefHigh;
+            }
+            else if (lastPlayed == playerInput.inputLow)
+            {
+                tonePos = toneSet[tonePos].tonesetRefLow;
+            }
+        }
+
+
         toneHolder currentToneSet = toneSet[tonePos];
+
+        //Debug.Log("TonePos = " + tonePos);
 
         high = currentToneSet.high;
         mid = currentToneSet.mid;
         low = currentToneSet.low;
+
+
 
         if (playerInput.inputHigh == "" && playerInput.inputMid == "" && playerInput.inputLow == "")
         {
@@ -229,44 +208,29 @@ public class MusicPlayer : MonoBehaviour
                 isPlayable = false;
 
                 playerInput.audioSource.PlayOneShot(high);
+                mainTrackTimer = 0;
+                ActivateDrums();
 
-                if (!usingToneMatch)
-                {
-                    tonePos++;
-                }
-
-                if (isRythmPlayer)
-                {
-                    rythmLength = toneSet[tonePos].timeLength;
-                }
-                else
-                {
-                    toneLength = toneSet[tonePos].timeLength;
-                }
 
                 playerInput.userInput = null;
+                lastPlayed = "high";
+
+                if (tonePos == 0)
+                {
+                    tonePos = toneSet[tonePos].tonesetRefHigh;
+                }
 
             }
 
-            else if (playerInput.userInput == playerInput.inputMid && isPlayable == true)
+            else if (playerInput.userInput == playerInput.inputMid && isPlayable == true && useMidInput == true)
             {
                 playerInput.audioSource.PlayOneShot(mid);
-
-                if (!usingToneMatch)
-                {
-                    tonePos++;
-                }
+                mainTrackTimer = 0;
+                ActivateDrums();
 
                 isPlayable = false;
 
-                if (isRythmPlayer)
-                {
-                    rythmTimer = toneSet[tonePos].timeLength;
-                }
-                else
-                {
-                    toneLength = toneSet[tonePos].timeLength;
-                }
+
 
                 playerInput.userInput = null;
 
@@ -275,24 +239,20 @@ public class MusicPlayer : MonoBehaviour
             else if (playerInput.userInput == playerInput.inputLow && isPlayable == true)
             {
                 playerInput.audioSource.PlayOneShot(low);
-
-                if (!usingToneMatch)
-                {
-                    tonePos++;
-                }
+                mainTrackTimer = 0;
+                ActivateDrums();
 
                 isPlayable = false;
 
-                if (isRythmPlayer)
-                {
-                    rythmTimer = toneSet[tonePos].timeLength;
-                }
-                else
-                {
-                    toneLength = toneSet[tonePos].timeLength;
-                }
+
 
                 playerInput.userInput = null;
+                lastPlayed = "low";
+                if (tonePos == 0)
+                {
+                    tonePos = toneSet[tonePos].tonesetRefLow;
+                }
+                //tonePos = currentToneSet.tonesetRefLow;
 
             }
         }
@@ -302,11 +262,11 @@ public class MusicPlayer : MonoBehaviour
     public void PlayerDepth(UserInput P1Input, UserInput P2Input)
     {
 
-        if(P1Input.userDepth == P1Input.depthFar)
+        if (P1Input.userDepth == P1Input.depthFar)
         {
             //Player1.audioSource.outputAudioMixerGroup.audioMixer.TransitionToSnapshots(snapshots[0],25,1);
         }
-        
+
 
     }
 
@@ -317,9 +277,9 @@ public class MusicPlayer : MonoBehaviour
         {
             //Debug.LogError("Missing Player GameObject. Player 1 = " + Player1.name + ". Player 2 = " + Player2.name + ".");
         }
-        if (toneSetObject == null || rythmSetObject == null)
+        if (mainToneSetObject == null || mainRythmSetObject == null)
         {
-            //Debug.LogError("Missing Tone Set GameObject. Tone Set Object 1 = " + toneSetObject.name + ". Tone Set Object 2 = " + rythmSetObject.name + ".");
+            //Debug.LogError("Missing Tone Set GameObject. Tone Set Object 1 = " + mainToneSetObject.name + ". Tone Set Object 2 = " + mainRythmSetObject.name + ".");
         }
 
     }
@@ -421,150 +381,68 @@ public class MusicPlayer : MonoBehaviour
 
     }
 
-    void InitializeToneSets()
+    void InitializeToneSets(GameObject tonesetObject, GameObject rythmObject, GameObject bassObject)
     {
 
-        toneSetAmount = toneSetObject.transform.childCount;
-        rythmToneSetAmount = rythmSetObject.transform.childCount;
-        bassSetAmount = bassSetObject.transform.childCount;
+        toneSetAmount = tonesetObject.transform.childCount;
+        rythmToneSetAmount = rythmObject.transform.childCount;
 
         melodicToneSet = new toneHolder[toneSetAmount];
         rythmToneSet = new toneHolder[rythmToneSetAmount];
-        bassToneSet = new toneHolder[bassSetAmount];
-
 
         for (int i = 0; i < toneSetAmount; i++)
         {
 
-            melodicToneSet[i] = toneSetObject.transform.GetChild(i).gameObject.GetComponent<toneHolder>();
+            melodicToneSet[i] = tonesetObject.transform.GetChild(i).gameObject.GetComponent<toneHolder>();
 
         }
 
         for (int i = 0; i < rythmToneSetAmount; i++)
         {
 
-            rythmToneSet[i] = rythmSetObject.transform.GetChild(i).gameObject.GetComponent<toneHolder>();
+            rythmToneSet[i] = rythmObject.transform.GetChild(i).gameObject.GetComponent<toneHolder>();
 
         }
-        for (int i = 0; i < bassSetAmount; i++)
-        {
-            bassToneSet[i] = bassSetObject.transform.GetChild(i).gameObject.GetComponent<toneHolder>();
-        }
+
 
     }
 
-    void BassFollowRythm(UserInput playerInput)
+    void SoundtrackTimeManager()
     {
+        float offset = 0.5f;
 
-        BassPlayer(playerInput, bassToneSet,bassSetAmount, ref bassPos, ref bassPlayable);
+        if (mainTrackTimer >= mainTrackTime)
+        {
+            mainTrackTimer = 0;
+            beatMan.bassAudioSource.Stop();
+        }
 
-        PlayerIO(playerInput, rythmToneSet, rythmToneSetAmount, ref rythmPos, ref rythmPlayable);
+        if (mainTrackTimer == introTime - offset && introTime != 0)
+        {
+            rythmPos = rythmIntroPos;
+        }
+        else if (introTime == 0 && mainTrackTimer == introTime)
+        {
+            rythmPos = rythmIntroPos;
+        }
+        if (mainTrackTimer == versTime - offset && versTime != 0)
+        {
+            rythmPos = rythmVersPos;
+        }
+        else if (versTime == 0 && mainTrackTimer == versTime)
+        {
+            rythmPos = rythmVersPos;
+        }
+
+
+
 
     }
 
-    void BassFollowBeat(UserInput playerInput, toneHolder[] bassHolder, int toneSetAmount, ref int tonePos)
+    void ActivateDrums()
     {
-
-        AudioClip bassTone;
-
-        if (tonePos >= toneSetAmount)
-        {
-            tonePos = 0;
-        }
-
-        toneHolder currentBassSet;
-        currentBassSet = bassHolder[tonePos];
-
-        bassTone = currentBassSet.low;
-
-        if (playerInput.userInput == playerInput.inputHigh)
-        {
-            bassTone = currentBassSet.high;
-        }
-        else if (playerInput.userInput == playerInput.inputMid)
-        {
-            bassTone = currentBassSet.mid;
-        }
-        else if (playerInput.userInput == playerInput.inputLow)
-        {
-            bassTone = currentBassSet.low;
-        }
-
-
-        if (beatMan.rythmTimer <= 0)
-        {
-            beatMan.bassAudioSource.PlayOneShot(bassTone);
-        }
-
+        beatMan.useBeat = true;
     }
 
-    void BassPlayer(UserInput playerInput, toneHolder[] bassHolder, int toneSetAmount, ref int tonesetPos, ref bool isBassPlayable)
-    {
-
-        AudioClip highBass, midBass, lowBass;
-
-        if(tonesetPos >= toneSetAmount)
-        {
-            tonesetPos = 0;
-        }
-
-        toneHolder currentBass = bassHolder[tonesetPos];
-
-        highBass = currentBass.high;
-        midBass = currentBass.mid;
-        lowBass = currentBass.low;
-
-        if (playerInput.inputHigh == "" && playerInput.inputMid == "" && playerInput.inputLow == "")
-        {
-            //Debug.LogError("Assign input controls");
-        }
-        else
-        {
-            if(playerInput.userInput == playerInput.inputHigh && isBassPlayable == true)
-            {
-                beatMan.bassAudioSource.PlayOneShot(highBass);
-                isBassPlayable = false;
-            }
-            else if(playerInput.userInput == playerInput.inputMid && isBassPlayable == true)
-            {
-                beatMan.bassAudioSource.PlayOneShot(midBass);
-                isBassPlayable = false;
-            }
-            else if(playerInput.userInput == playerInput.inputLow && isBassPlayable == true)
-            {
-                beatMan.bassAudioSource.PlayOneShot(lowBass);
-                isBassPlayable = false;
-            }
-        }
-
-
-    }
-    
-
-    void SetBassInput(UserInput userInput)
-    {
-        bassInput.inputHigh = userInput.inputHigh;
-        bassInput.inputMid = userInput.inputMid;
-        bassInput.inputLow = userInput.inputLow;
-        bassInput.userInput = userInput.userInput;
-
-        bassInput.getInput = userInput.getInput;
-    }
-
-    void GetMixers(UserInput player, AudioMixer mixer, string mixerGroup)
-    {
-
-        player.audioSource.outputAudioMixerGroup = mixer.FindMatchingGroups(mixerGroup)[0];
-        
-    }
-
-    void SetSnapshots()
-    {
-
-        snapshots[0] = EQMixer.FindSnapshot("Far");
-        snapshots[1] = EQMixer.FindSnapshot("Mid");
-        snapshots[2] = EQMixer.FindSnapshot("Close");
-
-    }
 
 }

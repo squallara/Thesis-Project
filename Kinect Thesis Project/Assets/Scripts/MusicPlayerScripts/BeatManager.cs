@@ -7,11 +7,6 @@ public class BeatManager : MonoBehaviour
 
     public AudioClip drumBeat, bassTone;
 
-    public GameObject bassTonesetObject;
-
-    
-    public toneHolder[] bassToneSet;
-
     [HideInInspector]
     public int bassSetAmount;
 
@@ -54,16 +49,7 @@ public class BeatManager : MonoBehaviour
         melodicTimer = toneFollowBeat;
         rythmTimer = rythmFollowBeat;
 
-        bassSetAmount = bassTonesetObject.transform.childCount;
-
-        bassToneSet = new toneHolder[bassSetAmount];
-
-        for (int i = 0; i < bassSetAmount; i++)
-        {
-
-            bassToneSet[i] = bassTonesetObject.transform.GetChild(i).gameObject.GetComponent<toneHolder>();
-
-        }
+     
 
     }
 
@@ -97,7 +83,7 @@ public class BeatManager : MonoBehaviour
             isPlaying = false;
         }
 
-    
+        
 
 
     }
