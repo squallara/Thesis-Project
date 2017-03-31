@@ -29,11 +29,16 @@ public class MusicManager : MonoBehaviour
     float melodicBeatTimer, rythmBeatTimer, beatTimer;
     public float melodicBeatInterval, rythmBeatInterval, beatInterval;
     public float timeOffset;
+    public float earlyApplauseTime;
 
     [HideInInspector]
     public bool melodyPlayable, rythmPlayable, inputReady, playApplause;
 
     timeManager timeSetter;
+
+    FireworkManager fireworkManager;
+
+    IntroCountDown countDown;
 
 
 
@@ -57,6 +62,8 @@ public class MusicManager : MonoBehaviour
         playApplause = false;
 
         timeSetter = GetComponent<timeManager>();
+        fireworkManager = GetComponent<FireworkManager>();
+        countDown = GetComponent<IntroCountDown>();
 
     }
 
@@ -83,7 +90,7 @@ public class MusicManager : MonoBehaviour
         ResetBeatTime();
 
 
-        if (mainTrackTimer >= mainTrackTime)
+        if (mainTrackTimer >= mainTrackTime-earlyApplauseTime && !playApplause)
         {
             startMusic = false;
             StopMusic();
@@ -94,6 +101,7 @@ public class MusicManager : MonoBehaviour
         if (!drumSource.isPlaying && playApplause)
         {
             drumSource.mute = true;
+            playApplause = false;
         }
 
         /*
@@ -120,6 +128,7 @@ public class MusicManager : MonoBehaviour
                     inputReady = true;
                 }
                 StartMusic();
+                countDown.introIsPlaying = true;
             }
             
         }
@@ -595,7 +604,7 @@ public class MusicManager : MonoBehaviour
 
         drumSource.mute = false;
         drumSource.PlayOneShot(applause);
-        
+        fireworkManager.activateFireworks = true;
 
     }
 }

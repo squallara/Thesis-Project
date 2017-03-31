@@ -2,83 +2,54 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ApplauseOnButton : MonoBehaviour {
+public class FireworkManager : MonoBehaviour {
 
-    public AudioClip feedback;
-   // public Particle fireworks;
     public GameObject visualFeedback;
-    public string inputKey;
     public float visualDisplayTime;
-    public bool isFireworks;
-    AudioSource applauseSource;
+
     bool visualCountdown;
     float visualTimer;
-
     GameObject[] fireworksObjects;
     ParticleSystem[] fireworksSystem;
 
-	// Use this for initialization
-	void Start () {
-        applauseSource = gameObject.AddComponent<AudioSource>();
+    [HideInInspector]
+    public bool activateFireworks;
+    // Use this for initialization
+    void Start () {
 
-        if (isFireworks)
-        {
-            GetParticleSystem();
-        }
-        if (isFireworks)
-        {
-            visualFeedback.SetActive(true);
-            StopParticleSystem();
-        }
-        else
-        {
-            visualFeedback.SetActive(false);
-        } 
+        GetParticleSystem();
+        StopParticleSystem();
+
         visualCountdown = false;
+        activateFireworks = false;
+
         visualTimer = visualDisplayTime;
 
-    }
+	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetButtonDown(inputKey) && !applauseSource.isPlaying)
-        {
-            applauseSource.PlayOneShot(feedback);
-            
-            if (isFireworks)
-            {
-                PlayParticleSystem();
-            }
-            else
-            {
-                visualFeedback.SetActive(true);
-            }
+        if (activateFireworks)
+        {    
+            PlayParticleSystem();
             visualCountdown = true;
+            activateFireworks = false;
         }
-
         if (visualCountdown)
         {
             visualTimer = visualTimer - Time.deltaTime;
         }
-        
-
         if (visualTimer <= 0)
         {
-            if (isFireworks)
-            {
-                StopParticleSystem();
-            }
-            else
-            {
-                visualFeedback.SetActive(false);
-            }
-            
+            StopParticleSystem();
+
             visualCountdown = false;
             visualTimer = visualDisplayTime;
+            activateFireworks = false;
         }
 
-	}
+    }
 
     void GetParticleSystem()
     {
@@ -87,7 +58,7 @@ public class ApplauseOnButton : MonoBehaviour {
         childObjectAmount = visualFeedback.transform.childCount;
         fireworksSystem = new ParticleSystem[childObjectAmount];
 
-        for(int i = 0; i < childObjectAmount; i++)
+        for (int i = 0; i < childObjectAmount; i++)
         {
             fireworksSystem[i] = visualFeedback.transform.GetChild(i).GetComponent<ParticleSystem>();
         }
@@ -96,7 +67,7 @@ public class ApplauseOnButton : MonoBehaviour {
 
     void PlayParticleSystem()
     {
-        for(int i = 0; i < fireworksSystem.Length; i++)
+        for (int i = 0; i < fireworksSystem.Length; i++)
         {
             fireworksSystem[i].Play(true);
         }
