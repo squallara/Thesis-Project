@@ -1240,6 +1240,7 @@ MonoBehaviour:
   rythmBeatInterval: 2
   beatInterval: 2
   timeOffset: 0
+  earlyApplauseTime: 0
   melodyPlayable: 0
   rythmPlayable: 0
   inputReady: 0
@@ -1469,7 +1470,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 104619404
+  randomSeed: 1860078999
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4099,6 +4100,7 @@ MonoBehaviour:
   visualFeedback: {fileID: 1060973873}
   inputKey: Fire1
   visualDisplayTime: 2
+  isFireworks: 0
 --- !u!4 &1687112403
 Transform:
   m_ObjectHideFlags: 0
@@ -4248,6 +4250,7 @@ MonoBehaviour:
   visualFeedback: {fileID: 1543865660}
   inputKey: Jump
   visualDisplayTime: 5
+  isFireworks: 0
 --- !u!1001 &1876246142
 Prefab:
   m_ObjectHideFlags: 0
