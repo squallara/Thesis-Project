@@ -115,6 +115,15 @@ public class PlayerManager : MonoBehaviour
             {
                 // Debug.Log("Player 1 playing");
 
+                if(playerInput.userInput == playerInput.targetForwardInput)
+                {
+                    playerInput.userInput = playerInput.inputHigh;
+                }
+                if(playerInput.userInput == playerInput.targetBackInput)
+                {
+                    playerInput.userInput = playerInput.inputLow;
+                }
+
                 if (player2rythm)
                 {
                     
@@ -192,6 +201,16 @@ public class PlayerManager : MonoBehaviour
             }
             else if (playerInput.isPlayer2)
             {
+
+                if (playerInput.userInput == playerInput.targetForwardInput)
+                {
+                    playerInput.userInput = playerInput.inputHigh;
+                }
+                if (playerInput.userInput == playerInput.targetBackInput)
+                {
+                    playerInput.userInput = playerInput.inputLow;
+                }
+
                 if (player2rythm)
                 {
                     if (musicManager.rythmPlayable)
