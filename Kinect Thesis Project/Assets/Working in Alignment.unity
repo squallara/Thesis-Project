@@ -1824,21 +1824,33 @@ MonoBehaviour:
   useMidOutput: 0
   playersId: 
   playersMat:
-  - {fileID: 2800000, guid: 18cde2b7d1d77294494f087e35c9fe38, type: 3}
-  - {fileID: 2800000, guid: 6665365227ce9504ba53572009e3a737, type: 3}
+  - {fileID: 2800000, guid: ed670cc8b4cbabc43bae7ba78ac67231, type: 3}
+  - {fileID: 2800000, guid: c02584b19d3bcfe4bb0d400b375f87b1, type: 3}
   - {fileID: 2800000, guid: 3d0488cf578717a4ca9c90d67279ae62, type: 3}
   - {fileID: 2800000, guid: ef364f0c8895e1f46932bbef09b7b3b5, type: 3}
   - {fileID: 2800000, guid: 41364acf463b3ae42b62ba13416ceab5, type: 3}
   - {fileID: 2800000, guid: f1cd1c0f7d7833345abe55c137ad4037, type: 3}
+  player1_2LineMat:
+  - {fileID: 2800000, guid: 18cde2b7d1d77294494f087e35c9fe38, type: 3}
+  - {fileID: 2800000, guid: 6665365227ce9504ba53572009e3a737, type: 3}
   LowHighMats:
   - {fileID: 2800000, guid: 1e2d0792480eea24e9e789f7653a2578, type: 3}
   - {fileID: 2800000, guid: 406fd598e4a715a448b47a7f8cb226ae, type: 3}
   - {fileID: 2800000, guid: 9b19df33fa0ca45449653668c61d2113, type: 3}
   - {fileID: 2800000, guid: 3b91891d3b2d8f9499ccf7b825f35331, type: 3}
+  MidLowHighMats:
+  - {fileID: 2800000, guid: f5bb29345c3229a44bcfac2bd702814f, type: 3}
+  - {fileID: 2800000, guid: 7e1120d8cbb377240ba0e9e7ff40fa7b, type: 3}
+  - {fileID: 2800000, guid: be62e1401529b8d448e779cfe01b583a, type: 3}
+  - {fileID: 2800000, guid: 7d436bc9bc6a58e439401848647e8e62, type: 3}
   prefJoints: 01000000070000000b000000
   trailAmount: 10
   textureWidth: 50
   textureHeight: 50
+  midTextureWidthP1: 100
+  midTextureHeightP1: 100
+  midTextureWidthP2: 150
+  midTextureHeightP2: 150
   timeToStopInputs: 10
   player1: {fileID: 324958586}
   player2: {fileID: 902193084}

@@ -24,12 +24,13 @@ public class Manager : MonoBehaviour
     float[,] minMaxHeight;
     float[,] minMaxHeightInPixels;
     List<float> spineMidHeightInPixels;   //The spineMid position of each player in pixels
-    List<float> spineMidPos;
+    List<float> spineMidPos, spineMidPosThreshold;
     List<Texture> playersMidHighLowMat;
     int countBodies;        //Counts how many bodies are active at the same frame.
     bool foundId, moveHands, ableToHigh5Left, ableToHigh5Right;
     public static bool didHigh5;
     public static bool playTones;
+    public static bool clipEnded;
     float countDown;
 
     //public Texture texture;
@@ -39,8 +40,8 @@ public class Manager : MonoBehaviour
     public List<Texture> MidLowHighMats; ////2 cells per player.
     public List<Kinect.JointType> prefJoints;       //Assign in the inspector the pref joints you want to detect. ALWAYS first the main body.
     public int trailAmount;
-    public int textureWidth, textureHeight, midTextureWidthP1, midTextureHeightP1, midTextureWidthP2, midTextureHeightP2;
-    public float timeToStopInputs;
+    public int textureWidth, textureHeight, midTextureWidthP1, midTextureHeightP1, midTextureWidthP2, midTextureHeightP2, high5Distance;
+    public float timeToStopInputs, bodyDistanceThreshold;
 
     public GameObject player1, player2;
     UserInput p1UInput, p2UInput;
@@ -68,6 +69,7 @@ public class Manager : MonoBehaviour
         player2TrailHandRight = new List<Kinect.ColorSpacePoint>();
         spineMidHeightInPixels = new List<float>();
         spineMidPos = new List<float>();
+        spineMidPosThreshold = new List<float>();
         playersMidHighLowMat = new List<Texture>();
         players = new bool[6];
         countBodies = 0;
@@ -78,6 +80,7 @@ public class Manager : MonoBehaviour
         ableToHigh5Right = true;
         didHigh5 = false;
         playTones = false;
+        clipEnded = false;
         countDown = 0;
 
         p1UInput = player1.GetComponent<UserInput>();
@@ -127,6 +130,7 @@ public class Manager : MonoBehaviour
                                 playersId.Add(body.TrackingId);
                                 spineMidHeightInPixels.Add(0);
                                 spineMidPos.Add(0);
+                                spineMidPosThreshold.Add(0);
                                 bodyJoints.Add(null);
                                 bodyJointsWorld.Add(null);
                                 playersJointsHeight.Add(null);
@@ -148,6 +152,7 @@ public class Manager : MonoBehaviour
                                 playersId.Add(body.TrackingId);
                                 spineMidHeightInPixels.Add(0);
                                 spineMidPos.Add(0);
+                                spineMidPosThreshold.Add(0);
                                 bodyJoints.Add(null);
                                 bodyJointsWorld.Add(null);
                                 playersJointsHeight.Add(null);
@@ -191,7 +196,8 @@ public class Manager : MonoBehaviour
                                                     spineMidHeightInPixels[j] = colorPoint.Y;
                                                     if (initializeMidPos[j] == false)
                                                     {
-                                                        spineMidPos[j] = Mathf.Floor(body.Joints[jt].Position.Z);
+                                                        spineMidPos[j] = Mathf.Floor(body.Joints[jt].Position.Z); //spineMidPos is used for the zone control with the integer
+                                                        spineMidPosThreshold[j] = body.Joints[jt].Position.Z;
                                                         initializeMidPos[j] = true;
                                                     }
                                                     else
@@ -200,7 +206,6 @@ public class Manager : MonoBehaviour
                                                         {
                                                             //print("body changed zone");
                                                             //StopAllCoroutines();
-                                                            zoneChanged[j] = true;
                                                             for (int l = 1; l < prefJoints.Count; l++)
                                                             {
                                                                 playersMinMaxHeight[j][l, 0] = 1;
@@ -209,37 +214,48 @@ public class Manager : MonoBehaviour
                                                                 playersMinMaxHeightInPixels[j][l, 1] = 1080;
                                                             }
 
-                                                            if (Mathf.Floor(body.Joints[jt].Position.Z) > spineMidPos[j])
+
+                                                            spineMidPos[j] = Mathf.Floor(body.Joints[jt].Position.Z);
+                                                        }
+
+                                                        if (body.Joints[jt].Position.Z > spineMidPosThreshold[j] + bodyDistanceThreshold || body.Joints[jt].Position.Z < spineMidPosThreshold[j] - bodyDistanceThreshold)
+                                                        {
+                                                            zoneChanged[j] = true;
+                                                            if (body.Joints[jt].Position.Z > spineMidPosThreshold[j] + bodyDistanceThreshold)
                                                             {
                                                                 //further away from kinect (Low)
                                                                 if (j == 0)
                                                                 {
                                                                     p1UInput.userInput = "low";
                                                                     playersMidHighLowMat[j] = MidLowHighMats[0];
+                                                                    clipEnded = false;
                                                                 }
                                                                 else if (j == 1)
                                                                 {
                                                                     p2UInput.userInput = "low";
                                                                     playersMidHighLowMat[j] = MidLowHighMats[2];
+                                                                    clipEnded = false;
                                                                 }
                                                             }
-                                                            else if (Mathf.Floor(body.Joints[jt].Position.Z) < spineMidPos[j])
+                                                            else if (body.Joints[jt].Position.Z < spineMidPosThreshold[j] - bodyDistanceThreshold)
                                                             {
                                                                 //closer to kinect (High)
                                                                 if (j == 0)
                                                                 {
                                                                     p1UInput.userInput = "high";
                                                                     playersMidHighLowMat[j] = MidLowHighMats[1];
+                                                                    clipEnded = false;
                                                                 }
                                                                 else if (j == 1)
                                                                 {
                                                                     p2UInput.userInput = "high";
                                                                     playersMidHighLowMat[j] = MidLowHighMats[3];
+                                                                    clipEnded = false;
                                                                 }
                                                             }
-
-                                                            spineMidPos[j] = Mathf.Floor(body.Joints[jt].Position.Z);
+                                                            spineMidPosThreshold[j] = body.Joints[jt].Position.Z;
                                                         }
+
                                                         //else
                                                         //{
                                                         //    //if (countDown >= timeToStopInputs)
@@ -396,6 +412,7 @@ public class Manager : MonoBehaviour
                     playersMinMaxHeightInPixels.RemoveAt(i);
                     spineMidHeightInPixels.RemoveAt(i);
                     spineMidPos.RemoveAt(i);
+                    spineMidPosThreshold.RemoveAt(i);
                     playersMidHighLowMat.RemoveAt(i);
                     playersId.RemoveAt(i);
                     initializeMidPos[i] = false;
@@ -443,39 +460,54 @@ public class Manager : MonoBehaviour
                                         }
                                         else if (zoneChanged[k] == true && k < 2)
                                         {
-                                            if (playersMidHighLowMat[k] != null)
+                                            if (clipEnded == true)
                                             {
                                                 if (k == 0)
                                                 {
-                                                    Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP1 / 2, bodyJoints[k][i, 1] - midTextureHeightP1 / 2, midTextureWidthP1, midTextureHeightP1), playersMidHighLowMat[k]);
+                                                    Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP1 / 2, bodyJoints[k][i, 1] - midTextureHeightP1 / 2, midTextureWidthP1, midTextureHeightP1), playersMat[k]);
                                                 }
                                                 else
                                                 {
-                                                    Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP2 / 2, bodyJoints[k][i, 1] - midTextureHeightP2 / 2, midTextureWidthP2, midTextureHeightP2), playersMidHighLowMat[k]);
+                                                    Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP2 / 2, bodyJoints[k][i, 1] - midTextureHeightP2 / 2, midTextureWidthP2, midTextureHeightP2), playersMat[k]);
                                                 }
+                                            }
+                                            else
+                                            {
 
-                                                //if (playersMidHighLowMat[k] == LowHighMats[0] || playersMidHighLowMat[k] == LowHighMats[2])
-                                                //{
-                                                //    if (k == 0)
-                                                //    {
-                                                //        p1UInput.userInput = "low";
-                                                //    }
-                                                //    else if (k == 1)
-                                                //    {
-                                                //        p2UInput.userInput = "low";
-                                                //    }
-                                                //}
-                                                //else if (playersMidHighLowMat[k] == LowHighMats[1] || playersMidHighLowMat[k] == LowHighMats[3])
-                                                //{
-                                                //    if (k == 0)
-                                                //    {
-                                                //        p1UInput.userInput = "high";
-                                                //    }
-                                                //    else if (k == 1)
-                                                //    {
-                                                //        p2UInput.userInput = "high";
-                                                //    }
-                                                //}
+                                                if (playersMidHighLowMat[k] != null)
+                                                {
+                                                    if (k == 0)
+                                                    {
+                                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP1 / 2, bodyJoints[k][i, 1] - midTextureHeightP1 / 2, midTextureWidthP1, midTextureHeightP1), playersMidHighLowMat[k]);
+                                                    }
+                                                    else
+                                                    {
+                                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP2 / 2, bodyJoints[k][i, 1] - midTextureHeightP2 / 2, midTextureWidthP2, midTextureHeightP2), playersMidHighLowMat[k]);
+                                                    }
+
+                                                    //if (playersMidHighLowMat[k] == LowHighMats[0] || playersMidHighLowMat[k] == LowHighMats[2])
+                                                    //{
+                                                    //    if (k == 0)
+                                                    //    {
+                                                    //        p1UInput.userInput = "low";
+                                                    //    }
+                                                    //    else if (k == 1)
+                                                    //    {
+                                                    //        p2UInput.userInput = "low";
+                                                    //    }
+                                                    //}
+                                                    //else if (playersMidHighLowMat[k] == LowHighMats[1] || playersMidHighLowMat[k] == LowHighMats[3])
+                                                    //{
+                                                    //    if (k == 0)
+                                                    //    {
+                                                    //        p1UInput.userInput = "high";
+                                                    //    }
+                                                    //    else if (k == 1)
+                                                    //    {
+                                                    //        p2UInput.userInput = "high";
+                                                    //    }
+                                                    //}
+                                                }
                                             }
                                             //else
                                             //{
@@ -734,7 +766,7 @@ public class Manager : MonoBehaviour
                                     var differenceY_LR = Mathf.Abs(bodyJointsWorld[0][j, 1] - bodyJointsWorld[1][j + 1, 1]);
                                     var differenceX_LL = Mathf.Abs(bodyJointsWorld[0][j, 0] - bodyJointsWorld[1][j, 0]);
                                     var differenceY_LL = Mathf.Abs(bodyJointsWorld[0][j, 1] - bodyJointsWorld[1][j, 1]);
-                                    if ((Mathf.Round(differenceX_LR * 5) == 0 && Mathf.Round(differenceY_LR * 5) == 0) || (Mathf.Round(differenceX_LL * 5) == 0 && Mathf.Round(differenceY_LL * 5) == 0)) //Seems that the hands need to be very close. Change 5 to 7.5 like (10 seems so far away)
+                                    if ((Mathf.Round(differenceX_LR * high5Distance) == 0 && Mathf.Round(differenceY_LR * high5Distance) == 0) || (Mathf.Round(differenceX_LL * high5Distance) == 0 && Mathf.Round(differenceY_LL * high5Distance) == 0)) //Seems that the hands need to be very close. Change 5 to 7.5 like (10 seems so far away)
                                     {
                                         if (ableToHigh5Left == true)
                                         {
@@ -743,7 +775,7 @@ public class Manager : MonoBehaviour
                                             ableToHigh5Left = false;
                                         }
                                     }
-                                    else if((Mathf.Round(differenceX_LR * 5) != 0 && Mathf.Round(differenceY_LR * 5) != 0) && (Mathf.Round(differenceX_LL * 5) != 0 && Mathf.Round(differenceY_LL * 5) != 0))
+                                    else if ((Mathf.Round(differenceX_LR * high5Distance) != 0 && Mathf.Round(differenceY_LR * high5Distance) != 0) && (Mathf.Round(differenceX_LL * high5Distance) != 0 && Mathf.Round(differenceY_LL * high5Distance) != 0))
                                     {
                                         ableToHigh5Left = true;
                                     }
@@ -758,7 +790,7 @@ public class Manager : MonoBehaviour
                                     var differenceY_RL = Mathf.Abs(bodyJointsWorld[0][j, 1] - bodyJointsWorld[1][j - 1, 1]);
                                     var differenceX_RR = Mathf.Abs(bodyJointsWorld[0][j, 0] - bodyJointsWorld[1][j, 0]);
                                     var differenceY_RR = Mathf.Abs(bodyJointsWorld[0][j, 1] - bodyJointsWorld[1][j, 1]);
-                                    if ((Mathf.Round(differenceX_RL * 5) == 0 && Mathf.Round(differenceY_RL * 5) == 0) || (Mathf.Round(differenceX_RR * 5) == 0 && Mathf.Round(differenceY_RR * 5) == 0))
+                                    if ((Mathf.Round(differenceX_RL * high5Distance) == 0 && Mathf.Round(differenceY_RL * high5Distance) == 0) || (Mathf.Round(differenceX_RR * high5Distance) == 0 && Mathf.Round(differenceY_RR * high5Distance) == 0))
                                     {
                                         if (ableToHigh5Right == true)
                                         {
@@ -767,7 +799,7 @@ public class Manager : MonoBehaviour
                                             ableToHigh5Right = false;
                                         }
                                     }
-                                    else if((Mathf.Round(differenceX_RL * 5) != 0 && Mathf.Round(differenceY_RL * 5) != 0) && (Mathf.Round(differenceX_RR * 5) != 0 && Mathf.Round(differenceY_RR * 5) != 0))
+                                    else if ((Mathf.Round(differenceX_RL * high5Distance) != 0 && Mathf.Round(differenceY_RL * high5Distance) != 0) && (Mathf.Round(differenceX_RR * high5Distance) != 0 && Mathf.Round(differenceY_RR * high5Distance) != 0))
                                     {
                                         ableToHigh5Right = true;
                                     }

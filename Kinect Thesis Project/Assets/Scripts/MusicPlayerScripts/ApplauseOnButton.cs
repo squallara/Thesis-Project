@@ -65,6 +65,7 @@ public class ApplauseOnButton : MonoBehaviour {
 
         if (visualTimer <= 0)
         {
+            Manager.didHigh5 = false;       //I don't know if it is the correct placement here. It plays two applauses before it stops.
             if (isFireworks)
             {
                 StopParticleSystem();
