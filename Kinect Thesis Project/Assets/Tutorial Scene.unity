@@ -1929,29 +1929,8 @@ MonoBehaviour:
   audioPlayer2: {fileID: 941712888}
   mainTextObject: {fileID: 454641944}
   tutorialTime: 0
-  tutorialStartTime: 2
-  liftHandsTime: 2
-  showHighLowTime: 2
-  firstP1: 2
-  p1ReachHigh: 2
-  p1GoodJobHigh: 2
-  p1ReachLow: 2
-  p1GoodJobLow: 2
-  p1DepthInfo: 2
-  p1MoveForward: 2
-  p1GoodJobForward: 2
-  p1MoveBack: 2
-  p1GoodJobBack: 2
-  thenP2: 2
-  p2ReachHigh: 2
-  p2GoodJobHigh: 2
-  p2ReachLow: 2
-  p2GoodJobLow: 2
-  p2DepthInfo: 2
-  p2MoveForward: 2
-  p2GoodJobForward: 2
-  p2MoveBack: 2
-  p2GoodJobBack: 2
+  standardDisplayTime: 2
+  feedbackDisplayTime: 2
 --- !u!114 &1024803440
 MonoBehaviour:
   m_ObjectHideFlags: 0
