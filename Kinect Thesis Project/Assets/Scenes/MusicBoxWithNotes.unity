@@ -1627,6 +1627,7 @@ Prefab:
     - {fileID: 114847580689790630, guid: 522cd53fe3231754fb0f871eb91cf2d7, type: 2}
     - {fileID: 114174793476659764, guid: 522cd53fe3231754fb0f871eb91cf2d7, type: 2}
     - {fileID: 114275696300824240, guid: 522cd53fe3231754fb0f871eb91cf2d7, type: 2}
+    - {fileID: 114396514355544414, guid: 522cd53fe3231754fb0f871eb91cf2d7, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 522cd53fe3231754fb0f871eb91cf2d7, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1604948081 stripped
@@ -1713,7 +1714,7 @@ GameObject:
   - component: {fileID: 1628347170}
   - component: {fileID: 1628347172}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: MusicBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1887,7 +1888,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1658168970
+  randomSeed: -1513727851
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4958,8 +4959,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e726b069a2cd8468640e7e68132ba3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useMidOutput: 0
+  thisMoment: 0
   playersId: 
+  didHigh5: 0
+  playTones: 0
+  clipEnded: 0
   playersMat:
   - {fileID: 2800000, guid: ed670cc8b4cbabc43bae7ba78ac67231, type: 3}
   - {fileID: 2800000, guid: c02584b19d3bcfe4bb0d400b375f87b1, type: 3}
@@ -4990,7 +4994,7 @@ MonoBehaviour:
   midTextureHeightP2: 150
   high5Distance: 5
   timeToStopInputs: 10
-  bodyDistanceThreshold: 0.25
+  bodyDistanceThreshold: 0.2
   player1: {fileID: 324958586}
   player2: {fileID: 902193084}
 --- !u!4 &2051844645

@@ -27,7 +27,7 @@ public class TonesFeedback : MonoBehaviour {
         }
         timeCounter += Time.deltaTime;
 
-        if(Manager.playTones == true)
+        if(Manager.instance.playTones == true)
         {
             GetComponent<ParticleSystem>().enableEmission = true;
         }
