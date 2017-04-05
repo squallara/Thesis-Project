@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class UserInput : MonoBehaviour {
 
-    public string inputHigh, inputMid, inputLow, depthFar, depthMid, depthClose;
+    //preset input strings. Input variables must match these strings for input
+    public string inputHigh, inputMid, inputLow, targetForwardInput, targetBackInput;
+
+    //input variables to set an input to
+    //public string handInput1, handInput2, forwardInput, backInput;
 
     [HideInInspector]
     public string userInput, userDepth, getInput, depthInput;
@@ -24,12 +28,7 @@ public class UserInput : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        depthInput = Input.inputString;
-
-        if(depthInput == depthFar || depthInput == depthMid || depthInput == depthClose)
-        {
-            userDepth = depthInput;
-        }
+       
 
     }
 }

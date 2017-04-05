@@ -107,17 +107,17 @@ public class SceneManagerV2 : MonoBehaviour {
                 if (spineMidPlayer1.transform.position.z <= (minMaxDistance[0, 0] + zoneDistribution[0])) //Put a restriction so it doesn't start from close. chacke the assigned boolean
                 {
                     //print("zone: Close");
-                    userInput1.depthClose = "Close";
+                    userInput1.userInput = userInput1.targetForwardInput;
                 }
                 else if (spineMidPlayer1.transform.position.z > (minMaxDistance[0, 0] + zoneDistribution[0]) && spineMidPlayer1.transform.position.z <= ((minMaxDistance[0, 0] + zoneDistribution[0]) + zoneDistribution[0]))
                 {
                     //print("zone: Neutral");
-                    userInput1.depthClose = "Mid";
+                    
                 }
                 else if (spineMidPlayer1.transform.position.z > ((minMaxDistance[0, 0] + zoneDistribution[0]) + zoneDistribution[0]))
                 {
                     //print("zone: Far");
-                    userInput1.depthClose = "Far";
+                    userInput1.userInput = userInput1.targetBackInput;
                 }
             }
         }
@@ -133,17 +133,17 @@ public class SceneManagerV2 : MonoBehaviour {
                 if (spineMidPlayer2.transform.position.z <= (minMaxDistance[1, 0] + zoneDistribution[1]))
                 {
                     //print("zone: Close");
-                    userInput2.depthClose = "Close";
+                    userInput2.userInput = userInput2.targetForwardInput;
                 }
                 else if (spineMidPlayer2.transform.position.z > (minMaxDistance[1, 0] + zoneDistribution[1]) && spineMidPlayer2.transform.position.z <= ((minMaxDistance[1, 0] + zoneDistribution[1]) + zoneDistribution[1]))
                 {
                     //print("zone: Neutral");
-                    userInput2.depthClose = "Mid";
+                    
                 }
                 else if (spineMidPlayer2.transform.position.z > ((minMaxDistance[1, 0] + zoneDistribution[1]) + zoneDistribution[1]))
                 {
                     //print("zone: Far");
-                    userInput2.depthClose = "Far";
+                    userInput2.userInput = userInput2.targetBackInput;
                 }
             }
         }

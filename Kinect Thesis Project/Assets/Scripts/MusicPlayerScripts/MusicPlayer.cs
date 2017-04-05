@@ -259,16 +259,6 @@ public class MusicPlayer : MonoBehaviour
 
     }
 
-    public void PlayerDepth(UserInput P1Input, UserInput P2Input)
-    {
-
-        if (P1Input.userDepth == P1Input.depthFar)
-        {
-            //Player1.audioSource.outputAudioMixerGroup.audioMixer.TransitionToSnapshots(snapshots[0],25,1);
-        }
-
-
-    }
 
     void StatusError()
     {
