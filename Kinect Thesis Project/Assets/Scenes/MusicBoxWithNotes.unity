@@ -4959,7 +4959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e726b069a2cd8468640e7e68132ba3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisMoment: 0
+  thisMoment: 1
   playersId: 
   didHigh5: 0
   playTones: 0
