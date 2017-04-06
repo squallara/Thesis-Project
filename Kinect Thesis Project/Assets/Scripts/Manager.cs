@@ -222,13 +222,13 @@ public class Manager : MonoBehaviour
                                                                 //further away from kinect (Low)
                                                                 if (j == 0)
                                                                 {
-                                                                    p1UInput.userInput = "low";
+                                                                    p1UInput.userInput = p1UInput.targetBackInput;
                                                                     playersMidHighLowMat[j] = MidLowHighMats[0];
                                                                     clipEnded = false;
                                                                 }
                                                                 else if (j == 1)
                                                                 {
-                                                                    p2UInput.userInput = "low";
+                                                                    p2UInput.userInput = p2UInput.targetBackInput;
                                                                     playersMidHighLowMat[j] = MidLowHighMats[2];
                                                                     clipEnded = false;
                                                                 }
@@ -238,13 +238,13 @@ public class Manager : MonoBehaviour
                                                                 //closer to kinect (High)
                                                                 if (j == 0)
                                                                 {
-                                                                    p1UInput.userInput = "high";
+                                                                    p1UInput.userInput = p1UInput.targetForwardInput;
                                                                     playersMidHighLowMat[j] = MidLowHighMats[1];
                                                                     clipEnded = false;
                                                                 }
                                                                 else if (j == 1)
                                                                 {
-                                                                    p2UInput.userInput = "high";
+                                                                    p2UInput.userInput = p2UInput.targetForwardInput;
                                                                     playersMidHighLowMat[j] = MidLowHighMats[3];
                                                                     clipEnded = false;
                                                                 }

@@ -1929,8 +1929,8 @@ MonoBehaviour:
   audioPlayer2: {fileID: 941712888}
   mainTextObject: {fileID: 454641944}
   tutorialTime: 0
-  standardDisplayTime: 2
-  feedbackDisplayTime: 2
+  standardDisplayTime: 5
+  feedbackDisplayTime: 3
 --- !u!114 &1024803440
 MonoBehaviour:
   m_ObjectHideFlags: 0
