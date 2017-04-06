@@ -27,6 +27,8 @@ public class TutorialScript : MonoBehaviour
     bool p2HandHigh, p2HandLow, p2Forward, p2Back;
     bool socialInter1;
 
+    public static bool highSession, lowSession;
+
     string userInput1, userInput2;
 
     public float standardDisplayTime, feedbackDisplayTime;
@@ -43,6 +45,8 @@ public class TutorialScript : MonoBehaviour
         p2Forward = false;
         p2Back = false;
         socialInter1 = false;
+        highSession = false;
+        lowSession = false;
 
         waitingForInput = false;
 
@@ -144,6 +148,7 @@ public class TutorialScript : MonoBehaviour
         activateTextOnPos(4);
         yield return new WaitForSeconds(standardDisplayTime);
 
+        highSession = true;
         UserInputNull();
         waitingForInput = true;
         activateTextOnPos(5);
@@ -156,9 +161,11 @@ public class TutorialScript : MonoBehaviour
             yield return null;
         }
         yield return new WaitUntil(() => p1HandHigh == true);
+        highSession = false;
 
         activateTextOnPos(6);
         yield return new WaitForSeconds(feedbackDisplayTime);
+        lowSession = true;
 
         UserInputNull();
         waitingForInput = true;
@@ -170,6 +177,7 @@ public class TutorialScript : MonoBehaviour
             yield return null;
         }
         yield return new WaitUntil(() => p1HandLow == true);
+        lowSession = false;
 
         activateTextOnPos(8);
         yield return new WaitForSeconds(feedbackDisplayTime);
