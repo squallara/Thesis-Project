@@ -159,7 +159,7 @@ public class PlayerManager : MonoBehaviour
                         musicManager.MuteOthersMelodic(setPos, playerInput);
                         musicManager.melodyPlayable = false;
                         playerInput.userInput = null;
-                        
+                        Manager.instance.clipEnded = true;
                     }
                 }
                 else if (!player2rythm)
@@ -196,6 +196,7 @@ public class PlayerManager : MonoBehaviour
                         musicManager.MuteOthersRythm(setPos, playerInput);
                         musicManager.rythmPlayable = false;
                         playerInput.userInput = null;
+                        Manager.instance.clipEnded = true;
                     }
                 }
             }
@@ -244,6 +245,7 @@ public class PlayerManager : MonoBehaviour
                         musicManager.MuteOthersRythm(setPos, playerInput);
                         musicManager.rythmPlayable = false;
                         playerInput.userInput = null;
+                        Manager.instance.clipEnded = true;
                     }
                 }
                 else if (!player2rythm)
@@ -279,6 +281,7 @@ public class PlayerManager : MonoBehaviour
                         musicManager.MuteOthersMelodic(setPos, playerInput);
                         musicManager.melodyPlayable = false;
                         playerInput.userInput = null;
+                        Manager.instance.clipEnded = true;
                     }
                 }
             }

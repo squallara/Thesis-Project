@@ -42,7 +42,7 @@ public class ApplauseOnButton : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetButtonDown(inputKey) && !applauseSource.isPlaying)
+        if (/*Input.GetButtonDown(inputKey)*/ Manager.instance.didHigh5 == true && !applauseSource.isPlaying)
         {
             applauseSource.PlayOneShot(feedback);
             
@@ -65,6 +65,7 @@ public class ApplauseOnButton : MonoBehaviour {
 
         if (visualTimer <= 0)
         {
+            Manager.instance.didHigh5 = false;       //I don't know if it is the correct placement here. It plays two applauses before it stops.
             if (isFireworks)
             {
                 StopParticleSystem();
