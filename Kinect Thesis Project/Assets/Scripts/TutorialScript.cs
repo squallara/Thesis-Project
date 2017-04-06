@@ -150,6 +150,7 @@ public class TutorialScript : MonoBehaviour
 
         while(!p1HandHigh)
         {
+            UserInputNull();
             userInput1 = PlayerIO(player1Input, userInput1);
             textWaitForInput(player1Input, userInput1, player1Input.inputHigh, ref p1HandHigh);
             yield return null;
