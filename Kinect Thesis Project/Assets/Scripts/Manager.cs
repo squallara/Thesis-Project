@@ -7,8 +7,8 @@ public class Manager : MonoBehaviour
 {
     public static Manager instance;
 
-    public enum stages { tutorial, gameplay };
-    public stages thisMoment;
+    //public enum stages { tutorial, gameplay };
+    //public stages thisMoment;
     Kinect.KinectSensor sensor;
     Kinect.MultiSourceFrameReader reader;
     IList<Kinect.Body> bodies;
@@ -16,7 +16,7 @@ public class Manager : MonoBehaviour
     float[,] jointPosWorld; //Store the world position of every joint in a body. 3 columns for X, Y, Z
     List<float[,]> bodyJoints;
     List<float[,]> bodyJointsWorld; //Store the world position of every joint per player
-    List<float[]> playersJointsHeight; // Heights of the joints per player
+    public List<float[]> playersJointsHeight; // Heights of the joints per player
     List<float[,]> playersMinMaxHeight; // Min-Max height of joints per player
     //List<Kinect.ColorSpacePoint> colorPoints;   //The pixels position for every pref bodyJoint;
     List<Kinect.ColorSpacePoint> player1TrailHandLeft, player1TrailHandRight, player2TrailHandLeft, player2TrailHandRight; //The trails of 2 players and their two hands. FIXED THING.
@@ -32,7 +32,7 @@ public class Manager : MonoBehaviour
     int countBodies;        //Counts how many bodies are active at the same frame.
     bool foundId, moveHands, ableToHigh5Left, ableToHigh5Right;
     [HideInInspector]
-    public bool didHigh5, playTones, clipEnded, displayZoneDots, changeInstCol, tutorialReadyToH5;
+    public bool didHigh5, playTones, clipEnded, displayZoneDots, changeInstCol, tutorialReadyToH5, tutorialRaisedHandsDown;
     [HideInInspector]
     public int counterForDots;
     float countDown;
@@ -93,6 +93,7 @@ public class Manager : MonoBehaviour
         displayZoneDots = false;
         changeInstCol = false;
         tutorialReadyToH5 = false;
+        tutorialRaisedHandsDown = false;
         countDown = 0;
         counterForDots = 0;
 
@@ -394,24 +395,16 @@ public class Manager : MonoBehaviour
             }
         }
 
-        if(thisMoment == stages.gameplay)
-        {
-            tutorialReadyToH5 = true;
-        }
+        //if(thisMoment == stages.gameplay)
+        //{
+        //    tutorialReadyToH5 = true;
+        //}
     }
 
 
     void OnGUI()
     {
-        switch (thisMoment)
-        {
-            case stages.tutorial:
-                TutorialSession();
-                break;
-            case stages.gameplay:
-                GameplaySession();
-                break;
-        }
+        GameplaySession();
 
     }
 
@@ -577,7 +570,25 @@ public class Manager : MonoBehaviour
 
                                         if (playersJointsHeight[k][p] > playersJointsHeight[k][0] && k < 2)          //K will be restricted to 2 for only two players.
                                         {
-
+                                            if (TutorialManager.instance.textCounter == 3)
+                                            {
+                                                if (k == 0)
+                                                {
+                                                    if (playersJointsHeight[k][1] > playersJointsHeight[k][0] || playersJointsHeight[k][2] > playersJointsHeight[k][0])
+                                                    {
+                                                        TutorialManager.instance.raisedHands[0] = true;
+                                                        TutorialManager.instance.raisedHands[1] = true;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (playersJointsHeight[k][1] > playersJointsHeight[k][0] || playersJointsHeight[k][2] > playersJointsHeight[k][0])
+                                                    {
+                                                        TutorialManager.instance.raisedHands[2] = true;
+                                                        TutorialManager.instance.raisedHands[3] = true;
+                                                    }
+                                                }
+                                            }
                                             /////////////////////FIXED CASE ONLY FOR TWO PLAYERS AND ONLY FOR TWO HANDS
                                             if (playersId.Count > 1)
                                             {
@@ -724,6 +735,18 @@ public class Manager : MonoBehaviour
                                             else if (k == 1)
                                             {
                                                 p2UInput.userInput = null;
+                                            }
+
+                                            if (playersId.Count > 1)
+                                            {
+                                                if (TutorialManager.instance.currentStage == TutorialManager.tutorialStages.bothRaiseHands)
+                                                {
+                                                    if (playersJointsHeight[0][1] <= playersJointsHeight[0][0] && playersJointsHeight[0][2] <= playersJointsHeight[0][0]
+                                                        && playersJointsHeight[1][1] <= playersJointsHeight[1][0] && playersJointsHeight[1][2] <= playersJointsHeight[1][0]) //Fixed code for 2 players, needs to be more dynamic
+                                                    {
+                                                        tutorialRaisedHandsDown = true;
+                                                    }
+                                                }
                                             }
 
                                             moveHands = false;
