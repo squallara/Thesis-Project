@@ -586,6 +586,7 @@ MonoBehaviour:
   standardDisplayTime: 1
   maxRaiseHandTime: 10
   setMaxPlayers: 2
+  textCounter: 0
 --- !u!114 &1024803440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1121,7 +1122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e726b069a2cd8468640e7e68132ba3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisMoment: 1
   playersId: 
   didHigh5: 0
   playTones: 0
@@ -1129,6 +1129,7 @@ MonoBehaviour:
   displayZoneDots: 0
   changeInstCol: 0
   tutorialReadyToH5: 0
+  tutorialRaisedHandsDown: 0
   counterForDots: 0
   playersMat:
   - {fileID: 2800000, guid: ed670cc8b4cbabc43bae7ba78ac67231, type: 3}
