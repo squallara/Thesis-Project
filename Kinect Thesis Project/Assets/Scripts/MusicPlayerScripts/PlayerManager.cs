@@ -79,6 +79,8 @@ public class PlayerManager : MonoBehaviour
 
     }
 
+
+
     public void PlayerIO(ref UserInput playerInput, ref int setPos)
     {
 
