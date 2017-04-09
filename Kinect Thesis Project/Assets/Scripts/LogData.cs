@@ -23,6 +23,7 @@ public class LogData : MonoBehaviour {
             counter++;
         }
 
-        File.WriteAllText("C:/Users/User/Desktop/DataCollection/SaveData" + counter + ".txt", Manager.instance.playersId[0].ToString());
+        //////////////////////////////EXAMPLE/////////////////////////////////
+        File.AppendAllText("C:/Users/User/Desktop/DataCollection/SaveData" + counter + ".txt", "This is player 1: " + "\r\n" + Manager.instance.playersId[0].ToString() + "\r\n" + "played: " + Manager.instance.P1Highes + " highes");
     }
 }

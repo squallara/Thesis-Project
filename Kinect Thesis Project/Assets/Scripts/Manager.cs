@@ -30,6 +30,8 @@ public class Manager : MonoBehaviour
     bool foundId, moveHands, ableToHigh5Left, ableToHigh5Right;
     [HideInInspector]
     public bool didHigh5, playTones, clipEndedP1, clipEndedP2, tutorialRaisedHandsDown;
+    [HideInInspector]
+    public int P1Highes;
 
     //public Texture texture;
     public List<Texture> playersMat;
@@ -85,7 +87,7 @@ public class Manager : MonoBehaviour
         p1UInput = player1.GetComponent<UserInput>();
         p2UInput = player2.GetComponent<UserInput>();
 
-
+        P1Highes = 0;
 
     }
 
@@ -535,6 +537,7 @@ public class Manager : MonoBehaviour
                                                 if (k == 0)
                                                 {
                                                     p1UInput.userInput = "high";
+                                                    P1Highes++;
 
                                                 }
                                                 else if (k == 1)
