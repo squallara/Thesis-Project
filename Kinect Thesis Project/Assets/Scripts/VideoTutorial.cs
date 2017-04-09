@@ -86,6 +86,10 @@ public class VideoTutorial : MonoBehaviour
         }
         else
         {
+            for(int i=0; i< KinectForTutorial.instance.playersId.Count; i++)
+            {
+                TutorialPlayers.instance.playersPlayedTut.Add(KinectForTutorial.instance.playersId[i]);
+            }
             SceneManager.LoadScene(1);  //Fixed to have only two scenes into the game.
         }
     }

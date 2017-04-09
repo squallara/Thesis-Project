@@ -4941,6 +4941,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2051844645}
   - component: {fileID: 2051844644}
+  - component: {fileID: 2051844646}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -4959,11 +4960,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e726b069a2cd8468640e7e68132ba3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisMoment: 1
   playersId: 
   didHigh5: 0
   playTones: 0
-  clipEnded: 0
+  clipEndedP1: 0
+  clipEndedP2: 0
+  tutorialRaisedHandsDown: 0
   playersMat:
   - {fileID: 2800000, guid: ed670cc8b4cbabc43bae7ba78ac67231, type: 3}
   - {fileID: 2800000, guid: c02584b19d3bcfe4bb0d400b375f87b1, type: 3}
@@ -4985,7 +4987,6 @@ MonoBehaviour:
   - {fileID: 2800000, guid: be62e1401529b8d448e779cfe01b583a, type: 3}
   - {fileID: 2800000, guid: 7d436bc9bc6a58e439401848647e8e62, type: 3}
   prefJoints: 01000000070000000b000000
-  trailAmount: 10
   textureWidth: 50
   textureHeight: 50
   midTextureWidthP1: 200
@@ -4993,8 +4994,8 @@ MonoBehaviour:
   midTextureWidthP2: 200
   midTextureHeightP2: 150
   high5Distance: 5
-  timeToStopInputs: 10
   bodyDistanceThreshold: 0.2
+  waitAtTheEnd: 10
   player1: {fileID: 324958586}
   player2: {fileID: 902193084}
 --- !u!4 &2051844645
@@ -5010,6 +5011,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2051844646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2051844643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d3ae291a9a340045a40476f4ff115be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2129519222 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114961946022812850, guid: 4187cb9ace099004aa2896c95f27c6d2,

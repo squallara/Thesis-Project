@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Kinect = Windows.Kinect;
+using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class Manager : MonoBehaviour
     public List<Texture> MidLowHighMats; ////2 cells per player.
     public List<Kinect.JointType> prefJoints;       //Assign in the inspector the pref joints you want to detect. ALWAYS first the main body.
     public int textureWidth, textureHeight, midTextureWidthP1, midTextureHeightP1, midTextureWidthP2, midTextureHeightP2, high5Distance;
-    public float bodyDistanceThreshold;
+    public float bodyDistanceThreshold, waitAtTheEnd;
 
     public GameObject player1, player2;
     UserInput p1UInput, p2UInput;
@@ -318,7 +319,7 @@ public class Manager : MonoBehaviour
             }
         }
 
-        if(playersId.Count < 2)
+        if (playersId.Count < 2)
         {
             playTones = false;
         }
@@ -600,6 +601,85 @@ public class Manager : MonoBehaviour
     }
 
 
+    public void CheckPlayersAfterGame()
+    {
+        if (playersId.Count > TutorialPlayers.instance.playersPlayedTut.Count) //players finished the game are greater to the ones that played the tutorial, so play the tutorial again.
+        {
+            SceneManager.LoadScene(0); /////////Fixed case where tutorial scene is always scene 0.
+        }
+        else if (playersId.Count == TutorialPlayers.instance.playersPlayedTut.Count) //players finished the game are equal to the ones that played the tutorial so we need to check if they are the same or not.
+        {
+            bool[] foundPlayer = new bool[TutorialPlayers.instance.playersPlayedTut.Count];
+            for (int i = 0; i < TutorialPlayers.instance.playersPlayedTut.Count; i++)
+            {
+                for (int j = 0; j < Manager.instance.playersId.Count; j++)
+                {
+                    if (playersId[j] == TutorialPlayers.instance.playersPlayedTut[i])
+                    {
+                        foundPlayer[i] = true;
+                    }
+                }
+            }
+
+            var count = 0;
+            for (int i = 0; i < foundPlayer.Length; i++)
+            {
+                if (foundPlayer[i] == true)
+                {
+                    count++;
+                }
+                else //Means that at least one player is not the same.
+                {
+                    SceneManager.LoadScene(0); /////////Fixed case where tutorial scene is always scene 0.
+                }
+            }
+
+            if (count == foundPlayer.Length) //Means that all the players are the same
+            {
+                SceneManager.LoadScene(1); /////////Fixed case where we have only one gameplay scene at number 1.
+                                           //I might need the DonDestroyOnLoad again for the videoHolder.
+            }
+        }
+        else //players finished the game are less than the ones that played the tutorial so we have to check if they are the ones that actually played the tutorial or not
+        {
+            if (playersId.Count == 0) //Means none is still playing so return to the tutorial screen.
+            {
+                SceneManager.LoadScene(0); /////////Fixed case where tutorial scene is always scene 0.
+            }
+            else
+            {
+                bool[] foundPlayer = new bool[playersId.Count];
+                for (int i = 0; i < playersId.Count; i++)
+                {
+                    for (int j = 0; j < TutorialPlayers.instance.playersPlayedTut.Count; j++)
+                    {
+                        if (TutorialPlayers.instance.playersPlayedTut[j] == playersId[i])
+                        {
+                            foundPlayer[i] = true;
+                        }
+                    }
+                }
+
+                var count = 0;
+                for (int i = 0; i < foundPlayer.Length; i++)
+                {
+                    if (foundPlayer[i] == true)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count == foundPlayer.Length) //Players that finished game, have already pass the tutorial so load game scene again
+                {
+                    SceneManager.LoadScene(1); /////////Fixed case where we have only one gameplay scene at number 1.
+                }
+                else //Some of the players finished the game haven't seen yet the tutorial so load tutorial scene
+                {
+                    SceneManager.LoadScene(0); /////////Fixed case where tutorial scene is always scene 0.
+                }
+            }
+        }
+    }
 
 }
 
