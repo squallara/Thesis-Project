@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class VideoTutorial : MonoBehaviour
 {
@@ -26,7 +27,6 @@ public class VideoTutorial : MonoBehaviour
         readyToPlay = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(KinectForTutorial.instance.playersId.Count > 0)
@@ -52,35 +52,41 @@ public class VideoTutorial : MonoBehaviour
             readyToPlay = true;
         }
 
-        //print(KinectForTutorial.instance.playersId.Count);
-        if (counter < videoMats.Count && !canvas.activeInHierarchy)
+        if (counter < videoMats.Count)
         {
-            if (readyToPlay)
+            if (!canvas.activeInHierarchy)
             {
-
-                rend.material = videoMats[counter];
-                video = (MovieTexture)rend.material.mainTexture;
-
-                video.Play();
-                videoStarted = true;
-                readyToPlay = false;
-            }
-
-            if (videoStarted)
-            {
-                if (!video.isPlaying)
+                if (readyToPlay)
                 {
-                    video.Stop();
-                    countReps++;
-                    if (countReps == repeatVideo)
+
+                    rend.material = videoMats[counter];
+                    video = (MovieTexture)rend.material.mainTexture;
+
+                    video.Play();
+                    videoStarted = true;
+                    readyToPlay = false;
+                }
+
+                if (videoStarted)
+                {
+                    if (!video.isPlaying)
                     {
-                        counter++;
-                        countReps = 0;
+                        video.Stop();
+                        countReps++;
+                        if (countReps == repeatVideo)
+                        {
+                            counter++;
+                            countReps = 0;
+                        }
+                        videoStarted = false;
+                        readyToPlay = true;
                     }
-                    videoStarted = false;
-                    readyToPlay = true;
                 }
             }
+        }
+        else
+        {
+            SceneManager.LoadScene(1);  //Fixed to have only two scenes into the game.
         }
     }
 }

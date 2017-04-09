@@ -425,7 +425,7 @@ GameObject:
   - component: {fileID: 1473787004}
   - component: {fileID: 1473787003}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: VideoHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -447,7 +447,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: a250fd7cf2443474bb866179db34b78a, type: 2}
   - {fileID: 2100000, guid: a95e9933518f5cf4a847e70b0a6e9a86, type: 2}
   canvas: {fileID: 1507497549}
-  repeatVideo: 3
+  repeatVideo: 1
   timeToStart: 4
 --- !u!23 &1473787004
 MeshRenderer:

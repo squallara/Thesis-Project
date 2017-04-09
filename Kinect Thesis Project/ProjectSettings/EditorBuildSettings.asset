@@ -6,4 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/KinectView/Alex.unity
+    path: Assets/Scenes/VideoTestingScene.unity
+  - enabled: 1
+    path: Assets/Scenes/MusicBoxWithNotes.unity
