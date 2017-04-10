@@ -28,7 +28,7 @@ public class VideoTutorial : MonoBehaviour
     }
 
     void Update()
-    {
+    {       
         if(KinectForTutorial.instance.playersId.Count > 0)
         {
             if (!tutorialStarted)

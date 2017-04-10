@@ -615,7 +615,7 @@ public class MusicManager : MonoBehaviour
     IEnumerator AfterEnding()
     {
         yield return new WaitForSeconds(Manager.instance.waitAtTheEnd);
-        //LogData.instance.WriteFile(); //Call function to save data after the final fireworks ended.
+        LogData.instance.WriteFile(); //Call function to save data after the final fireworks ended.
         SceneManager.LoadScene(2); //Fixed case where the break scene is always at position 2 in the build settings
     }
 }
