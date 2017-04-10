@@ -9,3 +9,5 @@ EditorBuildSettings:
     path: Assets/Scenes/VideoTestingScene.unity
   - enabled: 1
     path: Assets/Scenes/MusicBoxWithNotes.unity
+  - enabled: 1
+    path: Assets/Scenes/BreakTime.unity

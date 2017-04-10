@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Kinect = Windows.Kinect;
+using UnityEngine.SceneManagement;
 
 public class KinectForTutorial : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class KinectForTutorial : MonoBehaviour
 
     void Start()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -75,8 +76,8 @@ public class KinectForTutorial : MonoBehaviour
 
                             if (foundId == false)
                             {
-                                playersId.Add(body.TrackingId);                               
-                            }                                                         
+                                playersId.Add(body.TrackingId);
+                            }
                         }
                         else
                         {
@@ -106,11 +107,69 @@ public class KinectForTutorial : MonoBehaviour
             for (int i = 0; i < playersId.Count; i++)
             {
                 if (players[i] == false)
-                {                   
+                {
                     playersId.RemoveAt(i);
                 }
             }
         }
     }
+
+
+    public int CheckPlayersAfterGame()
+    {
+        if (playersId.Count == 0) //All the players left the game. Go to welcome screen/tutorial
+        {
+            return 0; /////////Fixed case where tutorial scene is always scene 0.
+        }
+        else //They are some still remaining to play
+        {
+            if (playersId.Count == 1)
+            {
+                bool foundPlayer = false;
+                for (int i = 0; i < TutorialPlayers.instance.playersPlayedTut.Count; i++)
+                {
+                    if (playersId[0] == TutorialPlayers.instance.playersPlayedTut[i])
+                    {
+                        foundPlayer = true;
+                    }
+                }
+
+                if (foundPlayer) //P1 had already passed the tutorial
+                {
+                    return 1;
+                }
+                else //New player1
+                {
+                    return 0;   //Remaining P1 hasn't passed the tutorial. Needs to see it.
+                }
+            }
+            else
+            {
+                bool[] foundPlayer = new bool[2];
+                for (int j = 0; j < 2; j++) ////////Runs only for P1 and P2
+                {
+                    for (int i = 0; i < TutorialPlayers.instance.playersPlayedTut.Count; i++) //if only one finished the tutorial then they will see it again
+                    {
+                        if (playersId[j] == TutorialPlayers.instance.playersPlayedTut[i])
+                        {
+                            foundPlayer[j] = true;
+                        }
+                    }
+
+                }
+
+                if (foundPlayer[0] == true && foundPlayer[1] == true)    //Fixed case for two players. both they have passed the tutorial.
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0; //One of the two hasn't seen the tutorial.
+                }
+            }
+        }
+
+    }
+
 }
 
