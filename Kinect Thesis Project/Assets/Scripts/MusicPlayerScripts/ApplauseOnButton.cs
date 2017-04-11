@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ApplauseOnButton : MonoBehaviour {
 
-    public AudioClip feedback;
+    public List<AudioClip> feedback = new List<AudioClip>();
+    int feedbackSelector, prevFeedback;
    // public Particle fireworks;
     public GameObject visualFeedback;
     public string inputKey;
@@ -20,6 +21,9 @@ public class ApplauseOnButton : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         applauseSource = gameObject.AddComponent<AudioSource>();
+
+        feedbackSelector = 0;
+        prevFeedback = 0;
 
         if (isFireworks)
         {
@@ -42,9 +46,11 @@ public class ApplauseOnButton : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        RandomizeFeedback();
+
         if (/*Input.GetButtonDown(inputKey)*/ Manager.instance.didHigh5 == true && !applauseSource.isPlaying)
         {
-            applauseSource.PlayOneShot(feedback);
+            applauseSource.PlayOneShot(feedback[feedbackSelector]);
             
             if (isFireworks)
             {
@@ -111,4 +117,21 @@ public class ApplauseOnButton : MonoBehaviour {
         }
     }
 
+    void RandomizeFeedback()
+    {
+
+        feedbackSelector = Random.Range(0, feedback.Count);
+
+        if(feedbackSelector == prevFeedback)
+        {
+            feedbackSelector = Random.Range(0, feedback.Count);
+            prevFeedback = feedbackSelector;
+        }
+        else
+        {
+            prevFeedback = feedbackSelector;
+        }
+
+
+    }
 }
