@@ -28,7 +28,7 @@ public class SavedData : MonoBehaviour {
     public void Save()
     {
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + "/playerProgress.dat"); /////////Not dynamic saves. it is only one save file. doesn't matter. we would need more if we would like to have different save files
+        FileStream file = File.Create(Application.persistentDataPath + "/GameplayProgress.dat"); /////////Not dynamic saves. it is only one save file. doesn't matter. we would need more if we would like to have different save files
 
         PlayerData data = new PlayerData();
         data.song = song;
@@ -43,7 +43,7 @@ public class SavedData : MonoBehaviour {
         BinaryFormatter bf = new BinaryFormatter();
         if (File.Exists(Application.persistentDataPath + "/playerProgress.dat"))
         {
-            FileStream file = File.Open(Application.persistentDataPath + "/playerProgress.dat", FileMode.Open);
+            FileStream file = File.Open(Application.persistentDataPath + "/GameplayProgress.dat", FileMode.Open);
             PlayerData data = (PlayerData)bf.Deserialize(file);
             file.Close();
 
