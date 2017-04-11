@@ -61,6 +61,7 @@ public class ApplauseOnButton : MonoBehaviour {
                 visualFeedback.SetActive(true);
             }
             visualCountdown = true;
+            Manager.instance.didHigh5 = false;       //I don't know if it is the correct placement here. It plays two applauses before it stops.
         }
 
         if (visualCountdown)
@@ -71,7 +72,7 @@ public class ApplauseOnButton : MonoBehaviour {
 
         if (visualTimer <= 0)
         {
-            Manager.instance.didHigh5 = false;       //I don't know if it is the correct placement here. It plays two applauses before it stops.
+           
             if (isFireworks)
             {
                 StopParticleSystem();
