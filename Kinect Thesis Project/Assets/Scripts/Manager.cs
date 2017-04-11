@@ -62,6 +62,7 @@ public class Manager : MonoBehaviour
         reader = sensor.OpenMultiSourceFrameReader(Kinect.FrameSourceTypes.Body | Kinect.FrameSourceTypes.Color | Kinect.FrameSourceTypes.Depth | Kinect.FrameSourceTypes.Infrared);
         reader.MultiSourceFrameArrived += Reader_MultiSourceFrameArrived;
         playersId = new List<ulong>();
+        playersId.Clear();
         bodyJoints = new List<float[,]>();
         bodyJointsWorld = new List<float[,]>();
         playersJointsHeight = new List<float[]>();
@@ -288,7 +289,7 @@ public class Manager : MonoBehaviour
     }
 
 
-    void Update()
+    void OnGUI()
     {
         countBodies = 0;
         for (int i = 0; i < 6; i++)
@@ -314,9 +315,9 @@ public class Manager : MonoBehaviour
                     spineMidPos.RemoveAt(i);
                     spineMidPosThreshold.RemoveAt(i);
                     playersMidHighLowMat.RemoveAt(i);
-                    playersId.RemoveAt(i);
                     initializeMidPos[i] = false;
                     zoneChanged[i] = false;
+                    playersId.RemoveAt(i);
                 }
             }
         }
@@ -325,13 +326,8 @@ public class Manager : MonoBehaviour
         {
             playTones = false;
         }
-    }
 
-
-    void OnGUI()
-    {
         GameplaySession();
-
     }
 
     void SortMinMax(float height, int player, int joint)

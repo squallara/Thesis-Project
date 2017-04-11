@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87529edd7ff2ab647a24cee8a85fa71c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playersId: 
+  playersIdTut: 
 --- !u!4 &530908799
 Transform:
   m_ObjectHideFlags: 0
@@ -487,7 +487,6 @@ MonoBehaviour:
   videoMats:
   - {fileID: 2100000, guid: b4022d5056f0b5a4cba9fc0c3bff5737, type: 2}
   - {fileID: 2100000, guid: a250fd7cf2443474bb866179db34b78a, type: 2}
-  - {fileID: 2100000, guid: a95e9933518f5cf4a847e70b0a6e9a86, type: 2}
   canvas: {fileID: 1507497549}
   repeatVideo: 1
   timeToStart: 4

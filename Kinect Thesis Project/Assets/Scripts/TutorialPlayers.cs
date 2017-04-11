@@ -7,7 +7,7 @@ public class TutorialPlayers : MonoBehaviour
 
     public static TutorialPlayers instance;
 
-    public List<ulong> playersPlayedTut = new List<ulong>();
+    public List<ulong> playersPlayedTut;
     public GameObject tutObj;
 
     void Start()
@@ -16,7 +16,9 @@ public class TutorialPlayers : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(tutObj);
+            playersPlayedTut = new List<ulong>();
+            playersPlayedTut.Clear();
+            DontDestroyOnLoad(tutObj);           
         }
         else
         {

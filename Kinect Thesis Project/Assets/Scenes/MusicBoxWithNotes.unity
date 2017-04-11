@@ -184,97 +184,11 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 146638042}
---- !u!1 &259747730
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 259747732}
-  - component: {fileID: 259747731}
-  m_Layer: 0
-  m_Name: AutoPlayer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &259747731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 259747730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db32bf736248ff742bc5e01dbd574b6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerReplaceObject: {fileID: 902193084}
-  timeTillGenerate: 2
-  useAutoPlayer: 0
---- !u!4 &259747732
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 259747730}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &324958586 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1763715597326056, guid: 4187cb9ace099004aa2896c95f27c6d2,
     type: 2}
   m_PrefabInternal: {fileID: 1172423974}
---- !u!1 &478422607
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 478422609}
-  - component: {fileID: 478422608}
-  m_Layer: 0
-  m_Name: AutoPlayer (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &478422608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 478422607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db32bf736248ff742bc5e01dbd574b6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerReplaceObject: {fileID: 324958586}
-  timeTillGenerate: 2
-  useAutoPlayer: 0
---- !u!4 &478422609
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 478422607}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &517020276
 Prefab:
   m_ObjectHideFlags: 0
@@ -437,7 +351,7 @@ RectTransform:
   m_Children:
   - {fileID: 146638043}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -679,7 +593,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4652510983124450, guid: cfbad4efb2af38d4382cfac8d6da3a25, type: 2}
       propertyPath: m_RootOrder
-      value: 14
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 198945032395724016, guid: cfbad4efb2af38d4382cfac8d6da3a25,
         type: 2}
@@ -1332,7 +1246,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1543865660 stripped
 GameObject:
@@ -1687,7 +1601,7 @@ Transform:
   m_LocalScale: {x: 8, y: 8, z: 8}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!199 &1628347170
 ParticleSystemRenderer:
@@ -1794,7 +1708,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1513727851
+  randomSeed: -290235725
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4393,54 +4307,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: df46a8643bdde904e8576250db17cee1, type: 2}
   - {fileID: 2100000, guid: e5c4ceb5de84b3c4c8c0ec1687d35787, type: 2}
   changeToneTime: 0.5
---- !u!1 &1687112401
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1687112403}
-  - component: {fileID: 1687112402}
-  m_Layer: 0
-  m_Name: Feedback Godt Samarbejde
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1687112402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1687112401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4762e41aa822c48439ac0f8c76fe1fc6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  feedback:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  visualFeedback: {fileID: 0}
-  inputKey: Fire1
-  visualDisplayTime: 2
-  isFireworks: 0
---- !u!4 &1687112403
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1687112401}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1721709364 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634,
@@ -4560,7 +4426,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1849966263
 MonoBehaviour:
@@ -4573,8 +4439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4762e41aa822c48439ac0f8c76fe1fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  feedback:
-  - {fileID: 8300000, guid: 3cff9b4181cfa0c49ba0a42e998d2537, type: 3}
+  feedback: {fileID: 8300000, guid: 3cff9b4181cfa0c49ba0a42e998d2537, type: 3}
   visualFeedback: {fileID: 1543865660}
   inputKey: Jump
   visualDisplayTime: 5
