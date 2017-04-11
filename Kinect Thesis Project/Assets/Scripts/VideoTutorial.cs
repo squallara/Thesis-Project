@@ -29,7 +29,7 @@ public class VideoTutorial : MonoBehaviour
 
     void Update()
     {       
-        if(KinectForTutorial.instance.playersId.Count > 0)
+        if(KinectForTutorial.instance.playersIdTut.Count > 0)
         {
             if (!tutorialStarted)
             {
@@ -86,9 +86,9 @@ public class VideoTutorial : MonoBehaviour
         }
         else
         {
-            for(int i=0; i< KinectForTutorial.instance.playersId.Count; i++)
+            for(int i=0; i< KinectForTutorial.instance.playersIdTut.Count; i++)
             {
-                TutorialPlayers.instance.playersPlayedTut.Add(KinectForTutorial.instance.playersId[i]);
+                TutorialPlayers.instance.playersPlayedTut.Add(KinectForTutorial.instance.playersIdTut[i]);
             }
             SceneManager.LoadScene(1);  //Fixed to have only two scenes into the game.
         }

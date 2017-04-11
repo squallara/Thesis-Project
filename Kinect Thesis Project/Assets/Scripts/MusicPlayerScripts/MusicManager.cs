@@ -46,7 +46,8 @@ public class MusicManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        melodyPlayable = false;
+        rythmPlayable = false;
         inputReady = false;
         GetToneSets();
         AudioSetup();

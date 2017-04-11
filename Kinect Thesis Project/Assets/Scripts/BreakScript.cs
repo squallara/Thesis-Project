@@ -26,7 +26,7 @@ public class BreakScript : MonoBehaviour
 
         if (countTime >= baseWaitingTime && !reachedTime)
         {
-            scene = KinectForTutorial.instance.CheckPlayersAfterGame();
+            scene = GetComponent<KinectForBreak>().CheckPlayersAfterGame();
             reachedTime = true;
             
             if(scene == 1)

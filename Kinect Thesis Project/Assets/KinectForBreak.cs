@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Kinect = Windows.Kinect;
-using UnityEngine.SceneManagement;
 
-public class KinectForTutorial : MonoBehaviour
-{
+public class KinectForBreak : MonoBehaviour {
 
-    public static KinectForTutorial instance;
+
+    public static KinectForBreak instance;
 
     Kinect.KinectSensor sensor;
     Kinect.MultiSourceFrameReader reader;
     IList<Kinect.Body> bodies;
     [HideInInspector]
-    public List<ulong> playersIdTut;       //Remove the public. Did only for observation.
+    public List<ulong> playersIdBreak;       //Remove the public. Did only for observation.
     bool[] players;
     int countBodies;        //Counts how many bodies are active at the same frame.
     bool foundId;
@@ -34,8 +33,8 @@ public class KinectForTutorial : MonoBehaviour
 
         reader = sensor.OpenMultiSourceFrameReader(Kinect.FrameSourceTypes.Body | Kinect.FrameSourceTypes.Color | Kinect.FrameSourceTypes.Depth | Kinect.FrameSourceTypes.Infrared);
         reader.MultiSourceFrameArrived += Reader_MultiSourceFrameArrived;
-        playersIdTut = new List<ulong>();
-        playersIdTut.Clear();
+        playersIdBreak = new List<ulong>();
+        playersIdBreak.Clear();
         players = new bool[6];
         countBodies = 0;
     }
@@ -62,12 +61,12 @@ public class KinectForTutorial : MonoBehaviour
                         {
                             players[p] = true;
 
-                            if (playersIdTut.Count == 0)
+                            if (playersIdBreak.Count == 0)
                             {
-                                playersIdTut.Add(body.TrackingId);
+                                playersIdBreak.Add(body.TrackingId);
                             }
 
-                            foreach (ulong id in playersIdTut)
+                            foreach (ulong id in playersIdBreak)
                             {
                                 if (body.TrackingId == id)
                                 {
@@ -77,7 +76,7 @@ public class KinectForTutorial : MonoBehaviour
 
                             if (foundId == false)
                             {
-                                playersIdTut.Add(body.TrackingId);
+                                playersIdBreak.Add(body.TrackingId);
                             }
                         }
                         else
@@ -103,17 +102,71 @@ public class KinectForTutorial : MonoBehaviour
             }
         }
 
-        if (countBodies != playersIdTut.Count)
+        if (countBodies != playersIdBreak.Count)
         {
-            for (int i = 0; i < playersIdTut.Count; i++)
+            for (int i = 0; i < playersIdBreak.Count; i++)
             {
                 if (players[i] == false)
                 {
-                    playersIdTut.RemoveAt(i);
+                    playersIdBreak.RemoveAt(i);
                 }
             }
         }
-    }   
+    }
 
+
+    public int CheckPlayersAfterGame()
+    {
+        if (playersIdBreak.Count == 0) //All the players left the game. Go to welcome screen/tutorial
+        {
+            return 0; /////////Fixed case where tutorial scene is always scene 0.
+        }
+        else //They are some still remaining to play
+        {
+            if (playersIdBreak.Count == 1)
+            {
+                bool foundPlayer = false;
+                for (int i = 0; i < TutorialPlayers.instance.playersPlayedTut.Count; i++)
+                {
+                    if (playersIdBreak[0] == TutorialPlayers.instance.playersPlayedTut[i])
+                    {
+                        foundPlayer = true;
+                    }
+                }
+
+                if (foundPlayer) //P1 had already passed the tutorial
+                {
+                    return 1;
+                }
+                else //New player1
+                {
+                    return 0;   //Remaining P1 hasn't passed the tutorial. Needs to see it.
+                }
+            }
+            else
+            {
+                bool[] foundPlayer = new bool[2];
+                for (int j = 0; j < 2; j++) ////////Runs only for P1 and P2
+                {
+                    for (int i = 0; i < TutorialPlayers.instance.playersPlayedTut.Count; i++) //if only one finished the tutorial then they will see it again
+                    {
+                        if (playersIdBreak[j] == TutorialPlayers.instance.playersPlayedTut[i])
+                        {
+                            foundPlayer[j] = true;
+                        }
+                    }
+
+                }
+
+                if (foundPlayer[0] == true && foundPlayer[1] == true)    //Fixed case for two players. both they have passed the tutorial.
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0; //One of the two hasn't seen the tutorial.
+                }
+            }
+        }
+    }
 }
-
