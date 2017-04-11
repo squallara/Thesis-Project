@@ -29,9 +29,9 @@ public class BreakScript : MonoBehaviour
             scene = GetComponent<KinectForBreak>().CheckPlayersAfterGame();
             reachedTime = true;
             
-            if(scene == 1)
+            if(scene == 1) //Means has to play again the game
             {
-                SceneManager.LoadScene(scene);
+                SceneManager.LoadScene(SavedData.instance.song);
             }
             else if(scene == 0)
             {

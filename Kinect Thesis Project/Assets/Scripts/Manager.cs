@@ -47,6 +47,8 @@ public class Manager : MonoBehaviour
 
     void Start()
     {
+        print(SceneManager.GetActiveScene().name);
+
         if (instance == null)
         {
             instance = this;
