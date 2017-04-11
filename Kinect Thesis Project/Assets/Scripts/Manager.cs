@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Kinect = Windows.Kinect;
+using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class Manager : MonoBehaviour
     bool foundId, moveHands, ableToHigh5Left, ableToHigh5Right;
     [HideInInspector]
     public bool didHigh5, playTones, clipEndedP1, clipEndedP2, tutorialRaisedHandsDown;
+    [HideInInspector]
+    public int P1Highes;
 
     //public Texture texture;
     public List<Texture> playersMat;
@@ -37,7 +40,7 @@ public class Manager : MonoBehaviour
     public List<Texture> MidLowHighMats; ////2 cells per player.
     public List<Kinect.JointType> prefJoints;       //Assign in the inspector the pref joints you want to detect. ALWAYS first the main body.
     public int textureWidth, textureHeight, midTextureWidthP1, midTextureHeightP1, midTextureWidthP2, midTextureHeightP2, high5Distance;
-    public float bodyDistanceThreshold;
+    public float bodyDistanceThreshold, waitAtTheEnd;
 
     public GameObject player1, player2;
     UserInput p1UInput, p2UInput;
@@ -84,7 +87,7 @@ public class Manager : MonoBehaviour
         p1UInput = player1.GetComponent<UserInput>();
         p2UInput = player2.GetComponent<UserInput>();
 
-
+        P1Highes = 0;
 
     }
 
@@ -318,7 +321,7 @@ public class Manager : MonoBehaviour
             }
         }
 
-        if(playersId.Count < 2)
+        if (playersId.Count < 2)
         {
             playTones = false;
         }
@@ -534,6 +537,7 @@ public class Manager : MonoBehaviour
                                                 if (k == 0)
                                                 {
                                                     p1UInput.userInput = "high";
+                                                    P1Highes++;
 
                                                 }
                                                 else if (k == 1)
