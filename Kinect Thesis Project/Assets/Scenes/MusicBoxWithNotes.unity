@@ -4420,7 +4420,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4762e41aa822c48439ac0f8c76fe1fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  feedback: {fileID: 8300000, guid: 0b1b49e51989d8746b72c0ab97ea47fe, type: 3}
+  feedback:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   visualFeedback: {fileID: 0}
   inputKey: Fire1
   visualDisplayTime: 2
@@ -4570,7 +4573,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4762e41aa822c48439ac0f8c76fe1fc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  feedback: {fileID: 8300000, guid: 3cff9b4181cfa0c49ba0a42e998d2537, type: 3}
+  feedback:
+  - {fileID: 8300000, guid: 3cff9b4181cfa0c49ba0a42e998d2537, type: 3}
   visualFeedback: {fileID: 1543865660}
   inputKey: Jump
   visualDisplayTime: 5
