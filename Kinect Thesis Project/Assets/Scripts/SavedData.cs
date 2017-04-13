@@ -41,7 +41,7 @@ public class SavedData : MonoBehaviour {
     public void Load()
     {
         BinaryFormatter bf = new BinaryFormatter();
-        if (File.Exists(Application.persistentDataPath + "/playerProgress.dat"))
+        if (File.Exists(Application.persistentDataPath + "/GameplayProgress.dat"))
         {
             FileStream file = File.Open(Application.persistentDataPath + "/GameplayProgress.dat", FileMode.Open);
             PlayerData data = (PlayerData)bf.Deserialize(file);
