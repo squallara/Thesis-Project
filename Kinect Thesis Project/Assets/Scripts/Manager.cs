@@ -29,7 +29,7 @@ public class Manager : MonoBehaviour
     List<Texture> playersMidHighLowMat;     //Counts how many bodies are active at the same frame.
     bool foundId, moveHands, ableToHigh5Left, ableToHigh5Right;
     [HideInInspector]
-    public bool didHigh5, playTones, clipEndedP1, clipEndedP2, tutorialRaisedHandsDown;
+    public bool didHigh5, playTones, playTonesBody, playTonesBodyHands, clipEndedP1, clipEndedP2, tutorialRaisedHandsDown;
 
     //public Texture texture;
     public List<Texture> playersMat;
@@ -37,7 +37,7 @@ public class Manager : MonoBehaviour
     public List<Texture> LowHighMats; //2 cells per player.
     public List<Texture> MidLowHighMats; ////2 cells per player.
     public List<Kinect.JointType> prefJoints;       //Assign in the inspector the pref joints you want to detect. ALWAYS first the main body.
-    public int textureWidth, textureHeight, midTextureWidthP1, midTextureHeightP1, midTextureWidthP2, midTextureHeightP2, high5Distance;
+    public int textureWidth, textureHeight, midTextureWidthP1, midTextureHeightP1, midTextureWidthP2, midTextureHeightP2, lineTextureWidth, lineTextureHeight, high5Distance;
     public float bodyDistanceThreshold, waitAtTheEnd;
 
     public GameObject player1, player2;
@@ -81,6 +81,8 @@ public class Manager : MonoBehaviour
         ableToHigh5Right = true;
         didHigh5 = false;
         playTones = false;
+        playTonesBody = false;
+        playTonesBodyHands = false;
         clipEndedP1 = false;
         clipEndedP2 = false;
         tutorialRaisedHandsDown = false;
@@ -243,6 +245,12 @@ public class Manager : MonoBehaviour
                                                                     clipEndedP2 = false;
                                                                 }
                                                             }
+
+                                                            if(clipEndedP1 == false && clipEndedP2 == false)
+                                                            {
+                                                                playTonesBody = true;
+                                                            }
+
                                                             spineMidPosThreshold[j] = body.Joints[jt].Position.Z;
                                                         }
                                                     }
@@ -288,6 +296,8 @@ public class Manager : MonoBehaviour
                 if (playersId.Count < 2)
                 {
                     playTones = false;
+                    playTonesBody = false;
+                    playTonesBodyHands = false;
                 }
             }
         }
@@ -455,6 +465,18 @@ public class Manager : MonoBehaviour
                                                         {
                                                             playTones = false;
                                                         }
+
+                                                        if (((playersJointsHeight[0][1] > playersJointsHeight[0][0] || playersJointsHeight[0][2] > playersJointsHeight[0][0]) && clipEndedP2 == false) 
+                                                            || ((playersJointsHeight[1][1] > playersJointsHeight[1][0] || playersJointsHeight[1][2] > playersJointsHeight[1][0]) && clipEndedP1 == false))
+                                                        {
+                                                            playTonesBodyHands = true;
+                                                        }
+                                                        else
+                                                        {
+                                                            playTonesBodyHands = false;
+                                                        }
+
+
                                                     }
                                                     catch
                                                     {
@@ -468,7 +490,7 @@ public class Manager : MonoBehaviour
                                                 var range = playersMinMaxHeightInPixels[k][p, 0] - playersMinMaxHeightInPixels[k][p, 1];
                                                 var distribution = range / 3;
 
-                                                Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - 125 / 2, (playersMinMaxHeightInPixels[k][p, 0] - (2 * distribution)) - 15 / 2, 125, 15), player1_2LineMat[k]);
+                                                Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - lineTextureWidth / 2, (playersMinMaxHeightInPixels[k][p, 0] - (2 * distribution)) - lineTextureHeight / 2, lineTextureWidth, lineTextureHeight), player1_2LineMat[k]);
 
                                                 var range2 = playersMinMaxHeight[k][p, 1] - playersMinMaxHeight[k][p, 0];
                                                 var distribution2 = range2 / 3;

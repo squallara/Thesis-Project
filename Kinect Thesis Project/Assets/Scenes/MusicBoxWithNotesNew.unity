@@ -1468,7 +1468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   melodicObject: {fileID: 929940645}
   rythmObject: {fileID: 882749006}
-  drumClip: {fileID: 8300000, guid: 62f9e6375abd14b40897c8680bd90275, type: 3}
+  drumClip: {fileID: 8300000, guid: 6276166ca919bce4390aee4441e92f70, type: 3}
   applause: {fileID: 8300000, guid: 9ffa05968400c074caac1260dab597b4, type: 3}
   rythmUseTwoSets: 1
   melodicUseTwoSets: 0
@@ -1708,12 +1708,12 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -290235725
+  randomSeed: -654496531
   InitialModule:
     serializedVersion: 3
     enabled: 1
     startLifetime:
-      scalar: 5
+      scalar: 1.5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1752,7 +1752,7 @@ ParticleSystem:
         m_RotationOrder: 4
       minMaxState: 0
     startSpeed:
-      scalar: 2
+      scalar: 2.5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -2187,7 +2187,7 @@ ParticleSystem:
     enabled: 1
     serializedVersion: 3
     rateOverTime:
-      scalar: 2
+      scalar: 4
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4740,6 +4740,7 @@ MonoBehaviour:
   IDs: 
   didHigh5: 0
   playTones: 0
+  playTonesBody: 0
   clipEndedP1: 0
   clipEndedP2: 0
   tutorialRaisedHandsDown: 0
@@ -4764,12 +4765,14 @@ MonoBehaviour:
   - {fileID: 2800000, guid: be62e1401529b8d448e779cfe01b583a, type: 3}
   - {fileID: 2800000, guid: 7d436bc9bc6a58e439401848647e8e62, type: 3}
   prefJoints: 01000000070000000b000000
-  textureWidth: 50
-  textureHeight: 50
+  textureWidth: 75
+  textureHeight: 75
   midTextureWidthP1: 200
   midTextureHeightP1: 100
   midTextureWidthP2: 200
   midTextureHeightP2: 150
+  lineTextureWidth: 175
+  lineTextureHeight: 25
   high5Distance: 5
   bodyDistanceThreshold: 0.2
   waitAtTheEnd: 10
