@@ -20,18 +20,16 @@ public class Manager : MonoBehaviour
     public List<ulong> playersId;       //Remove the public. Did only for observation.
     List<float[,]> playersMinMaxHeightInPixels;
     bool[] players, initializeMidPos, zoneChanged;
+    public ulong[] IDs;
     float[] jointsHeight;       //With the order of the prefJoints. (heights of the joints in general) (the y variable nto the actual y in pixels)
     float[,] minMaxHeight;
     float[,] minMaxHeightInPixels;
     List<float> spineMidHeightInPixels;   //The spineMid position of each player in pixels
     List<float> spineMidPos, spineMidPosThreshold;
-    List<Texture> playersMidHighLowMat;
-    int countBodies;        //Counts how many bodies are active at the same frame.
+    List<Texture> playersMidHighLowMat;     //Counts how many bodies are active at the same frame.
     bool foundId, moveHands, ableToHigh5Left, ableToHigh5Right;
     [HideInInspector]
     public bool didHigh5, playTones, clipEndedP1, clipEndedP2, tutorialRaisedHandsDown;
-    [HideInInspector]
-    public int P1Highes;
 
     //public Texture texture;
     public List<Texture> playersMat;
@@ -75,9 +73,9 @@ public class Manager : MonoBehaviour
         spineMidPosThreshold = new List<float>();
         playersMidHighLowMat = new List<Texture>();
         players = new bool[6];
-        countBodies = 0;
-        initializeMidPos = new bool[2];  //RESTRICTED ONLY TO TWO PLAYERS
-        zoneChanged = new bool[2];  //RESTRICTED ONLY TO TWO PLAYERS
+        IDs = new ulong[6];
+        initializeMidPos = new bool[6];  //maximum 6 players
+        zoneChanged = new bool[6];  //maximum 6 players
         moveHands = false;
         ableToHigh5Left = true;
         ableToHigh5Right = true;
@@ -89,8 +87,6 @@ public class Manager : MonoBehaviour
 
         p1UInput = player1.GetComponent<UserInput>();
         p2UInput = player2.GetComponent<UserInput>();
-
-        P1Highes = 0;
 
     }
 
@@ -128,6 +124,7 @@ public class Manager : MonoBehaviour
                         if (body.IsTracked)
                         {
                             players[p] = true;
+                            IDs[p] = body.TrackingId;
 
                             if (playersId.Count == 0)
                             {
@@ -281,11 +278,85 @@ public class Manager : MonoBehaviour
                         else
                         {
                             players[p] = false;
+                            IDs[p] = 0;
                         }
                     }
                     p++;
                 }
                 CheckHighFive();
+                CheckActivePlayers();
+                if (playersId.Count < 2)
+                {
+                    playTones = false;
+                }
+            }
+        }
+    }
+
+
+    void CheckActivePlayers()
+    {
+        for (int i = 0; i < playersId.Count; i++)
+        {
+            bool playerFound = false;
+            for (int j = 0; j < IDs.Length; j++)
+            {
+                if (playersId[i] == IDs[j])
+                {
+                    playerFound = true;
+                }
+            }
+
+            if (playerFound == false)
+            {
+                if (bodyJoints[i] != null)
+                {
+                    bodyJoints.RemoveAt(i);
+                }
+                if (bodyJointsWorld[i] != null)
+                {
+                    bodyJointsWorld.RemoveAt(i);
+                }
+                if (playersJointsHeight[i] != null)
+                {
+                    playersJointsHeight.RemoveAt(i);
+                }
+                if (playersMinMaxHeight[i] != null)
+                {
+                    playersMinMaxHeight.RemoveAt(i);
+                }
+                if (playersMinMaxHeightInPixels[i] != null)
+                {
+                    playersMinMaxHeightInPixels.RemoveAt(i);
+                }
+                if (spineMidHeightInPixels[i] != null)
+                {
+                    spineMidHeightInPixels.RemoveAt(i);
+                }
+                if (spineMidPos[i] != null)
+                {
+                    spineMidPos.RemoveAt(i);
+                }
+                if (spineMidPosThreshold[i] != null)
+                {
+                    spineMidPosThreshold.RemoveAt(i);
+                }
+                if (playersMidHighLowMat[i] != null)
+                {
+                    playersMidHighLowMat.RemoveAt(i);
+                }
+                if (initializeMidPos[i] != null)
+                {
+                    initializeMidPos[i] = false;
+                }
+                if (zoneChanged[i] != null)
+                {
+                    zoneChanged[i] = false;
+                }
+                if (playersId[i] != null)
+                {
+                    playersId.RemoveAt(i);
+                }
             }
         }
     }
@@ -293,43 +364,191 @@ public class Manager : MonoBehaviour
 
     void OnGUI()
     {
-        countBodies = 0;
-        for (int i = 0; i < 6; i++)
-        {
-            if (players[i] == true)
+        if (Event.current.type.Equals(EventType.Repaint))
+        {           
+            if (playersId.Count != 0)
             {
-                countBodies++;
-            }
-        }
-
-        if (countBodies != playersId.Count)
-        {
-            for (int i = 0; i < playersId.Count; i++)
-            {
-                if (players[i] == false)
+                for (int k = 0; k < playersId.Count; k++)       // K counts players
                 {
-                    bodyJoints.RemoveAt(i);
-                    bodyJointsWorld.RemoveAt(i);
-                    playersJointsHeight.RemoveAt(i);
-                    playersMinMaxHeight.RemoveAt(i);
-                    playersMinMaxHeightInPixels.RemoveAt(i);
-                    spineMidHeightInPixels.RemoveAt(i);
-                    spineMidPos.RemoveAt(i);
-                    spineMidPosThreshold.RemoveAt(i);
-                    playersMidHighLowMat.RemoveAt(i);
-                    initializeMidPos[i] = false;
-                    zoneChanged[i] = false;
-                    playersId.RemoveAt(i);
+                    var i = -1;     //i Counts the joints. All of them. 25 in sum
+
+                    for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
+                    {
+                        i++;
+                        var p = 0;      //p counts the pref joints we chose.
+                        foreach (Kinect.JointType joint in prefJoints)
+                        {
+                            if (jt == joint)
+                            {
+                                try
+                                {
+                                    if (bodyJoints[k][i, 0] != 0 && bodyJoints[k][i, 1] != 0)
+                                    {
+                                        if (jt == prefJoints[0]) //the base bodyjoint like spinemid needs to be at the first place ALWAYS!!!!!!
+                                        {
+                                            if (zoneChanged[k] == false && k < 2)
+                                            {
+                                                if (k == 0)
+                                                {
+                                                    Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP1 / 2, bodyJoints[k][i, 1] - midTextureHeightP1 / 2, midTextureWidthP1, midTextureHeightP1), playersMat[k]);
+                                                }
+                                                else
+                                                {
+                                                    Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP2 / 2, bodyJoints[k][i, 1] - midTextureHeightP2 / 2, midTextureWidthP2, midTextureHeightP2), playersMat[k]);
+                                                }
+                                            }
+                                            else if (zoneChanged[k] == true && k < 2)
+                                            {
+                                                if (clipEndedP1 == true)
+                                                {
+                                                    if (k == 0)
+                                                    {
+                                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP1 / 2, bodyJoints[k][i, 1] - midTextureHeightP1 / 2, midTextureWidthP1, midTextureHeightP1), playersMat[k]);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (k == 0)
+                                                    {
+                                                        if (playersMidHighLowMat[k] != null)
+                                                        {
+                                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP1 / 2, bodyJoints[k][i, 1] - midTextureHeightP1 / 2, midTextureWidthP1, midTextureHeightP1), playersMidHighLowMat[k]);
+                                                        }
+                                                    }
+                                                }
+
+                                                if (clipEndedP2 == true)
+                                                {
+                                                    if (k == 1)
+                                                    {
+                                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP2 / 2, bodyJoints[k][i, 1] - midTextureHeightP2 / 2, midTextureWidthP2, midTextureHeightP2), playersMat[k]);
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (k == 1)
+                                                    {
+                                                        if (playersMidHighLowMat[k] != null)
+                                                        {
+                                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP2 / 2, bodyJoints[k][i, 1] - midTextureHeightP2 / 2, midTextureWidthP2, midTextureHeightP2), playersMidHighLowMat[k]);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+
+                                            if (playersJointsHeight[k][p] > playersJointsHeight[k][0] && k < 2)          //K will be restricted to 2 for only two players.
+                                            {
+                                                /////////////////////FIXED CASE ONLY FOR TWO PLAYERS AND ONLY FOR TWO HANDS
+                                                if (playersId.Count > 1)
+                                                {
+                                                    try
+                                                    {
+                                                        if (playersJointsHeight[0][1] > playersJointsHeight[0][0] && (playersJointsHeight[1][1] > playersJointsHeight[1][0] || playersJointsHeight[1][2] > playersJointsHeight[1][0])
+                                                            || playersJointsHeight[0][2] > playersJointsHeight[0][0] && (playersJointsHeight[1][1] > playersJointsHeight[1][0] || playersJointsHeight[1][2] > playersJointsHeight[1][0]))
+                                                        {
+                                                            playTones = true;
+                                                        }
+                                                        else
+                                                        {
+                                                            playTones = false;
+                                                        }
+                                                    }
+                                                    catch
+                                                    {
+                                                        print("Something went wrong with detecting the position of either the left hand or right hand or both from the player1 or player2");
+                                                    }
+                                                }
+                                                //////////////////////////////////////////////////////////////////////////
+
+                                                moveHands = true;
+
+                                                var range = playersMinMaxHeightInPixels[k][p, 0] - playersMinMaxHeightInPixels[k][p, 1];
+                                                var distribution = range / 3;
+
+                                                Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - 125 / 2, (playersMinMaxHeightInPixels[k][p, 0] - (2 * distribution)) - 15 / 2, 125, 15), player1_2LineMat[k]);
+
+                                                var range2 = playersMinMaxHeight[k][p, 1] - playersMinMaxHeight[k][p, 0];
+                                                var distribution2 = range2 / 3;
+
+                                                if (playersJointsHeight[k][p] > (playersMinMaxHeight[k][p, 0] + (2 * distribution2)))
+                                                {
+                                                    //print("High");      ////////////////////////////////////  HERE IS THE HIGH INPUT////////////////////////////////////
+
+                                                    if (k == 0)
+                                                    {
+                                                        p1UInput.userInput = "high";
+
+                                                    }
+                                                    else if (k == 1)
+                                                    {
+                                                        p2UInput.userInput = "high";
+                                                    }
+
+                                                    switch (k)
+                                                    {
+                                                        case 0:
+                                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth / 2, bodyJoints[k][i, 1] - textureHeight / 2, textureWidth, textureHeight), LowHighMats[1]);
+                                                            break;
+                                                        case 1:
+                                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth / 2, bodyJoints[k][i, 1] - textureHeight / 2, textureWidth, textureHeight), LowHighMats[3]);
+                                                            break;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    //print("Low"); ////////////////////////////////////  HERE IS THE LOW INPUT////////////////////////////////////
+
+                                                    if (k == 0)
+                                                    {
+                                                        p1UInput.userInput = "low";
+                                                    }
+                                                    else if (k == 1)
+                                                    {
+                                                        p2UInput.userInput = "low";
+                                                    }
+
+                                                    switch (k)
+                                                    {
+                                                        case 0:
+                                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth / 2, bodyJoints[k][i, 1] - textureHeight / 2, textureWidth, textureHeight), LowHighMats[0]);
+                                                            break;
+                                                        case 1:
+                                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth / 2, bodyJoints[k][i, 1] - textureHeight / 2, textureWidth, textureHeight), LowHighMats[2]);
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                            else if (k < 2 && playersJointsHeight[k][1] <= playersJointsHeight[k][0] && playersJointsHeight[k][2] <= playersJointsHeight[k][0] && moveHands == true)
+                                            {
+                                                if (k == 0)
+                                                {
+                                                    p1UInput.userInput = null;
+                                                }
+                                                else if (k == 1)
+                                                {
+                                                    p2UInput.userInput = null;
+                                                }
+
+                                                moveHands = false;
+                                            }
+                                        }
+                                    }
+                                }
+                                catch
+                                {
+                                    print("Something wrong with the bodyJoints of someone player that is being registered into Kinect");
+                                }
+                            }
+                            p++;
+                        }
+                    }
+
                 }
             }
         }
-
-        if (playersId.Count < 2)
-        {
-            playTones = false;
-        }
-
-        GameplaySession();
     }
 
     void SortMinMax(float height, int player, int joint)
@@ -423,184 +642,6 @@ public class Manager : MonoBehaviour
             }
         }
     }
-
-
-    void GameplaySession()
-    {
-        if (Event.current.type.Equals(EventType.Repaint))
-        {
-            if (playersId.Count != 0)
-            {
-                for (int k = 0; k < playersId.Count; k++)       // K counts players
-                {
-
-                    var i = -1;     //i Counts the joints. All of them. 25 in sum
-
-                    for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
-                    {
-                        i++;
-                        var p = 0;      //p counts the pref joints we chose.
-                        foreach (Kinect.JointType joint in prefJoints)
-                        {
-                            if (jt == joint)
-                            {
-                                if (bodyJoints[k][i, 0] != 0 && bodyJoints[k][i, 1] != 0)
-                                {
-                                    if (jt == prefJoints[0]) //the base bodyjoint like spinemid needs to be at the first place ALWAYS!!!!!!
-                                    {
-                                        if (zoneChanged[k] == false && k < 2)
-                                        {
-                                            if (k == 0)
-                                            {
-                                                Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP1 / 2, bodyJoints[k][i, 1] - midTextureHeightP1 / 2, midTextureWidthP1, midTextureHeightP1), playersMat[k]);
-                                            }
-                                            else
-                                            {
-                                                Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP2 / 2, bodyJoints[k][i, 1] - midTextureHeightP2 / 2, midTextureWidthP2, midTextureHeightP2), playersMat[k]);
-                                            }
-                                        }
-                                        else if (zoneChanged[k] == true && k < 2)
-                                        {
-                                            if (clipEndedP1 == true)
-                                            {
-                                                if (k == 0)
-                                                {
-                                                    Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP1 / 2, bodyJoints[k][i, 1] - midTextureHeightP1 / 2, midTextureWidthP1, midTextureHeightP1), playersMat[k]);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                if (k == 0)
-                                                {
-                                                    if (playersMidHighLowMat[k] != null)
-                                                    {
-                                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP1 / 2, bodyJoints[k][i, 1] - midTextureHeightP1 / 2, midTextureWidthP1, midTextureHeightP1), playersMidHighLowMat[k]);
-                                                    }
-                                                }
-                                            }
-
-                                            if (clipEndedP2 == true)
-                                            {
-                                                if (k == 1)
-                                                {
-                                                    Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP2 / 2, bodyJoints[k][i, 1] - midTextureHeightP2 / 2, midTextureWidthP2, midTextureHeightP2), playersMat[k]);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                if (k == 1)
-                                                {
-                                                    if (playersMidHighLowMat[k] != null)
-                                                    {
-                                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP2 / 2, bodyJoints[k][i, 1] - midTextureHeightP2 / 2, midTextureWidthP2, midTextureHeightP2), playersMidHighLowMat[k]);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-
-                                        if (playersJointsHeight[k][p] > playersJointsHeight[k][0] && k < 2)          //K will be restricted to 2 for only two players.
-                                        {
-                                            /////////////////////FIXED CASE ONLY FOR TWO PLAYERS AND ONLY FOR TWO HANDS
-                                            if (playersId.Count > 1)
-                                            {
-                                                if (playersJointsHeight[0][1] > playersJointsHeight[0][0] && (playersJointsHeight[1][1] > playersJointsHeight[1][0] || playersJointsHeight[1][2] > playersJointsHeight[1][0])
-                                                    || playersJointsHeight[0][2] > playersJointsHeight[0][0] && (playersJointsHeight[1][1] > playersJointsHeight[1][0] || playersJointsHeight[1][2] > playersJointsHeight[1][0]))
-                                                {
-                                                    playTones = true;
-                                                }
-                                                else
-                                                {
-                                                    playTones = false;
-                                                }
-                                            }
-                                            //////////////////////////////////////////////////////////////////////////
-
-                                            moveHands = true;
-
-                                            var range = playersMinMaxHeightInPixels[k][p, 0] - playersMinMaxHeightInPixels[k][p, 1];
-                                            var distribution = range / 3;
-
-                                            Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - 125 / 2, (playersMinMaxHeightInPixels[k][p, 0] - (2 * distribution)) - 15 / 2, 125, 15), player1_2LineMat[k]);
-
-                                            var range2 = playersMinMaxHeight[k][p, 1] - playersMinMaxHeight[k][p, 0];
-                                            var distribution2 = range2 / 3;
-
-                                            if (playersJointsHeight[k][p] > (playersMinMaxHeight[k][p, 0] + (2 * distribution2)))
-                                            {
-                                                //print("High");      ////////////////////////////////////  HERE IS THE HIGH INPUT////////////////////////////////////
-
-                                                if (k == 0)
-                                                {
-                                                    p1UInput.userInput = "high";
-                                                    P1Highes++;
-
-                                                }
-                                                else if (k == 1)
-                                                {
-                                                    p2UInput.userInput = "high";
-                                                }
-
-                                                switch (k)
-                                                {
-                                                    case 0:
-                                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth / 2, bodyJoints[k][i, 1] - textureHeight / 2, textureWidth, textureHeight), LowHighMats[1]);
-                                                        break;
-                                                    case 1:
-                                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth / 2, bodyJoints[k][i, 1] - textureHeight / 2, textureWidth, textureHeight), LowHighMats[3]);
-                                                        break;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                //print("Low"); ////////////////////////////////////  HERE IS THE LOW INPUT////////////////////////////////////
-
-                                                if (k == 0)
-                                                {
-                                                    p1UInput.userInput = "low";
-                                                }
-                                                else if (k == 1)
-                                                {
-                                                    p2UInput.userInput = "low";
-                                                }
-
-                                                switch (k)
-                                                {
-                                                    case 0:
-                                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth / 2, bodyJoints[k][i, 1] - textureHeight / 2, textureWidth, textureHeight), LowHighMats[0]);
-                                                        break;
-                                                    case 1:
-                                                        Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - textureWidth / 2, bodyJoints[k][i, 1] - textureHeight / 2, textureWidth, textureHeight), LowHighMats[2]);
-                                                        break;
-                                                }
-                                            }
-                                        }
-                                        else if (k < 2 && playersJointsHeight[k][1] <= playersJointsHeight[k][0] && playersJointsHeight[k][2] <= playersJointsHeight[k][0] && moveHands == true)
-                                        {
-                                            if (k == 0)
-                                            {
-                                                p1UInput.userInput = null;
-                                            }
-                                            else if (k == 1)
-                                            {
-                                                p2UInput.userInput = null;
-                                            }
-
-                                            moveHands = false;
-                                        }
-                                    }
-                                }
-                            }
-                            p++;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
 
 
 }

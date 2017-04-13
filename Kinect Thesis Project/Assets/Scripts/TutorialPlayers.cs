@@ -9,6 +9,10 @@ public class TutorialPlayers : MonoBehaviour
 
     public List<ulong> playersPlayedTut;
     public GameObject tutObj;
+    public float timeToStart;
+
+    [HideInInspector]
+    public float timeToStartTemp;
 
     void Start()
     {
@@ -18,6 +22,7 @@ public class TutorialPlayers : MonoBehaviour
             instance = this;
             playersPlayedTut = new List<ulong>();
             playersPlayedTut.Clear();
+            timeToStartTemp = timeToStart;
             DontDestroyOnLoad(tutObj);           
         }
         else

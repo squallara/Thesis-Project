@@ -119,10 +119,13 @@ public class KinectForBreak : MonoBehaviour {
     {
         if (playersIdBreak.Count == 0) //All the players left the game. Go to welcome screen/tutorial
         {
+            TutorialPlayers.instance.timeToStartTemp = TutorialPlayers.instance.timeToStart;
             return 0; /////////Fixed case where tutorial scene is always scene 0.
         }
         else //They are some still remaining to play
         {
+            TutorialPlayers.instance.timeToStartTemp = 0;
+
             if (playersIdBreak.Count == 1)
             {
                 bool foundPlayer = false;

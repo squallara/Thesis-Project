@@ -1468,7 +1468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   melodicObject: {fileID: 929940645}
   rythmObject: {fileID: 882749006}
-  drumClip: {fileID: 8300000, guid: 6276166ca919bce4390aee4441e92f70, type: 3}
+  drumClip: {fileID: 8300000, guid: 62f9e6375abd14b40897c8680bd90275, type: 3}
   applause: {fileID: 8300000, guid: 9ffa05968400c074caac1260dab597b4, type: 3}
   rythmUseTwoSets: 1
   melodicUseTwoSets: 0
@@ -1597,7 +1597,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1628347165}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.7, y: -23.3, z: 77.25}
+  m_LocalPosition: {x: 1.7, y: -33, z: 77.25}
   m_LocalScale: {x: 8, y: 8, z: 8}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1708,12 +1708,12 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -290235725
+  randomSeed: 337286564
   InitialModule:
     serializedVersion: 3
     enabled: 1
     startLifetime:
-      scalar: 5
+      scalar: 1.5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1752,7 +1752,7 @@ ParticleSystem:
         m_RotationOrder: 4
       minMaxState: 0
     startSpeed:
-      scalar: 2
+      scalar: 2.5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -2187,7 +2187,7 @@ ParticleSystem:
     enabled: 1
     serializedVersion: 3
     rateOverTime:
-      scalar: 2
+      scalar: 4
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4737,12 +4737,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playersId: 
+  IDs: 
   didHigh5: 0
   playTones: 0
   clipEndedP1: 0
   clipEndedP2: 0
   tutorialRaisedHandsDown: 0
-  P1Highes: 0
   playersMat:
   - {fileID: 2800000, guid: ed670cc8b4cbabc43bae7ba78ac67231, type: 3}
   - {fileID: 2800000, guid: c02584b19d3bcfe4bb0d400b375f87b1, type: 3}

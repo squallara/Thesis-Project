@@ -14,7 +14,6 @@ public class VideoTutorial : MonoBehaviour
     public int repeatVideo;
     bool videoStarted, readyToPlay, tutorialStarted;
     float countToStart;
-    public float timeToStart;
     AudioSource aud;
 
     void Start()
@@ -36,7 +35,7 @@ public class VideoTutorial : MonoBehaviour
             if (!tutorialStarted)
             {
                 countToStart += Time.deltaTime;
-                if (countToStart >= timeToStart)
+                if (countToStart >= TutorialPlayers.instance.timeToStartTemp)
                 {
                     canvas.SetActive(false);
                     tutorialStarted = true;

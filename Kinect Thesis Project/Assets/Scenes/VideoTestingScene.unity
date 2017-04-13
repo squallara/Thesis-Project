@@ -121,6 +121,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playersPlayedTut: 
   tutObj: {fileID: 325212955}
+  timeToStart: 10
+  timeToStartTemp: 0
 --- !u!4 &325212957
 Transform:
   m_ObjectHideFlags: 0
@@ -499,10 +501,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoMats:
-  - {fileID: 2100000, guid: b4022d5056f0b5a4cba9fc0c3bff5737, type: 2}
+  - {fileID: 2100000, guid: 6ec994000f6f2d047926708fcdbe13d7, type: 2}
   canvas: {fileID: 1507497549}
   repeatVideo: 1
-  timeToStart: 10
 --- !u!23 &1473787004
 MeshRenderer:
   m_ObjectHideFlags: 0
