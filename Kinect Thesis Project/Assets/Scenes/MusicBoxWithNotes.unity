@@ -4740,29 +4740,31 @@ MonoBehaviour:
   IDs: 
   didHigh5: 0
   playTones: 0
+  playTonesBody: 0
+  playTonesBodyHands: 0
   clipEndedP1: 0
   clipEndedP2: 0
   tutorialRaisedHandsDown: 0
   playersMat:
-  - {fileID: 2800000, guid: ed670cc8b4cbabc43bae7ba78ac67231, type: 3}
-  - {fileID: 2800000, guid: c02584b19d3bcfe4bb0d400b375f87b1, type: 3}
+  - {fileID: 2800000, guid: f5c94ccd1be569a47932c7235da849f6, type: 3}
+  - {fileID: 2800000, guid: a0b279b4dc6f6054180ff0575ddffa20, type: 3}
   - {fileID: 2800000, guid: 3d0488cf578717a4ca9c90d67279ae62, type: 3}
   - {fileID: 2800000, guid: ef364f0c8895e1f46932bbef09b7b3b5, type: 3}
   - {fileID: 2800000, guid: 41364acf463b3ae42b62ba13416ceab5, type: 3}
   - {fileID: 2800000, guid: f1cd1c0f7d7833345abe55c137ad4037, type: 3}
   player1_2LineMat:
-  - {fileID: 2800000, guid: 18cde2b7d1d77294494f087e35c9fe38, type: 3}
-  - {fileID: 2800000, guid: 6665365227ce9504ba53572009e3a737, type: 3}
+  - {fileID: 2800000, guid: 950d0d3de657d584c9e38a006fc89621, type: 3}
+  - {fileID: 2800000, guid: 9a897e3793f616d4ca5739703a97c53e, type: 3}
   LowHighMats:
-  - {fileID: 2800000, guid: 1e2d0792480eea24e9e789f7653a2578, type: 3}
-  - {fileID: 2800000, guid: 406fd598e4a715a448b47a7f8cb226ae, type: 3}
-  - {fileID: 2800000, guid: 9b19df33fa0ca45449653668c61d2113, type: 3}
-  - {fileID: 2800000, guid: 3b91891d3b2d8f9499ccf7b825f35331, type: 3}
+  - {fileID: 2800000, guid: f78be1fe43020154b8f38d9509ce8a2d, type: 3}
+  - {fileID: 2800000, guid: d5e049b587fed63409cf743172987ad0, type: 3}
+  - {fileID: 2800000, guid: c0f72566b9c00784294d568560107f09, type: 3}
+  - {fileID: 2800000, guid: ec08bc1de3aabcb4a8f5a1ef98091270, type: 3}
   MidLowHighMats:
-  - {fileID: 2800000, guid: f5bb29345c3229a44bcfac2bd702814f, type: 3}
-  - {fileID: 2800000, guid: 7e1120d8cbb377240ba0e9e7ff40fa7b, type: 3}
-  - {fileID: 2800000, guid: be62e1401529b8d448e779cfe01b583a, type: 3}
-  - {fileID: 2800000, guid: 7d436bc9bc6a58e439401848647e8e62, type: 3}
+  - {fileID: 2800000, guid: 9e225d965c225034dbdee99b663ad3bf, type: 3}
+  - {fileID: 2800000, guid: 35a8e7cbda148ad40804da2948951096, type: 3}
+  - {fileID: 2800000, guid: abc17d3d32f76f84986004e15ed8cd88, type: 3}
+  - {fileID: 2800000, guid: 58634d3217c334e449397bcfd1ce4629, type: 3}
   prefJoints: 01000000070000000b000000
   textureWidth: 75
   textureHeight: 75
