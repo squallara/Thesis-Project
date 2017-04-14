@@ -29,7 +29,26 @@ public class TonesFeedback : MonoBehaviour {
 
         if(Manager.instance.playTones == true || Manager.instance.playTonesBody == true || Manager.instance.playTonesBodyHands == true)
         {
+            //if(Manager.instance.playTones == true)
+            //{
+            //    print("Notes caused of hands");
+            //}
+            //if(Manager.instance.playTonesBody == true)
+            //{
+            //    print("Notes caused of bodies");
+            //}
+            //if(Manager.instance.playTonesBodyHands == true)
+            //{
+            //    print("Notes caused of a mix between bodies and hands");
+            //}
             GetComponent<ParticleSystem>().enableEmission = true;
+            for(int i=0; i<LogData.instance.pID.Count; i++)
+            {
+                if(LogData.instance.active[i] == true)
+                {
+                    LogData.instance.timePlayingTogether[i] += Time.deltaTime;
+                }
+            }
         }
         else
         {

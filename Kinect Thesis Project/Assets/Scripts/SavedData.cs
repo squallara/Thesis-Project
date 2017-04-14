@@ -10,7 +10,7 @@ public class SavedData : MonoBehaviour {
     public static SavedData instance;
 
     [HideInInspector]
-    public int song; ////This variable will be fixed to take 1 or 2 depending on the two fixed scene songs we have
+    public int song, game; ////song is fixed to take 1 or 2 depending on the two fixed scene songs we have. game increases by how many games were fully ended.
 
 	// Use this for initialization
 	void Start () {
@@ -18,7 +18,7 @@ public class SavedData : MonoBehaviour {
         if(instance == null)
         {
             instance = this;
-            print("I am here");
+            game = 1;
             Load();
         }
         	
@@ -32,6 +32,7 @@ public class SavedData : MonoBehaviour {
 
         PlayerData data = new PlayerData();
         data.song = song;
+        data.game = game;
 
 
         bf.Serialize(file, data);
@@ -48,6 +49,7 @@ public class SavedData : MonoBehaviour {
             file.Close();
 
             song = data.song;
+            game = data.game;
 
         }
 
@@ -59,5 +61,6 @@ class PlayerData
 {
 
     public int song;
+    public int game;
 
 }

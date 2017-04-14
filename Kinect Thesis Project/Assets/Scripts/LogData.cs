@@ -16,7 +16,9 @@ public class LogData : MonoBehaviour
     //[HideInInspector]
     public List<bool> active;
     //[HideInInspector]
-    public List<float> timeSpentAlone, playAlone;
+    public List<float> timeBeingActive, timeSpentAlone, playAlone, timePlayingTogether, timePlayingTogetherHands, timePlayingTogetherBodies, timeBothNotPlaying, timeNotPlayingButPartnerPlays;
+    //[HideInInspector]
+    public List<int> didH5;
 
     void Start()
     {
@@ -28,6 +30,15 @@ public class LogData : MonoBehaviour
         pID = new List<ulong>();
         color = new List<string>();
         active = new List<bool>();
+        timeBeingActive = new List<float>();
+        timeSpentAlone = new List<float>();
+        playAlone = new List<float>();
+        timePlayingTogether = new List<float>();
+        timePlayingTogetherHands = new List<float>();
+        timePlayingTogetherBodies = new List<float>();
+        timeBothNotPlaying = new List<float>();
+        timeNotPlayingButPartnerPlays = new List<float>();
+        didH5 = new List<int>();
 
     }
 
@@ -35,10 +46,14 @@ public class LogData : MonoBehaviour
     {
         if (!File.Exists("C:/Users/User/Desktop/DataCollection/" + dateAndTime.ToString("yyyy_MM_dd__HH_mm_ss") + ".txt"))
         {
-
-            //////////////////////////////EXAMPLE/////////////////////////////////
-            File.AppendAllText("C:/Users/User/Desktop/DataCollection/" + dateAndTime.ToString("yyyy_MM_dd__HH_mm_ss") + ".txt", "Players,TimeSpent,Highes,Lows,H5s" + "\r\n734587945983,50,15,20,5");
-            //"\r\n" + Manager.instance.playersId[0].ToString() + "\r\n" + "played: " + Manager.instance.P1Highes + " highes")
+            for (int i = 0; i < pID.Count; i++)
+            {
+                //////////////////////////////EXAMPLE/////////////////////////////////
+                File.AppendAllText("C:/Users/User/Desktop/DataCollection/" + dateAndTime.ToString("yyyy_MM_dd__HH_mm_ss") + ".txt", 
+                    "\r\n" + SavedData.instance.game + "," + pID[i].ToString() + "," + color[i] + "," + timeBeingActive[i] + "," + active[i] + "," + timeSpentAlone[i] + "," + playAlone[i] + "," + timeNotPlayingButPartnerPlays[i] + "," +
+                    timePlayingTogether[i] + "," + timePlayingTogetherHands[i] + "," + timePlayingTogetherBodies[i] + "," + timeBothNotPlaying[i] + "," + didH5[i]);
+                //"\r\n" + Manager.instance.playersId[0].ToString() + "\r\n" + "played: " + Manager.instance.P1Highes + " highes")
+            }
         }
 
     }

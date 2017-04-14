@@ -121,7 +121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playersPlayedTut: 
   tutObj: {fileID: 325212955}
-  timeToStart: 10
+  timeToStart: 3
   timeToStartTemp: 0
 --- !u!4 &325212957
 Transform:
@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   song: 0
+  game: 0
 --- !u!1 &436605011
 GameObject:
   m_ObjectHideFlags: 0

@@ -632,6 +632,7 @@ public class MusicManager : MonoBehaviour
                 SavedData.instance.song = 1;
             }
         }
+        SavedData.instance.game++;
         SavedData.instance.Save();
         SceneManager.LoadScene(3); //Fixed case where the break scene is always at position 3 in the build settings
     }

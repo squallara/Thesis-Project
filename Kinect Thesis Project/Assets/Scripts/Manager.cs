@@ -104,7 +104,7 @@ public class Manager : MonoBehaviour
                 bodies = new Kinect.Body[frame.BodyFrameSource.BodyCount];  //BodyCount is always 6. I guess they have it on 6 because it is the maximum of the players that they can track per frame.
                 frame.GetAndRefreshBodyData(bodies);
                 var p = 0; //p counts the bodies so it counts the players
-                for(int h=0; h<IDs.Length; h++)
+                for (int h = 0; h < IDs.Length; h++)
                 {
                     IDs[h] = 0;
                 }
@@ -123,7 +123,7 @@ public class Manager : MonoBehaviour
                         minMaxHeight[j, 1] = -1;
                         minMaxHeightInPixels[j, 0] = 1080;
                         minMaxHeightInPixels[j, 1] = 1080;
-                    }                    
+                    }
 
                     if (body != null)
                     {
@@ -204,8 +204,23 @@ public class Manager : MonoBehaviour
                                                     }
                                                     else
                                                     {
-                                                        if (Mathf.Floor(body.Joints[jt].Position.Z) != spineMidPos[j])
+                                                        //if (Mathf.Floor(body.Joints[jt].Position.Z) != spineMidPos[j])                ////Previous way of recalibrating where the users had to cross larger distance
+                                                        //{
+                                                        //    for (int l = 1; l < prefJoints.Count; l++)
+                                                        //    {
+                                                        //        playersMinMaxHeight[j][l, 0] = 1;
+                                                        //        playersMinMaxHeight[j][l, 1] = -1;
+                                                        //        playersMinMaxHeightInPixels[j][l, 0] = 1080;
+                                                        //        playersMinMaxHeightInPixels[j][l, 1] = 1080;
+                                                        //    }
+
+
+                                                        //    spineMidPos[j] = Mathf.Floor(body.Joints[jt].Position.Z);
+                                                        //}
+
+                                                        if (body.Joints[jt].Position.Z > spineMidPosThreshold[j] + bodyDistanceThreshold || body.Joints[jt].Position.Z < spineMidPosThreshold[j] - bodyDistanceThreshold)
                                                         {
+                                                            //Recalibration time
                                                             for (int l = 1; l < prefJoints.Count; l++)
                                                             {
                                                                 playersMinMaxHeight[j][l, 0] = 1;
@@ -214,12 +229,6 @@ public class Manager : MonoBehaviour
                                                                 playersMinMaxHeightInPixels[j][l, 1] = 1080;
                                                             }
 
-
-                                                            spineMidPos[j] = Mathf.Floor(body.Joints[jt].Position.Z);
-                                                        }
-
-                                                        if (body.Joints[jt].Position.Z > spineMidPosThreshold[j] + bodyDistanceThreshold || body.Joints[jt].Position.Z < spineMidPosThreshold[j] - bodyDistanceThreshold)
-                                                        {
                                                             zoneChanged[j] = true;
                                                             if (body.Joints[jt].Position.Z > spineMidPosThreshold[j] + bodyDistanceThreshold)
                                                             {
@@ -302,6 +311,7 @@ public class Manager : MonoBehaviour
                 CheckHighFive();
                 CheckActivePlayers();
                 AddRowToData();
+                TimeBeingActive();
                 TimeSpentAlone();
                 PlayAlone();
                 if (playersId.Count < 2)
@@ -333,8 +343,15 @@ public class Manager : MonoBehaviour
                 if (foundID == false)
                 {
                     LogData.instance.pID.Add(playersId[i]);
+                    LogData.instance.timeBeingActive.Add(0);
                     LogData.instance.timeSpentAlone.Add(0);
                     LogData.instance.playAlone.Add(0);
+                    LogData.instance.timeNotPlayingButPartnerPlays.Add(0);
+                    LogData.instance.timePlayingTogether.Add(0);
+                    LogData.instance.timePlayingTogetherHands.Add(0);
+                    LogData.instance.timePlayingTogetherBodies.Add(0);
+                    LogData.instance.timeBothNotPlaying.Add(0);
+                    LogData.instance.didH5.Add(0);
                     if (i == 0)
                     {
                         for (int k = 0; k < LogData.instance.color.Count; k++)
@@ -365,13 +382,24 @@ public class Manager : MonoBehaviour
     }
 
 
+    void TimeBeingActive()
+    {
+        for (int i = 0; i < LogData.instance.pID.Count; i++)
+        {
+            if (LogData.instance.active[i] == true)
+            {
+                LogData.instance.timeBeingActive[i] += Time.deltaTime;
+            }
+        }
+    }
+
     void TimeSpentAlone()
     {
-        if(playersId.Count == 1)
+        if (playersId.Count == 1)
         {
-            for(int i=0; i<LogData.instance.active.Count; i++)
+            for (int i = 0; i < LogData.instance.active.Count; i++)
             {
-                if(LogData.instance.active[i] == true)
+                if (LogData.instance.active[i] == true)
                 {
                     LogData.instance.timeSpentAlone[i] += Time.deltaTime;
                 }
@@ -382,22 +410,29 @@ public class Manager : MonoBehaviour
 
     void PlayAlone()
     {
-        if(playersId.Count > 1)
+        if (playersId.Count > 1)
         {
-            if((p1UInput.userInput == "high" || p1UInput.userInput == "low" || p1UInput.userInput == p1UInput.targetBackInput || p1UInput.userInput == p1UInput.targetForwardInput) && p2UInput.userInput == null)
+            if ((p1UInput.userInput == "high" || p1UInput.userInput == "low" || p1UInput.userInput == p1UInput.targetBackInput || p1UInput.userInput == p1UInput.targetForwardInput) && p2UInput.userInput == null)
             {
-                for(int i=0; i<LogData.instance.color.Count; i++)
+                for (int i = 0; i < LogData.instance.color.Count; i++)
                 {
-                    if(LogData.instance.color[i] == "Blue")
+                    if (LogData.instance.color[i] == "Blue")
                     {
                         if (LogData.instance.active[i] == true)
                         {
                             LogData.instance.playAlone[i] += Time.deltaTime;
                         }
                     }
+                    else if(LogData.instance.color[i] == "Red")
+                    {
+                        if(LogData.instance.active[i] == true)
+                        {
+                            LogData.instance.timeNotPlayingButPartnerPlays[i] += Time.deltaTime;
+                        }
+                    }
                 }
             }
-            else if((p2UInput.userInput == "high" || p2UInput.userInput == "low" || p2UInput.userInput == p2UInput.targetBackInput || p2UInput.userInput == p2UInput.targetForwardInput) && p1UInput.userInput == null)
+            else if ((p2UInput.userInput == "high" || p2UInput.userInput == "low" || p2UInput.userInput == p2UInput.targetBackInput || p2UInput.userInput == p2UInput.targetForwardInput) && p1UInput.userInput == null)
             {
                 for (int i = 0; i < LogData.instance.color.Count; i++)
                 {
@@ -406,6 +441,13 @@ public class Manager : MonoBehaviour
                         if (LogData.instance.active[i] == true)
                         {
                             LogData.instance.playAlone[i] += Time.deltaTime;
+                        }
+                    }
+                    else if (LogData.instance.color[i] == "Blue")
+                    {
+                        if (LogData.instance.active[i] == true)
+                        {
+                            LogData.instance.timeNotPlayingButPartnerPlays[i] += Time.deltaTime;
                         }
                     }
                 }
@@ -474,22 +516,45 @@ public class Manager : MonoBehaviour
                 }
                 if (playersId[i] != null)
                 {
-                    for(int k=0; k<LogData.instance.pID.Count; k++)
+                    for (int k = 0; k < LogData.instance.pID.Count; k++)
                     {
-                        if(LogData.instance.pID[k] == playersId[i])
+                        if (LogData.instance.pID[k] == playersId[i])
                         {
-                            if(i==0)
+                            if (i == 0)
                             {
-                                for(int p=0; p<LogData.instance.color.Count; p++)
+                                playTones = false;
+                                playTonesBody = false;
+                                playTonesBodyHands = false;
+                                for (int p = 0; p < LogData.instance.color.Count; p++)
                                 {
-                                    if(LogData.instance.color[p] == "Red")
+                                    if (LogData.instance.color[p] == "Red")
                                     {
-                                        if(LogData.instance.active[p] == true)
+                                        if (LogData.instance.active[p] == true)
                                         {
-                                            LogData.instance.color[p] = "Blue";
+                                            //Means p2 changes to p1. Add a new row where p2 becomes blue and the previous red becomes inactive
+                                            LogData.instance.pID.Add(LogData.instance.pID[p]);
+                                            LogData.instance.color.Add("Blue");
+                                            LogData.instance.active.Add(true);
+                                            LogData.instance.timeBeingActive.Add(0);
+                                            LogData.instance.timeSpentAlone.Add(0);
+                                            LogData.instance.playAlone.Add(0);
+                                            LogData.instance.timeNotPlayingButPartnerPlays.Add(0);
+                                            LogData.instance.timePlayingTogether.Add(0);
+                                            LogData.instance.timePlayingTogetherHands.Add(0);
+                                            LogData.instance.timePlayingTogetherBodies.Add(0);
+                                            LogData.instance.timeBothNotPlaying.Add(0);
+                                            LogData.instance.didH5.Add(0);
+                                            LogData.instance.active[p] = false;
+                                            //LogData.instance.color[p] = "Blue";
                                         }
                                     }
                                 }
+                            }
+                            else if (i == 1)
+                            {
+                                playTones = false;
+                                playTonesBody = false;
+                                playTonesBodyHands = false;
                             }
                             LogData.instance.active[k] = false;
                         }
@@ -500,6 +565,50 @@ public class Manager : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        CheckHandnBodyForNotes();
+
+        if (playersId.Count > 1)
+        {
+            if (playTones == true)
+            {
+                for (int i = 0; i < LogData.instance.pID.Count; i++)
+                {
+                    if (LogData.instance.active[i] == true)
+                    {
+                        LogData.instance.timePlayingTogetherHands[i] += Time.deltaTime;
+                    }
+                }
+            }
+
+            if (playTonesBody == true)
+            {
+                for (int i = 0; i < LogData.instance.pID.Count; i++)
+                {
+                    if (LogData.instance.active[i] == true)
+                    {
+                        LogData.instance.timePlayingTogetherBodies[i] += Time.deltaTime;
+                    }
+                }
+            }
+
+
+            if (p1UInput.userInput == null && p2UInput.userInput == null)
+            {
+                for (int i = 0; i < LogData.instance.pID.Count; i++)
+                {
+                    if (LogData.instance.active[i] == true)
+                    {
+                        LogData.instance.timeBothNotPlaying[i] += Time.deltaTime;
+                    }
+                }
+            }
+
+
+        }
+
+    }
 
     void OnGUI()
     {
@@ -580,40 +689,6 @@ public class Manager : MonoBehaviour
 
                                             if (playersJointsHeight[k][p] > playersJointsHeight[k][0] && k < 2)          //K will be restricted to 2 for only two players.
                                             {
-                                                /////////////////////FIXED CASE ONLY FOR TWO PLAYERS AND ONLY FOR TWO HANDS
-                                                if (playersId.Count > 1)
-                                                {
-                                                    try
-                                                    {
-                                                        if (playersJointsHeight[0][1] > playersJointsHeight[0][0] && (playersJointsHeight[1][1] > playersJointsHeight[1][0] || playersJointsHeight[1][2] > playersJointsHeight[1][0])
-                                                            || playersJointsHeight[0][2] > playersJointsHeight[0][0] && (playersJointsHeight[1][1] > playersJointsHeight[1][0] || playersJointsHeight[1][2] > playersJointsHeight[1][0]))
-                                                        {
-                                                            playTones = true;
-                                                        }
-                                                        else
-                                                        {
-                                                            playTones = false;
-                                                        }
-
-                                                        if (((playersJointsHeight[0][1] > playersJointsHeight[0][0] || playersJointsHeight[0][2] > playersJointsHeight[0][0]) && clipEndedP2 == false)
-                                                            || ((playersJointsHeight[1][1] > playersJointsHeight[1][0] || playersJointsHeight[1][2] > playersJointsHeight[1][0]) && clipEndedP1 == false))
-                                                        {
-                                                            playTonesBodyHands = true;
-                                                        }
-                                                        else
-                                                        {
-                                                            playTonesBodyHands = false;
-                                                        }
-
-
-                                                    }
-                                                    catch
-                                                    {
-                                                        print("Something went wrong with detecting the position of either the left hand or right hand or both from the player1 or player2");
-                                                    }
-                                                }
-                                                //////////////////////////////////////////////////////////////////////////
-
                                                 moveHands = true;
 
                                                 var range = playersMinMaxHeightInPixels[k][p, 0] - playersMinMaxHeightInPixels[k][p, 1];
@@ -702,6 +777,45 @@ public class Manager : MonoBehaviour
         }
     }
 
+
+    void CheckHandnBodyForNotes()
+    {
+        /////////////////////FIXED CASE ONLY FOR TWO PLAYERS AND ONLY FOR TWO HANDS
+        if (playersId.Count > 1)
+        {
+            try
+            {
+                if (playersJointsHeight[0][1] > playersJointsHeight[0][0] && (playersJointsHeight[1][1] > playersJointsHeight[1][0] || playersJointsHeight[1][2] > playersJointsHeight[1][0])
+                    || playersJointsHeight[0][2] > playersJointsHeight[0][0] && (playersJointsHeight[1][1] > playersJointsHeight[1][0] || playersJointsHeight[1][2] > playersJointsHeight[1][0]))
+                {
+                    playTones = true;
+                }
+                else
+                {
+                    playTones = false;
+                }
+
+                if (((playersJointsHeight[0][1] > playersJointsHeight[0][0] || playersJointsHeight[0][2] > playersJointsHeight[0][0]) && clipEndedP2 == false) || ((playersJointsHeight[1][1] > playersJointsHeight[1][0] || playersJointsHeight[1][2] > playersJointsHeight[1][0]) && clipEndedP1 == false))
+
+                {
+                    playTonesBodyHands = true;
+                }
+                else
+                {
+                    playTonesBodyHands = false;
+                }
+
+
+            }
+            catch
+            {
+                print("Something went wrong with detecting the position of either the left hand or right hand or both from the player1 or player2");
+            }
+        }
+        //////////////////////////////////////////////////////////////////////////
+    }
+
+
     void SortMinMax(float height, int player, int joint)
     {
         playersMinMaxHeight[player][joint, 0] = jointsHeight[0];
@@ -751,6 +865,13 @@ public class Manager : MonoBehaviour
                                         if (ableToHigh5Left == true)
                                         {
                                             print("p1Left highFive with p2AnyHand");
+                                            for (int i = 0; i < LogData.instance.pID.Count; i++)
+                                            {
+                                                if (LogData.instance.active[i] == true)
+                                                {
+                                                    LogData.instance.didH5[i]++;
+                                                }
+                                            }
                                             didHigh5 = true;    //Needs to be set on false when the fireworks were played;
                                             ableToHigh5Left = false;
                                         }
@@ -775,6 +896,13 @@ public class Manager : MonoBehaviour
                                         if (ableToHigh5Right == true)
                                         {
                                             print("p1Right highFive with p2AnyHand");
+                                            for (int i = 0; i < LogData.instance.pID.Count; i++)
+                                            {
+                                                if (LogData.instance.active[i] == true)
+                                                {
+                                                    LogData.instance.didH5[i]++;
+                                                }
+                                            }
                                             didHigh5 = true;    //Needs to be set on false when the fireworks were played;
                                             ableToHigh5Right = false;
                                         }
