@@ -16,7 +16,7 @@ public class LogData : MonoBehaviour
     //[HideInInspector]
     public List<bool> active;
     //[HideInInspector]
-    public List<float> timeBeingActive, timeSpentAlone, playAlone, timePlayingTogether, timePlayingTogetherHands, timePlayingTogetherBodies, timeBothNotPlaying, timeNotPlayingButPartnerPlays;
+    public List<float> timeBeingActive, timeSpentAlone, playAlone, timePlayingTogether, timePlayingTogetherHands, timePlayingTogetherBodies, timeBothNotPlaying, timeNotPlayingButPartnerPlays, timeLowHand, timeHighHand, timeBackBody, timeForwBody, timeNullInput;
     //[HideInInspector]
     public List<int> didH5;
 
@@ -38,6 +38,11 @@ public class LogData : MonoBehaviour
         timePlayingTogetherBodies = new List<float>();
         timeBothNotPlaying = new List<float>();
         timeNotPlayingButPartnerPlays = new List<float>();
+        timeLowHand = new List<float>();
+        timeHighHand = new List<float>();
+        timeBackBody = new List<float>();
+        timeForwBody = new List<float>();
+        timeNullInput = new List<float>();
         didH5 = new List<int>();
 
     }
@@ -46,13 +51,13 @@ public class LogData : MonoBehaviour
     {
         if (!File.Exists("C:/Users/User/Desktop/DataCollection/" + dateAndTime.ToString("yyyy_MM_dd__HH_mm_ss") + ".txt"))
         {
+            //File.WriteAllText("C:/Users/User/Desktop/DataCollection/" + dateAndTime.ToString("yyyy_MM_dd__HH_mm_ss") + ".txt", "Game,PlayerID,Color,TimeWasActive,Active,TimeSpentAlone,PlayedAlone,TimeDidntPlayButPartnerPlayed,PlayedTogether,PlayedTogetherHands,PlayedTogetherBodies,BothDidntPlay,H5s,LowHand,HighHand,BackBody,ForwardBody,NullInput");
+
             for (int i = 0; i < pID.Count; i++)
             {
-                //////////////////////////////EXAMPLE/////////////////////////////////
-                File.AppendAllText("C:/Users/User/Desktop/DataCollection/" + dateAndTime.ToString("yyyy_MM_dd__HH_mm_ss") + ".txt", 
-                    "\r\n" + SavedData.instance.game + "," + pID[i].ToString() + "," + color[i] + "," + timeBeingActive[i] + "," + active[i] + "," + timeSpentAlone[i] + "," + playAlone[i] + "," + timeNotPlayingButPartnerPlays[i] + "," +
-                    timePlayingTogether[i] + "," + timePlayingTogetherHands[i] + "," + timePlayingTogetherBodies[i] + "," + timeBothNotPlaying[i] + "," + didH5[i]);
-                //"\r\n" + Manager.instance.playersId[0].ToString() + "\r\n" + "played: " + Manager.instance.P1Highes + " highes")
+                File.AppendAllText("C:/Users/User/Desktop/DataCollection/" + dateAndTime.ToString("yyyy_MM_dd__HH_mm_ss") + ".txt",
+                    "\r\n" + SavedData.instance.game + "," + pID[i] + "," + color[i] + "," + timeBeingActive[i] + "," + active[i] + "," + timeSpentAlone[i] + "," + playAlone[i] + "," + timeNotPlayingButPartnerPlays[i] + "," +
+                    timePlayingTogether[i] + "," + timePlayingTogetherHands[i] + "," + timePlayingTogetherBodies[i] + "," + timeBothNotPlaying[i] + "," + didH5[i] + "," + timeLowHand[i] + "," + timeHighHand[i] + "," + timeBackBody[i] + "," + timeForwBody[i] + "," + timeNullInput[i]);
             }
         }
 

@@ -1469,7 +1469,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   melodicObject: {fileID: 929940645}
   rythmObject: {fileID: 882749006}
-  drumClip: {fileID: 8300000, guid: 6276166ca919bce4390aee4441e92f70, type: 3}
+  drumClip: {fileID: 8300000, guid: 62f9e6375abd14b40897c8680bd90275, type: 3}
   applause: {fileID: 8300000, guid: 9ffa05968400c074caac1260dab597b4, type: 3}
   rythmUseTwoSets: 1
   melodicUseTwoSets: 0
@@ -4746,6 +4746,10 @@ MonoBehaviour:
   clipEndedP1: 0
   clipEndedP2: 0
   tutorialRaisedHandsDown: 0
+  p1MovedFrw: 0
+  p1MovedBack: 0
+  p2MovedFrw: 0
+  p2MovedBack: 0
   playersMat:
   - {fileID: 2800000, guid: f5c94ccd1be569a47932c7235da849f6, type: 3}
   - {fileID: 2800000, guid: a0b279b4dc6f6054180ff0575ddffa20, type: 3}
@@ -4815,6 +4819,11 @@ MonoBehaviour:
   timePlayingTogetherBodies: []
   timeBothNotPlaying: []
   timeNotPlayingButPartnerPlays: []
+  timeLowHand: []
+  timeHighHand: []
+  timeBackBody: []
+  timeForwBody: []
+  timeNullInput: []
   didH5: 
 --- !u!1 &2082081819
 GameObject:

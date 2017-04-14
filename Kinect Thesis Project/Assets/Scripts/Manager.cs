@@ -29,7 +29,7 @@ public class Manager : MonoBehaviour
     List<Texture> playersMidHighLowMat;     //Counts how many bodies are active at the same frame.
     bool foundId, moveHands, ableToHigh5Left, ableToHigh5Right;
     [HideInInspector]
-    public bool didHigh5, playTones, playTonesBody, playTonesBodyHands, clipEndedP1, clipEndedP2, tutorialRaisedHandsDown;
+    public bool didHigh5, playTones, playTonesBody, playTonesBodyHands, clipEndedP1, clipEndedP2, tutorialRaisedHandsDown, p1MovedFrw, p1MovedBack, p2MovedFrw, p2MovedBack;
 
     //public Texture texture;
     public List<Texture> playersMat;
@@ -83,8 +83,12 @@ public class Manager : MonoBehaviour
         playTones = false;
         playTonesBody = false;
         playTonesBodyHands = false;
-        clipEndedP1 = false;
-        clipEndedP2 = false;
+        clipEndedP1 = true;
+        clipEndedP2 = true;
+        p1MovedBack = false;
+        p1MovedFrw = false;
+        p2MovedBack = false;
+        p2MovedFrw = false;
         tutorialRaisedHandsDown = false;
 
         p1UInput = player1.GetComponent<UserInput>();
@@ -236,12 +240,14 @@ public class Manager : MonoBehaviour
                                                                 if (j == 0)
                                                                 {
                                                                     p1UInput.userInput = p1UInput.targetBackInput;
+                                                                    p1MovedBack = true;
                                                                     playersMidHighLowMat[j] = MidLowHighMats[0];
                                                                     clipEndedP1 = false;
                                                                 }
                                                                 else if (j == 1)
                                                                 {
                                                                     p2UInput.userInput = p2UInput.targetBackInput;
+                                                                    p2MovedBack = true;
                                                                     playersMidHighLowMat[j] = MidLowHighMats[2];
                                                                     clipEndedP2 = false;
                                                                 }
@@ -252,12 +258,14 @@ public class Manager : MonoBehaviour
                                                                 if (j == 0)
                                                                 {
                                                                     p1UInput.userInput = p1UInput.targetForwardInput;
+                                                                    p1MovedFrw = true;
                                                                     playersMidHighLowMat[j] = MidLowHighMats[1];
                                                                     clipEndedP1 = false;
                                                                 }
                                                                 else if (j == 1)
                                                                 {
                                                                     p2UInput.userInput = p2UInput.targetForwardInput;
+                                                                    p2MovedFrw = true;
                                                                     playersMidHighLowMat[j] = MidLowHighMats[3];
                                                                     clipEndedP2 = false;
                                                                 }
@@ -351,6 +359,11 @@ public class Manager : MonoBehaviour
                     LogData.instance.timePlayingTogetherHands.Add(0);
                     LogData.instance.timePlayingTogetherBodies.Add(0);
                     LogData.instance.timeBothNotPlaying.Add(0);
+                    LogData.instance.timeLowHand.Add(0);
+                    LogData.instance.timeHighHand.Add(0);
+                    LogData.instance.timeBackBody.Add(0);
+                    LogData.instance.timeForwBody.Add(0);
+                    LogData.instance.timeNullInput.Add(0);
                     LogData.instance.didH5.Add(0);
                     if (i == 0)
                     {
@@ -412,7 +425,7 @@ public class Manager : MonoBehaviour
     {
         if (playersId.Count > 1)
         {
-            if ((p1UInput.userInput == "high" || p1UInput.userInput == "low" || p1UInput.userInput == p1UInput.targetBackInput || p1UInput.userInput == p1UInput.targetForwardInput) && p2UInput.userInput == null)
+            if ((p1UInput.userInput == "high" || p1UInput.userInput == "low" || p1UInput.userInput == p1UInput.targetBackInput || p1UInput.userInput == p1UInput.targetForwardInput) && p2UInput.userInput == null)  //This statement doesn't work properly cause of p1UInput.targetBackInput and p1UInput.targetForwardInput
             {
                 for (int i = 0; i < LogData.instance.color.Count; i++)
                 {
@@ -432,7 +445,7 @@ public class Manager : MonoBehaviour
                     }
                 }
             }
-            else if ((p2UInput.userInput == "high" || p2UInput.userInput == "low" || p2UInput.userInput == p2UInput.targetBackInput || p2UInput.userInput == p2UInput.targetForwardInput) && p1UInput.userInput == null)
+            else if ((p2UInput.userInput == "high" || p2UInput.userInput == "low" || p2UInput.userInput == p2UInput.targetBackInput || p2UInput.userInput == p2UInput.targetForwardInput) && p1UInput.userInput == null)  //This statement doesn't work properly cause of p2UInput.targetBackInput and p2UInput.targetForwardInput
             {
                 for (int i = 0; i < LogData.instance.color.Count; i++)
                 {
@@ -543,6 +556,11 @@ public class Manager : MonoBehaviour
                                             LogData.instance.timePlayingTogetherHands.Add(0);
                                             LogData.instance.timePlayingTogetherBodies.Add(0);
                                             LogData.instance.timeBothNotPlaying.Add(0);
+                                            LogData.instance.timeLowHand.Add(0);
+                                            LogData.instance.timeHighHand.Add(0);
+                                            LogData.instance.timeBackBody.Add(0);
+                                            LogData.instance.timeForwBody.Add(0);
+                                            LogData.instance.timeNullInput.Add(0);
                                             LogData.instance.didH5.Add(0);
                                             LogData.instance.active[p] = false;
                                             //LogData.instance.color[p] = "Blue";
@@ -565,9 +583,158 @@ public class Manager : MonoBehaviour
         }
     }
 
+
+    void CheckHowPlayMusic() //This function collects data for how much time they spent on playing high/low/back/forward
+    {
+        //Checks for player1
+        if(p1UInput.userInput == "low")
+        {
+            for (int i = 0; i < LogData.instance.color.Count; i++)
+            {
+                if (LogData.instance.color[i] == "Blue")
+                {
+                    if (LogData.instance.active[i] == true)
+                    {
+                        LogData.instance.timeLowHand[i] += Time.deltaTime;
+                    }
+                }
+            }
+        }
+        if(p1UInput.userInput == "high")
+        {
+            for (int i = 0; i < LogData.instance.color.Count; i++)
+            {
+                if (LogData.instance.color[i] == "Blue")
+                {
+                    if (LogData.instance.active[i] == true)
+                    {
+                        LogData.instance.timeHighHand[i] += Time.deltaTime;
+                    }
+                }
+            }
+        }
+        if(p1MovedBack == true)         ///////Doesn't work properly it triggers High also because p1MovedBack depends on clipEndedp1 which seems that always push through high
+        {
+            for (int i = 0; i < LogData.instance.color.Count; i++)
+            {
+                if (LogData.instance.color[i] == "Blue")
+                {
+                    if (LogData.instance.active[i] == true)
+                    {
+                        LogData.instance.timeBackBody[i] += Time.deltaTime;
+                    }
+                }
+            }
+        }
+        if(p1MovedFrw == true)         ///////Doesn't work properly it triggers High also because p1MovedFrw depends on clipEndedp1 which seems that always push through high
+        {
+            for (int i = 0; i < LogData.instance.color.Count; i++)
+            {
+                if (LogData.instance.color[i] == "Blue")
+                {
+                    if (LogData.instance.active[i] == true)
+                    {
+                        LogData.instance.timeForwBody[i] += Time.deltaTime;
+                    }
+                }
+            }
+        }
+        if(p1UInput.userInput == null)
+        {
+            for (int i = 0; i < LogData.instance.color.Count; i++)
+            {
+                if (LogData.instance.color[i] == "Blue")
+                {
+                    if (LogData.instance.active[i] == true)
+                    {
+                        LogData.instance.timeNullInput[i] += Time.deltaTime;
+                    }
+                }
+            }
+        }
+
+        //Checks for player2
+        if (p2UInput.userInput == "low")
+        {
+            for (int i = 0; i < LogData.instance.color.Count; i++)
+            {
+                if (LogData.instance.color[i] == "Red")
+                {
+                    if (LogData.instance.active[i] == true)
+                    {
+                        LogData.instance.timeLowHand[i] += Time.deltaTime;
+                    }
+                }
+            }
+        }
+        if (p2UInput.userInput == "high")
+        {
+            for (int i = 0; i < LogData.instance.color.Count; i++)
+            {
+                if (LogData.instance.color[i] == "Red")
+                {
+                    if (LogData.instance.active[i] == true)
+                    {
+                        LogData.instance.timeHighHand[i] += Time.deltaTime;
+                    }
+                }
+            }
+        }
+        if (p2MovedBack == true)        ///////Doesn't work properly it triggers High also because p2MovedBack depends on clipEndedp2 which seems that always push through high
+        {
+            for (int i = 0; i < LogData.instance.color.Count; i++)
+            {
+                if (LogData.instance.color[i] == "Red")
+                {
+                    if (LogData.instance.active[i] == true)
+                    {
+                        LogData.instance.timeBackBody[i] += Time.deltaTime;
+                    }
+                }
+            }
+        }
+        if (p2MovedFrw == true)         ///////Doesn't work properly it triggers High also because p2MovedFrw depends on clipEndedp2 which seems that always push through high
+        {
+            for (int i = 0; i < LogData.instance.color.Count; i++)
+            {
+                if (LogData.instance.color[i] == "Red")
+                {
+                    if (LogData.instance.active[i] == true)
+                    {
+                        LogData.instance.timeForwBody[i] += Time.deltaTime;
+                    }
+                }
+            }
+        }
+        if (p2UInput.userInput == null)
+        {
+            for (int i = 0; i < LogData.instance.color.Count; i++)
+            {
+                if (LogData.instance.color[i] == "Red")
+                {
+                    if (LogData.instance.active[i] == true)
+                    {
+                        LogData.instance.timeNullInput[i] += Time.deltaTime;
+                    }
+                }
+            }
+        }
+
+    }
+
     void Update()
     {
         CheckHandnBodyForNotes();
+
+        //if(p1MovedBack == true)
+        //{
+        //    print("Player1 moved back");
+        //}
+
+        //if(p1MovedFrw == true)
+        //{
+        //    print("Player1 moved forward");
+        //}
 
         if (playersId.Count > 1)
         {
@@ -604,9 +771,9 @@ public class Manager : MonoBehaviour
                     }
                 }
             }
-
-
         }
+
+        CheckHowPlayMusic();
 
     }
 
@@ -649,6 +816,15 @@ public class Manager : MonoBehaviour
                                             {
                                                 if (clipEndedP1 == true)
                                                 {
+                                                    if(p1MovedBack == true)
+                                                    {
+                                                        p1MovedBack = false;
+                                                    }
+                                                    else if(p1MovedFrw == true)
+                                                    {
+                                                        p1MovedFrw = false;
+                                                    }
+
                                                     if (k == 0)
                                                     {
                                                         Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP1 / 2, bodyJoints[k][i, 1] - midTextureHeightP1 / 2, midTextureWidthP1, midTextureHeightP1), playersMat[k]);
@@ -667,6 +843,15 @@ public class Manager : MonoBehaviour
 
                                                 if (clipEndedP2 == true)
                                                 {
+                                                    if (p2MovedBack == true)
+                                                    {
+                                                        p2MovedBack = false;
+                                                    }
+                                                    else if (p2MovedFrw == true)
+                                                    {
+                                                        p2MovedFrw = false;
+                                                    }
+
                                                     if (k == 1)
                                                     {
                                                         Graphics.DrawTexture(new Rect(bodyJoints[k][i, 0] - midTextureWidthP2 / 2, bodyJoints[k][i, 1] - midTextureHeightP2 / 2, midTextureWidthP2, midTextureHeightP2), playersMat[k]);
