@@ -19,7 +19,7 @@ public class Manager : MonoBehaviour
     List<float[,]> playersMinMaxHeight; // Min-Max height of joints per player
     public List<ulong> playersId;       //Remove the public. Did only for observation.
     List<float[,]> playersMinMaxHeightInPixels;
-    bool[] players, initializeMidPos, zoneChanged;
+    bool[] initializeMidPos, zoneChanged;
     public ulong[] IDs;
     float[] jointsHeight;       //With the order of the prefJoints. (heights of the joints in general) (the y variable nto the actual y in pixels)
     float[,] minMaxHeight;
@@ -45,7 +45,7 @@ public class Manager : MonoBehaviour
 
     void Start()
     {
-        print(SceneManager.GetActiveScene().name);
+        //print(SceneManager.GetActiveScene().name);
 
         if (instance == null)
         {
@@ -72,7 +72,7 @@ public class Manager : MonoBehaviour
         spineMidPos = new List<float>();
         spineMidPosThreshold = new List<float>();
         playersMidHighLowMat = new List<Texture>();
-        players = new bool[6];
+        //players = new bool[6];
         IDs = new ulong[6];
         initializeMidPos = new bool[6];  //maximum 6 players
         zoneChanged = new bool[6];  //maximum 6 players
@@ -104,6 +104,10 @@ public class Manager : MonoBehaviour
                 bodies = new Kinect.Body[frame.BodyFrameSource.BodyCount];  //BodyCount is always 6. I guess they have it on 6 because it is the maximum of the players that they can track per frame.
                 frame.GetAndRefreshBodyData(bodies);
                 var p = 0; //p counts the bodies so it counts the players
+                for(int h=0; h<IDs.Length; h++)
+                {
+                    IDs[h] = 0;
+                }
 
                 foreach (var body in bodies)
                 {
@@ -119,13 +123,13 @@ public class Manager : MonoBehaviour
                         minMaxHeight[j, 1] = -1;
                         minMaxHeightInPixels[j, 0] = 1080;
                         minMaxHeightInPixels[j, 1] = 1080;
-                    }
-                    foundId = false;
+                    }                    
+
                     if (body != null)
                     {
                         if (body.IsTracked)
                         {
-                            players[p] = true;
+                            //players[p] = true;
                             IDs[p] = body.TrackingId;
 
                             if (playersId.Count == 0)
@@ -141,27 +145,31 @@ public class Manager : MonoBehaviour
                                 playersMinMaxHeight.Add(minMaxHeight);
                                 playersMinMaxHeightInPixels.Add(minMaxHeightInPixels);
                             }
-
-                            foreach (ulong id in playersId)
+                            else
                             {
-                                if (body.TrackingId == id)
+                                foundId = false;
+
+                                foreach (ulong id in playersId)
                                 {
-                                    foundId = true;
+                                    if (body.TrackingId == id)
+                                    {
+                                        foundId = true;
+                                    }
                                 }
-                            }
 
-                            if (foundId == false)
-                            {
-                                playersId.Add(body.TrackingId);
-                                spineMidHeightInPixels.Add(0);
-                                spineMidPos.Add(0);
-                                spineMidPosThreshold.Add(0);
-                                bodyJoints.Add(null);
-                                bodyJointsWorld.Add(null);
-                                playersJointsHeight.Add(null);
-                                playersMidHighLowMat.Add(null);
-                                playersMinMaxHeight.Add(minMaxHeight);
-                                playersMinMaxHeightInPixels.Add(minMaxHeightInPixels);
+                                if (foundId == false)
+                                {
+                                    playersId.Add(body.TrackingId);
+                                    spineMidHeightInPixels.Add(0);
+                                    spineMidPos.Add(0);
+                                    spineMidPosThreshold.Add(0);
+                                    bodyJoints.Add(null);
+                                    bodyJointsWorld.Add(null);
+                                    playersJointsHeight.Add(null);
+                                    playersMidHighLowMat.Add(null);
+                                    playersMinMaxHeight.Add(minMaxHeight);
+                                    playersMinMaxHeightInPixels.Add(minMaxHeightInPixels);
+                                }
                             }
 
                             for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
@@ -246,7 +254,7 @@ public class Manager : MonoBehaviour
                                                                 }
                                                             }
 
-                                                            if(clipEndedP1 == false && clipEndedP2 == false)
+                                                            if (clipEndedP1 == false && clipEndedP2 == false)
                                                             {
                                                                 playTonesBody = true;
                                                             }
@@ -283,16 +291,19 @@ public class Manager : MonoBehaviour
                                 }
                             }
                         }
-                        else
-                        {
-                            players[p] = false;
-                            IDs[p] = 0;
-                        }
+                        //else
+                        //{
+                        //    //players[p] = false;
+                        //    IDs[p] = 0;
+                        //}
                     }
                     p++;
                 }
                 CheckHighFive();
                 CheckActivePlayers();
+                AddRowToData();
+                TimeSpentAlone();
+                PlayAlone();
                 if (playersId.Count < 2)
                 {
                     playTones = false;
@@ -303,6 +314,104 @@ public class Manager : MonoBehaviour
         }
     }
 
+
+    void AddRowToData()
+    {
+        for (int i = 0; i < playersId.Count; i++)
+        {
+            if (i < 2)
+            {
+                bool foundID = false;
+                for (int j = 0; j < LogData.instance.pID.Count; j++)
+                {
+                    if (LogData.instance.pID[j] == playersId[i])
+                    {
+                        foundID = true;
+                    }
+                }
+
+                if (foundID == false)
+                {
+                    LogData.instance.pID.Add(playersId[i]);
+                    LogData.instance.timeSpentAlone.Add(0);
+                    LogData.instance.playAlone.Add(0);
+                    if (i == 0)
+                    {
+                        for (int k = 0; k < LogData.instance.color.Count; k++)
+                        {
+                            if (LogData.instance.color[k] == "Blue")
+                            {
+                                LogData.instance.active[k] = false;
+                            }
+                        }
+                        LogData.instance.color.Add("Blue");
+                        LogData.instance.active.Add(true);
+                    }
+                    else
+                    {
+                        for (int k = 0; k < LogData.instance.color.Count; k++)
+                        {
+                            if (LogData.instance.color[k] == "Red")
+                            {
+                                LogData.instance.active[k] = false;
+                            }
+                        }
+                        LogData.instance.color.Add("Red");
+                        LogData.instance.active.Add(true);
+                    }
+                }
+            }
+        }
+    }
+
+
+    void TimeSpentAlone()
+    {
+        if(playersId.Count == 1)
+        {
+            for(int i=0; i<LogData.instance.active.Count; i++)
+            {
+                if(LogData.instance.active[i] == true)
+                {
+                    LogData.instance.timeSpentAlone[i] += Time.deltaTime;
+                }
+            }
+        }
+    }
+
+
+    void PlayAlone()
+    {
+        if(playersId.Count > 1)
+        {
+            if((p1UInput.userInput == "high" || p1UInput.userInput == "low" || p1UInput.userInput == p1UInput.targetBackInput || p1UInput.userInput == p1UInput.targetForwardInput) && p2UInput.userInput == null)
+            {
+                for(int i=0; i<LogData.instance.color.Count; i++)
+                {
+                    if(LogData.instance.color[i] == "Blue")
+                    {
+                        if (LogData.instance.active[i] == true)
+                        {
+                            LogData.instance.playAlone[i] += Time.deltaTime;
+                        }
+                    }
+                }
+            }
+            else if((p2UInput.userInput == "high" || p2UInput.userInput == "low" || p2UInput.userInput == p2UInput.targetBackInput || p2UInput.userInput == p2UInput.targetForwardInput) && p1UInput.userInput == null)
+            {
+                for (int i = 0; i < LogData.instance.color.Count; i++)
+                {
+                    if (LogData.instance.color[i] == "Red")
+                    {
+                        if (LogData.instance.active[i] == true)
+                        {
+                            LogData.instance.playAlone[i] += Time.deltaTime;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     void CheckActivePlayers()
     {
@@ -365,6 +474,26 @@ public class Manager : MonoBehaviour
                 }
                 if (playersId[i] != null)
                 {
+                    for(int k=0; k<LogData.instance.pID.Count; k++)
+                    {
+                        if(LogData.instance.pID[k] == playersId[i])
+                        {
+                            if(i==0)
+                            {
+                                for(int p=0; p<LogData.instance.color.Count; p++)
+                                {
+                                    if(LogData.instance.color[p] == "Red")
+                                    {
+                                        if(LogData.instance.active[p] == true)
+                                        {
+                                            LogData.instance.color[p] = "Blue";
+                                        }
+                                    }
+                                }
+                            }
+                            LogData.instance.active[k] = false;
+                        }
+                    }
                     playersId.RemoveAt(i);
                 }
             }
@@ -375,7 +504,7 @@ public class Manager : MonoBehaviour
     void OnGUI()
     {
         if (Event.current.type.Equals(EventType.Repaint))
-        {           
+        {
             if (playersId.Count != 0)
             {
                 for (int k = 0; k < playersId.Count; k++)       // K counts players
@@ -466,7 +595,7 @@ public class Manager : MonoBehaviour
                                                             playTones = false;
                                                         }
 
-                                                        if (((playersJointsHeight[0][1] > playersJointsHeight[0][0] || playersJointsHeight[0][2] > playersJointsHeight[0][0]) && clipEndedP2 == false) 
+                                                        if (((playersJointsHeight[0][1] > playersJointsHeight[0][0] || playersJointsHeight[0][2] > playersJointsHeight[0][0]) && clipEndedP2 == false)
                                                             || ((playersJointsHeight[1][1] > playersJointsHeight[1][0] || playersJointsHeight[1][2] > playersJointsHeight[1][0]) && clipEndedP1 == false))
                                                         {
                                                             playTonesBodyHands = true;

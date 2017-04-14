@@ -6,9 +6,17 @@ using System;
 
 public class LogData : MonoBehaviour
 {
-
     public static LogData instance;
     DateTime dateAndTime;
+
+    //[HideInInspector]
+    public List<ulong> pID;
+    //[HideInInspector]
+    public List<string> color;
+    //[HideInInspector]
+    public List<bool> active;
+    //[HideInInspector]
+    public List<float> timeSpentAlone, playAlone;
 
     void Start()
     {
@@ -17,6 +25,10 @@ public class LogData : MonoBehaviour
             instance = this;
         }
         dateAndTime = DateTime.Now;
+        pID = new List<ulong>();
+        color = new List<string>();
+        active = new List<bool>();
+
     }
 
     public void WriteFile()
