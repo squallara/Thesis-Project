@@ -223,7 +223,7 @@ public class MusicManager : MonoBehaviour
         {
 
             //Debug.Log("Player 1");
-            if (setPos == 0 && userInput.userInput == userInput.inputHigh)
+            if (setPos == 0 && (userInput.userInput == userInput.inputHigh || userInput.userInput == "HighBody"))
             {
                 //Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
 
@@ -236,7 +236,7 @@ public class MusicManager : MonoBehaviour
                     melodicSourceTwoLow.mute = true;
                 }
             }
-            else if (setPos == 0 && userInput.userInput == userInput.inputLow)
+            else if (setPos == 0 && (userInput.userInput == userInput.inputLow || userInput.userInput == "LowBody"))
             {
                 // Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
                 melodicSourceOneHigh.mute = true;
@@ -248,7 +248,7 @@ public class MusicManager : MonoBehaviour
                     melodicSourceTwoLow.mute = true;
                 }
             }
-            else if (setPos == 1 && userInput.userInput == userInput.inputHigh)
+            else if (setPos == 1 && (userInput.userInput == userInput.inputHigh || userInput.userInput == "HighBody"))
             {
                 // Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
                 melodicSourceOneHigh.mute = true;
@@ -258,7 +258,7 @@ public class MusicManager : MonoBehaviour
                 melodicSourceTwoLow.mute = true;
 
             }
-            else if (setPos == 1 && userInput.userInput == userInput.inputLow)
+            else if (setPos == 1 && (userInput.userInput == userInput.inputLow || userInput.userInput == "LowBody"))
             {
                 // Debug.Log("Player 1, Set " + setPos + ", input " + userInput.userInput);
                 melodicSourceOneHigh.mute = true;
@@ -279,7 +279,7 @@ public class MusicManager : MonoBehaviour
 
         if (userInput.isPlayer2)
         {
-            if (setPos == 0 && userInput.userInput == userInput.inputHigh)
+            if (setPos == 0 && (userInput.userInput == userInput.inputHigh || userInput.userInput == "HighBody"))
             {
                 //Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
                 rythmSourceOneHigh.mute = false;
@@ -291,7 +291,7 @@ public class MusicManager : MonoBehaviour
                     rythmSourceTwoLow.mute = true;
                 }
             }
-            else if (setPos == 0 && userInput.userInput == userInput.inputLow)
+            else if (setPos == 0 && (userInput.userInput == userInput.inputLow || userInput.userInput == "LowBody"))
             {
                 //Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
                 rythmSourceOneHigh.mute = true;
@@ -303,7 +303,7 @@ public class MusicManager : MonoBehaviour
                     rythmSourceTwoLow.mute = true;
                 }
             }
-            else if (setPos == 1 && userInput.userInput == userInput.inputHigh)
+            else if (setPos == 1 && (userInput.userInput == userInput.inputHigh || userInput.userInput == "HighBody"))
             {
                 //Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
                 rythmSourceOneHigh.mute = true;
@@ -314,7 +314,7 @@ public class MusicManager : MonoBehaviour
 
 
             }
-            else if (setPos == 1 && userInput.userInput == userInput.inputLow)
+            else if (setPos == 1 && (userInput.userInput == userInput.inputLow || userInput.userInput == "LowBody"))
             {
                 //Debug.Log("Player 2, Set " + setPos + ", input " + userInput.userInput);
                 rythmSourceOneHigh.mute = true;
@@ -338,7 +338,7 @@ public class MusicManager : MonoBehaviour
 
     public void MuteOthersMelodic(int setPos, UserInput userInput)
     {
-        if (setPos == 0 && userInput.userInput == userInput.inputHigh)
+        if (setPos == 0 && (userInput.userInput == userInput.inputHigh || userInput.userInput == "HighBody"))
         {
 
 
@@ -351,7 +351,7 @@ public class MusicManager : MonoBehaviour
                 melodicSourceTwoLow.mute = true;
             }
         }
-        else if (setPos == 0 && userInput.userInput == userInput.inputLow)
+        else if (setPos == 0 && (userInput.userInput == userInput.inputLow || userInput.userInput == "LowBody"))
         {
 
             melodicSourceOneHigh.mute = true;
@@ -363,7 +363,7 @@ public class MusicManager : MonoBehaviour
                 melodicSourceTwoLow.mute = true;
             }
         }
-        else if (setPos == 1 && userInput.userInput == userInput.inputHigh)
+        else if (setPos == 1 && (userInput.userInput == userInput.inputHigh || userInput.userInput == "HighBody"))
         {
 
             melodicSourceOneHigh.mute = true;
@@ -373,7 +373,7 @@ public class MusicManager : MonoBehaviour
             melodicSourceTwoLow.mute = true;
 
         }
-        else if (setPos == 1 && userInput.userInput == userInput.inputLow)
+        else if (setPos == 1 && (userInput.userInput == userInput.inputLow || userInput.userInput == "LowBody"))
         {
 
             melodicSourceOneHigh.mute = true;
@@ -394,7 +394,7 @@ public class MusicManager : MonoBehaviour
 
     public void MuteOthersRythm(int setPos, UserInput userInput)
     {
-        if (setPos == 0 && userInput.userInput == userInput.inputHigh)
+        if (setPos == 0 && (userInput.userInput == userInput.inputHigh || userInput.userInput == "HighBody"))
         {
 
             rythmSourceOneHigh.mute = false;
@@ -406,7 +406,7 @@ public class MusicManager : MonoBehaviour
                 rythmSourceTwoLow.mute = true;
             }
         }
-        else if (setPos == 0 && userInput.userInput == userInput.inputLow)
+        else if (setPos == 0 && (userInput.userInput == userInput.inputLow || userInput.userInput == "LowBody"))
         {
 
             rythmSourceOneHigh.mute = true;
@@ -418,7 +418,7 @@ public class MusicManager : MonoBehaviour
                 rythmSourceTwoLow.mute = true;
             }
         }
-        else if (setPos == 1 && userInput.userInput == userInput.inputHigh)
+        else if (setPos == 1 && (userInput.userInput == userInput.inputHigh || userInput.userInput == "HighBody"))
         {
 
             rythmSourceOneHigh.mute = true;
@@ -429,7 +429,7 @@ public class MusicManager : MonoBehaviour
 
 
         }
-        else if (setPos == 1 && userInput.userInput == userInput.inputLow)
+        else if (setPos == 1 && (userInput.userInput == userInput.inputLow || userInput.userInput == "LowBody"))
         {
 
             rythmSourceOneHigh.mute = true;

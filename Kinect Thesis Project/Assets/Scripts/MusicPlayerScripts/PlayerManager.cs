@@ -119,11 +119,11 @@ public class PlayerManager : MonoBehaviour
 
                 if(playerInput.userInput == playerInput.targetForwardInput)
                 {
-                    playerInput.userInput = playerInput.inputHigh;
+                    playerInput.userInput = "HighBody";
                 }
                 if(playerInput.userInput == playerInput.targetBackInput)
                 {
-                    playerInput.userInput = playerInput.inputLow;
+                    playerInput.userInput = "LowBody";
                 }
 
                 if (player2rythm)
@@ -209,11 +209,11 @@ public class PlayerManager : MonoBehaviour
 
                 if (playerInput.userInput == playerInput.targetForwardInput)
                 {
-                    playerInput.userInput = playerInput.inputHigh;
+                    playerInput.userInput = "HighBody";
                 }
                 if (playerInput.userInput == playerInput.targetBackInput)
                 {
-                    playerInput.userInput = playerInput.inputLow;
+                    playerInput.userInput = "LowBody";
                 }
 
                 if (player2rythm)
