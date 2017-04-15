@@ -1489,7 +1489,7 @@ MonoBehaviour:
   rythmBeatInterval: 2
   beatInterval: 2
   timeOffset: 0
-  earlyApplauseTime: 4
+  earlyApplauseTime: 0
   melodyPlayable: 0
   rythmPlayable: 0
   inputReady: 0

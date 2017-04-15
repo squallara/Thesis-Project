@@ -587,7 +587,7 @@ public class Manager : MonoBehaviour
     void CheckHowPlayMusic() //This function collects data for how much time they spent on playing high/low/back/forward
     {
         //Checks for player1
-        if(p1UInput.userInput == "low")
+        if(p1UInput.userInput == p1UInput.targetHandLowInput)
         {
             for (int i = 0; i < LogData.instance.color.Count; i++)
             {
@@ -600,7 +600,7 @@ public class Manager : MonoBehaviour
                 }
             }
         }
-        if(p1UInput.userInput == "high")
+        if(p1UInput.userInput == p1UInput.targetHandHighInput)
         {
             for (int i = 0; i < LogData.instance.color.Count; i++)
             {
@@ -654,7 +654,7 @@ public class Manager : MonoBehaviour
         }
 
         //Checks for player2
-        if (p2UInput.userInput == "low")
+        if (p2UInput.userInput == p2UInput.targetHandLowInput)
         {
             for (int i = 0; i < LogData.instance.color.Count; i++)
             {
@@ -667,7 +667,7 @@ public class Manager : MonoBehaviour
                 }
             }
         }
-        if (p2UInput.userInput == "high")
+        if (p2UInput.userInput == p2UInput.targetHandHighInput)
         {
             for (int i = 0; i < LogData.instance.color.Count; i++)
             {
@@ -890,12 +890,12 @@ public class Manager : MonoBehaviour
 
                                                     if (k == 0)
                                                     {
-                                                        p1UInput.userInput = "high";
+                                                        p1UInput.userInput = p1UInput.targetHandHighInput;
 
                                                     }
                                                     else if (k == 1)
                                                     {
-                                                        p2UInput.userInput = "high";
+                                                        p2UInput.userInput = p2UInput.targetHandHighInput;
                                                     }
 
                                                     switch (k)
@@ -914,11 +914,11 @@ public class Manager : MonoBehaviour
 
                                                     if (k == 0)
                                                     {
-                                                        p1UInput.userInput = "low";
+                                                        p1UInput.userInput = p1UInput.targetHandLowInput;
                                                     }
                                                     else if (k == 1)
                                                     {
-                                                        p2UInput.userInput = "low";
+                                                        p2UInput.userInput = p2UInput.targetHandLowInput;
                                                     }
 
                                                     switch (k)
