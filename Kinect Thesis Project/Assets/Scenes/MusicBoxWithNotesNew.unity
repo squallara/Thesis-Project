@@ -4832,8 +4832,12 @@ MonoBehaviour:
   clipEndedP1: 0
   clipEndedP2: 0
   tutorialRaisedHandsDown: 0
+  p1MovedFrw: 0
+  p1MovedBack: 0
+  p2MovedFrw: 0
+  p2MovedBack: 0
   playersMat:
-  - {fileID: 2800000, guid: f5c94ccd1be569a47932c7235da849f6, type: 3}
+  - {fileID: 2800000, guid: 16a9cb393cae78d42941dfa5996779bf, type: 3}
   - {fileID: 2800000, guid: a0b279b4dc6f6054180ff0575ddffa20, type: 3}
   - {fileID: 2800000, guid: 3d0488cf578717a4ca9c90d67279ae62, type: 3}
   - {fileID: 2800000, guid: ef364f0c8895e1f46932bbef09b7b3b5, type: 3}
@@ -4848,8 +4852,8 @@ MonoBehaviour:
   - {fileID: 2800000, guid: c0f72566b9c00784294d568560107f09, type: 3}
   - {fileID: 2800000, guid: ec08bc1de3aabcb4a8f5a1ef98091270, type: 3}
   MidLowHighMats:
-  - {fileID: 2800000, guid: 9e225d965c225034dbdee99b663ad3bf, type: 3}
-  - {fileID: 2800000, guid: 35a8e7cbda148ad40804da2948951096, type: 3}
+  - {fileID: 2800000, guid: a27bee3c12c185041b9dac8b77a04919, type: 3}
+  - {fileID: 2800000, guid: a3d7bc5145259d8448046bf14e8c8903, type: 3}
   - {fileID: 2800000, guid: abc17d3d32f76f84986004e15ed8cd88, type: 3}
   - {fileID: 2800000, guid: 58634d3217c334e449397bcfd1ce4629, type: 3}
   prefJoints: 01000000070000000b000000
@@ -4893,8 +4897,20 @@ MonoBehaviour:
   pID: 
   color: []
   active: 
+  timeBeingActive: []
   timeSpentAlone: []
   playAlone: []
+  timePlayingTogether: []
+  timePlayingTogetherHands: []
+  timePlayingTogetherBodies: []
+  timeBothNotPlaying: []
+  timeNotPlayingButPartnerPlays: []
+  timeLowHand: []
+  timeHighHand: []
+  timeBackBody: []
+  timeForwBody: []
+  timeNullInput: []
+  didH5: 
 --- !u!114 &2129519222 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114961946022812850, guid: 4187cb9ace099004aa2896c95f27c6d2,
