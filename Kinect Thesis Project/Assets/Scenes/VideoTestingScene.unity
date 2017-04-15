@@ -100,6 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 325212957}
   - component: {fileID: 325212956}
+  - component: {fileID: 325212958}
   m_Layer: 0
   m_Name: PlayersFollowedTheTutorial
   m_TagString: Untagged
@@ -120,6 +121,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playersPlayedTut: 
   tutObj: {fileID: 325212955}
+  timeToStart: 3
+  timeToStartTemp: 0
 --- !u!4 &325212957
 Transform:
   m_ObjectHideFlags: 0
@@ -133,6 +136,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &325212958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 325212955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8be329bbe9e987a409d735901c8c2658, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  song: 0
+  game: 0
 --- !u!1 &436605011
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,7 +307,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 50da9db8102547d42bff353d30dd3c67, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c7f92e5f0c82eb44cbb190dea2a055cc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -466,6 +482,7 @@ GameObject:
   - component: {fileID: 1473787005}
   - component: {fileID: 1473787004}
   - component: {fileID: 1473787003}
+  - component: {fileID: 1473787008}
   m_Layer: 0
   m_Name: VideoHolder
   m_TagString: Untagged
@@ -485,11 +502,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoMats:
-  - {fileID: 2100000, guid: b4022d5056f0b5a4cba9fc0c3bff5737, type: 2}
-  - {fileID: 2100000, guid: a250fd7cf2443474bb866179db34b78a, type: 2}
+  - {fileID: 2100000, guid: 6ec994000f6f2d047926708fcdbe13d7, type: 2}
   canvas: {fileID: 1507497549}
   repeatVideo: 1
-  timeToStart: 4
 --- !u!23 &1473787004
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -553,6 +568,86 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!82 &1473787008
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1473787002}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 6ebbd7a866f035844b3d0a6943627137, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!1 &1507497549
 GameObject:
   m_ObjectHideFlags: 0

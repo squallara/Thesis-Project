@@ -14,7 +14,7 @@ public class VideoTutorial : MonoBehaviour
     public int repeatVideo;
     bool videoStarted, readyToPlay, tutorialStarted;
     float countToStart;
-    public float timeToStart;
+    AudioSource aud;
 
     void Start()
     {
@@ -25,16 +25,17 @@ public class VideoTutorial : MonoBehaviour
         videoStarted = false;
         tutorialStarted = false;
         readyToPlay = true;
+        aud = GetComponent<AudioSource>();
     }
 
     void Update()
-    {       
-        if(KinectForTutorial.instance.playersIdTut.Count > 0)
+    {
+        if (KinectForTutorial.instance.playersIdTut.Count > 0)
         {
             if (!tutorialStarted)
             {
                 countToStart += Time.deltaTime;
-                if (countToStart >= timeToStart)
+                if (countToStart >= TutorialPlayers.instance.timeToStartTemp)
                 {
                     canvas.SetActive(false);
                     tutorialStarted = true;
@@ -63,6 +64,8 @@ public class VideoTutorial : MonoBehaviour
                     video = (MovieTexture)rend.material.mainTexture;
 
                     video.Play();
+                    aud.Play();
+                    //aud.clip = video.audioClip;
                     videoStarted = true;
                     readyToPlay = false;
                 }
@@ -72,6 +75,7 @@ public class VideoTutorial : MonoBehaviour
                     if (!video.isPlaying)
                     {
                         video.Stop();
+                        aud.Stop();
                         countReps++;
                         if (countReps == repeatVideo)
                         {
@@ -86,11 +90,18 @@ public class VideoTutorial : MonoBehaviour
         }
         else
         {
-            for(int i=0; i< KinectForTutorial.instance.playersIdTut.Count; i++)
+            for (int i = 0; i < KinectForTutorial.instance.playersIdTut.Count; i++)
             {
                 TutorialPlayers.instance.playersPlayedTut.Add(KinectForTutorial.instance.playersIdTut[i]);
             }
-            SceneManager.LoadScene(1);  //Fixed to have only two scenes into the game.
+            if (SavedData.instance.song == 0)
+            {
+                SceneManager.LoadScene(1);
+            }
+            else
+            {
+                SceneManager.LoadScene(SavedData.instance.song);  //Fixed to have only two gameplay scenes into the game.
+            }
         }
     }
 }

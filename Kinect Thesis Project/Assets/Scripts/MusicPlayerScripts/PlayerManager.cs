@@ -170,6 +170,7 @@ public class PlayerManager : MonoBehaviour
                         musicManager.melodyPlayable = false;
                         playerInput.userInput = null;
                         Manager.instance.clipEndedP1 = true;
+                        Manager.instance.playTonesBody = false;
                     }
                 }
                 else if (!player2rythm)
@@ -207,6 +208,7 @@ public class PlayerManager : MonoBehaviour
                         musicManager.rythmPlayable = false;
                         playerInput.userInput = null;
                         Manager.instance.clipEndedP1 = true;
+                        Manager.instance.playTonesBody = false;
                     }
                 }
             }
@@ -263,6 +265,7 @@ public class PlayerManager : MonoBehaviour
                         musicManager.rythmPlayable = false;
                         playerInput.userInput = null;
                         Manager.instance.clipEndedP2 = true;
+                        Manager.instance.playTonesBody = false;
                     }
                 }
                 else if (!player2rythm)
@@ -299,6 +302,7 @@ public class PlayerManager : MonoBehaviour
                         musicManager.melodyPlayable = false;
                         playerInput.userInput = null;
                         Manager.instance.clipEndedP2 = true;
+                        Manager.instance.playTonesBody = false;
                     }
                 }
             }

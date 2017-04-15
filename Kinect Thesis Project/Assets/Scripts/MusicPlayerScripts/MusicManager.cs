@@ -617,7 +617,24 @@ public class MusicManager : MonoBehaviour
     {
         yield return new WaitForSeconds(Manager.instance.waitAtTheEnd);
         LogData.instance.WriteFile(); //Call function to save data after the final fireworks ended.
-        SceneManager.LoadScene(2); //Fixed case where the break scene is always at position 2 in the build settings
+        if (SavedData.instance.song == 0)
+        {
+            SavedData.instance.song = 2;
+        }
+        else
+        {
+            if (SavedData.instance.song == 1)
+            {
+                SavedData.instance.song = 2;
+            }
+            else if (SavedData.instance.song == 2)
+            {
+                SavedData.instance.song = 1;
+            }
+        }
+        SavedData.instance.game++;
+        SavedData.instance.Save();
+        SceneManager.LoadScene(3); //Fixed case where the break scene is always at position 3 in the build settings
     }
 }
 

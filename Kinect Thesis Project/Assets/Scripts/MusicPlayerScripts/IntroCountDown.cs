@@ -70,6 +70,7 @@ public class IntroCountDown : MonoBehaviour {
             else
             {
                 DeactivateAll();
+                //print("Now I am playing");
                 timer = -1;
             }
         }
