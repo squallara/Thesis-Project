@@ -1094,6 +1094,16 @@ Prefab:
       propertyPath: depthClose
       value: close
       objectReference: {fileID: 0}
+    - target: {fileID: 114961946022812850, guid: 4187cb9ace099004aa2896c95f27c6d2,
+        type: 2}
+      propertyPath: targetForwardInput
+      value: fwd
+      objectReference: {fileID: 0}
+    - target: {fileID: 114961946022812850, guid: 4187cb9ace099004aa2896c95f27c6d2,
+        type: 2}
+      propertyPath: targetBackInput
+      value: bwd
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4187cb9ace099004aa2896c95f27c6d2, type: 2}
   m_IsPrefabParent: 0

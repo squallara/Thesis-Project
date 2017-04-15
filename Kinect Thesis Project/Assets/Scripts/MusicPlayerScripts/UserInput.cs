@@ -5,7 +5,8 @@ using UnityEngine;
 public class UserInput : MonoBehaviour {
 
     //preset input strings. Input variables must match these strings for input
-    public string inputHigh, inputMid, inputLow, targetForwardInput, targetBackInput;
+    [HideInInspector]
+    public string inputHigh, inputMid, inputLow, targetHandHighInput, targetHandLowInput, targetForwardInput, targetBackInput;
 
     //input variables to set an input to
     //public string handInput1, handInput2, forwardInput, backInput;
@@ -20,6 +21,15 @@ public class UserInput : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
+        inputHigh = "high";
+        inputLow = "low";
+
+        targetHandHighInput = "thh";
+        targetHandLowInput = "thl";
+
+        targetForwardInput = "fwd";
+        targetBackInput = "bwd";
 
         audioSource = gameObject.GetComponent<AudioSource>();
 

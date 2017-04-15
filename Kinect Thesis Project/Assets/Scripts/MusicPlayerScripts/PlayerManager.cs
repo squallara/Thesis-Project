@@ -86,7 +86,7 @@ public class PlayerManager : MonoBehaviour
 
         if (playerInput.inputHigh == "" && playerInput.inputMid == "" && playerInput.inputLow == "")
         {
-           //Debug.LogError("Assign input controls");
+           Debug.LogError("Assign input controls");
         }
         else
         {
@@ -117,6 +117,14 @@ public class PlayerManager : MonoBehaviour
             {
                 // Debug.Log("Player 1 playing");
 
+                if(playerInput.userInput == playerInput.targetHandHighInput)
+                {
+                    playerInput.userInput = playerInput.inputHigh;
+                }
+                if(playerInput.userInput == playerInput.targetHandLowInput)
+                {
+                    playerInput.userInput = playerInput.inputLow;
+                }
                 if(playerInput.userInput == playerInput.targetForwardInput)
                 {
                     playerInput.userInput = playerInput.inputHigh;
@@ -204,7 +212,14 @@ public class PlayerManager : MonoBehaviour
             }
             else if (playerInput.isPlayer2)
             {
-
+                if (playerInput.userInput == playerInput.targetHandHighInput)
+                {
+                    playerInput.userInput = playerInput.inputHigh;
+                }
+                if (playerInput.userInput == playerInput.targetHandLowInput)
+                {
+                    playerInput.userInput = playerInput.inputLow;
+                }
                 if (playerInput.userInput == playerInput.targetForwardInput)
                 {
                     playerInput.userInput = playerInput.inputHigh;
