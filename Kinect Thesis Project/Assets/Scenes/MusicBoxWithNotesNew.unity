@@ -1555,7 +1555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   melodicObject: {fileID: 929940645}
   rythmObject: {fileID: 882749006}
-  drumClip: {fileID: 8300000, guid: 62f9e6375abd14b40897c8680bd90275, type: 3}
+  drumClip: {fileID: 8300000, guid: 6276166ca919bce4390aee4441e92f70, type: 3}
   applause: {fileID: 8300000, guid: 9ffa05968400c074caac1260dab597b4, type: 3}
   rythmUseTwoSets: 1
   melodicUseTwoSets: 0
@@ -1795,7 +1795,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -378235995
+  randomSeed: 1949119107
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4393,6 +4393,14 @@ MonoBehaviour:
   - {fileID: 2100000, guid: bf915de8bccd53e49b549c6823528b6b, type: 2}
   - {fileID: 2100000, guid: df46a8643bdde904e8576250db17cee1, type: 2}
   - {fileID: 2100000, guid: e5c4ceb5de84b3c4c8c0ec1687d35787, type: 2}
+  positiveFeedback:
+  - {fileID: 8300000, guid: 111e065fc39057e478f0df2b4f23bd72, type: 3}
+  - {fileID: 8300000, guid: f74727306a360c44cacc434f86b59f1a, type: 3}
+  - {fileID: 8300000, guid: 935521d79df637347993c6dd37837b1c, type: 3}
+  - {fileID: 8300000, guid: 61b8e94edb88e3a4ea7bc1b2ec291cfb, type: 3}
+  - {fileID: 8300000, guid: b6b4afdae8bd88348bac828f0827c12e, type: 3}
+  highFive: {fileID: 8300000, guid: 620bdc87205e8f4458eda7c761fec861, type: 3}
+  timeBeforeStart: 8
   changeToneTime: 0.5
 --- !u!4 &1721709364 stripped
 Transform:

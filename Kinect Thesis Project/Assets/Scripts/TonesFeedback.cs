@@ -2,23 +2,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TonesFeedback : MonoBehaviour {
+public class TonesFeedback : MonoBehaviour
+{
 
     public List<Material> nodes = new List<Material>();
+    public List<AudioClip> positiveFeedback = new List<AudioClip>();
+    public AudioClip highFive;
+    AudioSource pfSource;
+
+    public float timeBeforeStart;
+    float startCheckTimer;
     public float changeToneTime;
     float timeCounter;
+    float playTogetherTimer, playTogetherCooldown;
+    int prevFeedback;
 
-	// Use this for initialization
-	void Start () {
+    int togetherCounter;
+
+    bool firstPlay, onCooldown, musicStarted;
+
+    // Use this for initialization
+    void Start()
+    {
         GetComponent<ParticleSystemRenderer>().material = nodes[0];
         timeCounter = 0;
         GetComponent<ParticleSystem>().enableEmission = false;
+        pfSource = gameObject.AddComponent<AudioSource>();
 
+        playTogetherCooldown = 5;
+        playTogetherTimer = 0;
+        firstPlay = true;
+        onCooldown = false;
+        togetherCounter = 0;
+        startCheckTimer = timeBeforeStart;
+        musicStarted = false;
     }
-	
-	// Update is called once per frame
-	void Update () {
-		if(timeCounter > changeToneTime)
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (timeCounter > changeToneTime)
         {
             //Allakse tone
             var randomTone = Random.Range(0, nodes.Count);
@@ -27,8 +50,67 @@ public class TonesFeedback : MonoBehaviour {
         }
         timeCounter += Time.deltaTime;
 
-        if(Manager.instance.playTones == true || Manager.instance.playTonesBody == true || Manager.instance.playTonesBodyHands == true)
+        if (!musicStarted)
         {
+            startCheckTimer = startCheckTimer - Time.deltaTime;
+            Debug.Log("Music NOT started");
+        }
+        if(!musicStarted && startCheckTimer < 0)
+        {
+            musicStarted = true;
+        }
+
+        if (onCooldown)
+        {
+            playTogetherCooldown = playTogetherCooldown + Time.deltaTime;
+            if(playTogetherCooldown >= 5)
+            {
+                firstPlay = true;
+                playTogetherTimer = 0;
+                onCooldown = false;
+            }
+        }
+
+        if (Manager.instance.playTones == true || Manager.instance.playTonesBody == true || Manager.instance.playTonesBodyHands == true)
+        {
+
+            if (musicStarted)
+            {
+                
+                playTogetherTimer = playTogetherTimer + Time.deltaTime;
+                Debug.Log("tog count = " + togetherCounter);
+
+                int randomFeedback = Random.Range(0, positiveFeedback.Count);
+                if (randomFeedback == prevFeedback)
+                {
+                    randomFeedback = Random.Range(0, positiveFeedback.Count);
+                }
+
+                if (playTogetherTimer > 2 && firstPlay && !onCooldown)
+                {
+                    pfSource.PlayOneShot(positiveFeedback[randomFeedback]);
+                    prevFeedback = randomFeedback;
+                    firstPlay = false;
+                    playTogetherTimer = 0;
+                    togetherCounter++;
+                }
+                else if (playTogetherTimer >= 10 && !firstPlay && !onCooldown)
+                {
+                    pfSource.PlayOneShot(positiveFeedback[randomFeedback]);
+                    prevFeedback = randomFeedback;
+
+                    playTogetherTimer = 0;
+                    togetherCounter++;
+                }
+                if (togetherCounter >= 2)
+                {
+                    if (!pfSource.isPlaying)
+                    {
+                        pfSource.PlayOneShot(highFive);
+                        togetherCounter = 0;
+                    }
+                }
+            }
             //if(Manager.instance.playTones == true)
             //{
             //    print("Notes caused of hands");
@@ -42,9 +124,9 @@ public class TonesFeedback : MonoBehaviour {
             //    print("Notes caused of a mix between bodies and hands");
             //}
             GetComponent<ParticleSystem>().enableEmission = true;
-            for(int i=0; i<LogData.instance.pID.Count; i++)
+            for (int i = 0; i < LogData.instance.pID.Count; i++)
             {
-                if(LogData.instance.active[i] == true)
+                if (LogData.instance.active[i] == true)
                 {
                     LogData.instance.timePlayingTogether[i] += Time.deltaTime;
                 }
@@ -52,7 +134,12 @@ public class TonesFeedback : MonoBehaviour {
         }
         else
         {
+            if (!firstPlay)
+            {
+                playTogetherCooldown = 0;
+                onCooldown = true;
+            }
             GetComponent<ParticleSystem>().enableEmission = false;
         }
-	}
+    }
 }
