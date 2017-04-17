@@ -8,6 +8,9 @@ public class IntroCountDown : MonoBehaviour {
     public GameObject introTextObject;
     public GameObject[] countDownObjects;
 
+    public List<AudioClip> feedback = new List<AudioClip>();
+    AudioSource feedbackSrc;
+
     Text introText;
     Shadow introTextShadow;
 
@@ -17,7 +20,7 @@ public class IntroCountDown : MonoBehaviour {
     [HideInInspector]
     public bool introIsPlaying;
 
-    bool countDownActive;
+    bool play1, play2, play3, play4, play5;
 
     // Use this for initialization
     void Awake()
@@ -27,13 +30,22 @@ public class IntroCountDown : MonoBehaviour {
 
     void Start () {
 
+        feedbackSrc = gameObject.AddComponent<AudioSource>();
+
         introText = introTextObject.GetComponent<Text>();
         introTextShadow = introTextObject.GetComponent<Shadow>();
 
         InitializeCountDownText();
         DeactivateAll();
 
+        play1 = false;
+        play2 = false;
+        play3 = false;
+        play4 = false;
+        play5 = false;
+
         timer = introTime;
+
 	}
 	
 	// Update is called once per frame
@@ -44,28 +56,49 @@ public class IntroCountDown : MonoBehaviour {
             timer = timer - Time.deltaTime;
 
             if(timer > 3)
-            {    
-                ActivateText(true);
+            {
+                if (!play1)
+                {
+                    ActivateText(true);
+                    play1 = true;
+                }
+                
             }
             else if(timer <= 3 && timer > 2)
             {
-                ActivateText(false);
-                ActivateCountDown(3, true);
+                if(!play2)
+                {
+                    ActivateText(false);
+                    ActivateCountDown(3, true);
+                    play2 = true;
+                }                
             }
             else if(timer <= 2 && timer > 1)
             {
-                ActivateCountDown(3, false);
-                ActivateCountDown(2, true);
+                if (!play3)
+                {
+                    ActivateCountDown(3, false);
+                    ActivateCountDown(2, true);
+                    play3 = true;
+                }
             }
             else if(timer <= 1 && timer > 0)
             {
-                ActivateCountDown(2, false);
-                ActivateCountDown(1, true);
+                if (!play4)
+                {
+                    ActivateCountDown(2, false);
+                    ActivateCountDown(1, true);
+                    play4 = true;
+                }
             }
             else if(timer <= 0 && timer > -1)
             {
-                ActivateCountDown(1, false);
-                ActivateCountDown(0, true);
+                if (!play5)
+                {
+                    ActivateCountDown(1, false);
+                    ActivateCountDown(0, true);
+                    play5 = true;
+                }
             }
             else
             {
@@ -110,11 +143,25 @@ public class IntroCountDown : MonoBehaviour {
     {
         introText.enabled = setActive;
         introTextShadow.enabled = setActive;
+
+        if (setActive)
+        {
+            feedbackSrc.PlayOneShot(feedback[4]);
+        }
+        
+
     }
 
     void ActivateCountDown(int numberToActivate, bool setActive)
     {
         countDownObjects[numberToActivate].SetActive(setActive);
+
+        if (setActive)
+        {
+            feedbackSrc.PlayOneShot(feedback[numberToActivate]);
+        }
+       
+
     }
 
 }

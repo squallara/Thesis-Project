@@ -1070,7 +1070,7 @@ Prefab:
         type: 2}
       propertyPath: high
       value: 
-      objectReference: {fileID: 8300000, guid: ba3f51166ee59fb40b42419d0703541a, type: 3}
+      objectReference: {fileID: 8300000, guid: 1eeaaaec5fe71584ba13bb425c9a2a12, type: 3}
     - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
         type: 2}
       propertyPath: mid
@@ -1080,7 +1080,7 @@ Prefab:
         type: 2}
       propertyPath: low
       value: 
-      objectReference: {fileID: 8300000, guid: b98d1275d02136340a3576c19bddf6e9, type: 3}
+      objectReference: {fileID: 8300000, guid: be1e913e7f468a24ea2f4bc1a1acc77a, type: 3}
     - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
         type: 2}
       propertyPath: timeLength
@@ -1347,6 +1347,16 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: feedback.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: countDownObjects.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4428376968322788, guid: 522cd53fe3231754fb0f871eb91cf2d7, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1530,6 +1540,51 @@ Prefab:
       propertyPath: rythmObject
       value: 
       objectReference: {fileID: 882749006}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: countDownObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 1362722791}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: countDownObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 611347213}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: countDownObjects.Array.data[2]
+      value: 
+      objectReference: {fileID: 1862035496}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: countDownObjects.Array.data[3]
+      value: 
+      objectReference: {fileID: 968625190}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: feedback.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: aff0f60477a948d49811a55e056cc779, type: 3}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: feedback.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: 73e84b290153a134793cd3deccbd896f, type: 3}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: feedback.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 8959bb92a4e962648a2ede9f7ad1e8c0, type: 3}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: feedback.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 8069b0544799a354aaa3769a3f9d640a, type: 3}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: feedback.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 720540778458e70498f1d631903af317, type: 3}
     m_RemovedComponents:
     - {fileID: 114847580689790630, guid: 522cd53fe3231754fb0f871eb91cf2d7, type: 2}
     - {fileID: 114174793476659764, guid: 522cd53fe3231754fb0f871eb91cf2d7, type: 2}
@@ -1795,7 +1850,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -405264519
+  randomSeed: -1140292571
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4414,12 +4469,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 56b5b45dc8b96624b8195fd43489de25, type: 3}
   - {fileID: 8300000, guid: 67479b14559c0c342b85c18778dc17ed, type: 3}
   - {fileID: 8300000, guid: c1df06c68e1c8714b9028230c06b983d, type: 3}
-  - {fileID: 8300000, guid: f9a2a689948d3ac44bc7a44c47fe7965, type: 3}
+  - {fileID: 8300000, guid: 36387c1918c9ea9449b8cfad4c68ff86, type: 3}
   - {fileID: 8300000, guid: 1ae6f28a16458004d8614b0428287708, type: 3}
   - {fileID: 8300000, guid: 4ea0c9c1fce7f2640b4a87a985c00338, type: 3}
   - {fileID: 8300000, guid: 2eb5d8a387f8f7e47b4f2d0c8fdbdada, type: 3}
   - {fileID: 8300000, guid: dda4efae8d6557a4fa39ba2a467274ef, type: 3}
-  - {fileID: 8300000, guid: 36387c1918c9ea9449b8cfad4c68ff86, type: 3}
   highFive: {fileID: 8300000, guid: 0fbce9b1986500f49b70a15efa281344, type: 3}
   timeBeforeStart: 8
   changeToneTime: 0.5

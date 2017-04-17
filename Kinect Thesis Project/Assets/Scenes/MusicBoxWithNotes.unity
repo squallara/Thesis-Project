@@ -232,7 +232,7 @@ Prefab:
         type: 2}
       propertyPath: high
       value: 
-      objectReference: {fileID: 8300000, guid: 0a50aef31fcca2d4285ab030cfd9a1f6, type: 3}
+      objectReference: {fileID: 8300000, guid: 818de3c3b8197b641b73b78fa580679a, type: 3}
     - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
         type: 2}
       propertyPath: mid
@@ -242,7 +242,7 @@ Prefab:
         type: 2}
       propertyPath: low
       value: 
-      objectReference: {fileID: 8300000, guid: 0591f0e59d88a374a882b9b4dadec089, type: 3}
+      objectReference: {fileID: 8300000, guid: 6220587d23235874bb12b6705712ffd8, type: 3}
     - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
         type: 2}
       propertyPath: timeLength
@@ -640,7 +640,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1721709364}
-  - {fileID: 1061686370}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -941,87 +940,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 968625190}
---- !u!1001 &1061686369
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 882749007}
-    m_Modifications:
-    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
-        type: 2}
-      propertyPath: high
-      value: 
-      objectReference: {fileID: 8300000, guid: ba3f51166ee59fb40b42419d0703541a, type: 3}
-    - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
-        type: 2}
-      propertyPath: mid
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
-        type: 2}
-      propertyPath: low
-      value: 
-      objectReference: {fileID: 8300000, guid: b98d1275d02136340a3576c19bddf6e9, type: 3}
-    - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
-        type: 2}
-      propertyPath: timeLength
-      value: 1.965
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958904349720914, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
-      propertyPath: m_Name
-      value: Rythm (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
-        type: 2}
-      propertyPath: tonesetRefHigh
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
-        type: 2}
-      propertyPath: tonesetRefLow
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: b61f1a3793d9190439dd0d57d12d8634, type: 2}
-  m_IsPrefabParent: 0
---- !u!4 &1061686370 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634,
-    type: 2}
-  m_PrefabInternal: {fileID: 1061686369}
 --- !u!1001 &1172423974
 Prefab:
   m_ObjectHideFlags: 0
@@ -1271,6 +1189,16 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: feedback.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: countDownObjects.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4428376968322788, guid: 522cd53fe3231754fb0f871eb91cf2d7, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1454,6 +1382,51 @@ Prefab:
       propertyPath: rythmObject
       value: 
       objectReference: {fileID: 882749006}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: countDownObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 1362722791}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: countDownObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 611347213}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: countDownObjects.Array.data[2]
+      value: 
+      objectReference: {fileID: 1862035496}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: countDownObjects.Array.data[3]
+      value: 
+      objectReference: {fileID: 968625190}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: feedback.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: 4336efd0bac74ad40a65b8c61304ee62, type: 3}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: feedback.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: 73e84b290153a134793cd3deccbd896f, type: 3}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: feedback.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 8959bb92a4e962648a2ede9f7ad1e8c0, type: 3}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: feedback.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 8069b0544799a354aaa3769a3f9d640a, type: 3}
+    - target: {fileID: 114961260712115572, guid: 522cd53fe3231754fb0f871eb91cf2d7,
+        type: 2}
+      propertyPath: feedback.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: ed259d10b8afdf540981459e67647cf4, type: 3}
     m_RemovedComponents:
     - {fileID: 114847580689790630, guid: 522cd53fe3231754fb0f871eb91cf2d7, type: 2}
     - {fileID: 114174793476659764, guid: 522cd53fe3231754fb0f871eb91cf2d7, type: 2}
@@ -1479,17 +1452,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   melodicObject: {fileID: 929940645}
   rythmObject: {fileID: 882749006}
-  drumClip: {fileID: 8300000, guid: 6276166ca919bce4390aee4441e92f70, type: 3}
+  drumClip: {fileID: 8300000, guid: 47dd8f02750f27647847f4d05b94e874, type: 3}
   applause: {fileID: 8300000, guid: 9ffa05968400c074caac1260dab597b4, type: 3}
-  rythmUseTwoSets: 1
+  rythmUseTwoSets: 0
   melodicUseTwoSets: 0
   startMusic: 0
   mainTrackTime: 0
-  melodicBeatInterval: 2
-  rythmBeatInterval: 2
-  beatInterval: 2
+  melodicBeatInterval: 3.1
+  rythmBeatInterval: 3.1
+  beatInterval: 2.1
   timeOffset: 0
-  earlyApplauseTime: 4
+  earlyApplauseTime: 0
   melodyPlayable: 0
   rythmPlayable: 0
   inputReady: 0
@@ -1521,10 +1494,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e088119e3fa87334cb3ca43a384ad4b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  melodicBeatVerse: 2
-  rythmBeatVerse: 2
-  melodicBeatChorus: 4
-  rythmBeatChorus: 4
+  melodicBeatVerse: 2.1
+  rythmBeatVerse: 2.1
+  melodicBeatChorus: 2.1
+  rythmBeatChorus: 2.1
   verseTimeStart: 0
   verse2TimeStart: 80
   bridgeTimeStart: 40
@@ -1719,7 +1692,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -772492539
+  randomSeed: 62975523
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4617,7 +4590,7 @@ Prefab:
         type: 2}
       propertyPath: high
       value: 
-      objectReference: {fileID: 8300000, guid: cd2ff1c8816a3ca4d87998c8fb61f6cb, type: 3}
+      objectReference: {fileID: 8300000, guid: d053f3d0319104a4e897edf93f749eb4, type: 3}
     - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
         type: 2}
       propertyPath: mid
@@ -4627,7 +4600,7 @@ Prefab:
         type: 2}
       propertyPath: low
       value: 
-      objectReference: {fileID: 8300000, guid: f79117b332bf1d24d8912bd9627ef00f, type: 3}
+      objectReference: {fileID: 8300000, guid: 4b1a0caae51ace64eb424d15c91ee7ab, type: 3}
     - target: {fileID: 114342150575574618, guid: b61f1a3793d9190439dd0d57d12d8634,
         type: 2}
       propertyPath: timeLength
