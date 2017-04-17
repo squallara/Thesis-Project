@@ -121,7 +121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playersPlayedTut: 
   tutObj: {fileID: 325212955}
-  timeToStart: 3
+  timeToStart: 10
   timeToStartTemp: 0
 --- !u!4 &325212957
 Transform:
@@ -502,7 +502,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoMats:
-  - {fileID: 2100000, guid: 6ec994000f6f2d047926708fcdbe13d7, type: 2}
+  - {fileID: 2100000, guid: ebd1a8564f914994e9dbfedec41cc42b, type: 2}
   canvas: {fileID: 1507497549}
   repeatVideo: 1
 --- !u!23 &1473787004
@@ -577,7 +577,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 6ebbd7a866f035844b3d0a6943627137, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 021bb53e5b324f14ba0b4f3d6cbb5614, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

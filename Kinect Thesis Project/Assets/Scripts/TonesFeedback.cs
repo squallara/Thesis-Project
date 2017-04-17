@@ -53,7 +53,7 @@ public class TonesFeedback : MonoBehaviour
         if (!musicStarted)
         {
             startCheckTimer = startCheckTimer - Time.deltaTime;
-            Debug.Log("Music NOT started");
+            //Debug.Log("Music NOT started");
         }
         if(!musicStarted && startCheckTimer < 0)
         {
@@ -78,7 +78,7 @@ public class TonesFeedback : MonoBehaviour
             {
                 
                 playTogetherTimer = playTogetherTimer + Time.deltaTime;
-                Debug.Log("tog count = " + togetherCounter);
+                //Debug.Log("tog count = " + togetherCounter);
 
                 int randomFeedback = Random.Range(0, positiveFeedback.Count);
                 if (randomFeedback == prevFeedback)

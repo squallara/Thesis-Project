@@ -499,8 +499,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b82181e29ff02ed4bb17444e549aecf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseWaitingTime: 2
-  extraWaitingTime: 2
+  baseWaitingTime: 10
+  extraWaitingTime: 20
 --- !u!4 &1279398288
 Transform:
   m_ObjectHideFlags: 0

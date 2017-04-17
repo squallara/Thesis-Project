@@ -1719,7 +1719,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1963559091
+  randomSeed: -4842114
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4317,6 +4317,18 @@ MonoBehaviour:
   - {fileID: 2100000, guid: bf915de8bccd53e49b549c6823528b6b, type: 2}
   - {fileID: 2100000, guid: df46a8643bdde904e8576250db17cee1, type: 2}
   - {fileID: 2100000, guid: e5c4ceb5de84b3c4c8c0ec1687d35787, type: 2}
+  positiveFeedback:
+  - {fileID: 8300000, guid: 98a7e4508aa2ea44a869751a52704968, type: 3}
+  - {fileID: 8300000, guid: e3a9cf2543e67fd4ea16579f37a94141, type: 3}
+  - {fileID: 8300000, guid: e04159c99cf9e71468679ddbbd266a2b, type: 3}
+  - {fileID: 8300000, guid: 37a582f4ee90bf34a9909caa03dba470, type: 3}
+  - {fileID: 8300000, guid: 39a0fb5714e126249a6a12dcaed0aa12, type: 3}
+  - {fileID: 8300000, guid: f3f65697f58bcc142b53b1dc4cbdd472, type: 3}
+  - {fileID: 8300000, guid: 2dce9af12202f204b95617e34ae8f570, type: 3}
+  - {fileID: 8300000, guid: c1ff7c13439b6c24cb575a727e4cbf61, type: 3}
+  - {fileID: 8300000, guid: 2e50e389f2bc9c547a92a3f624e0c147, type: 3}
+  highFive: {fileID: 0}
+  timeBeforeStart: 8
   changeToneTime: 0.5
 --- !u!4 &1721709364 stripped
 Transform:

@@ -950,7 +950,7 @@ public class Manager : MonoBehaviour
                                 }
                                 catch
                                 {
-                                    print("Something wrong with the bodyJoints of someone player that is being registered into Kinect");
+                                    //print("Something wrong with the bodyJoints of someone player that is being registered into Kinect");
                                 }
                             }
                             p++;
@@ -994,7 +994,7 @@ public class Manager : MonoBehaviour
             }
             catch
             {
-                print("Something went wrong with detecting the position of either the left hand or right hand or both from the player1 or player2");
+                //print("Something went wrong with detecting the position of either the left hand or right hand or both from the player1 or player2");
             }
         }
         //////////////////////////////////////////////////////////////////////////
@@ -1049,7 +1049,7 @@ public class Manager : MonoBehaviour
                                     {
                                         if (ableToHigh5Left == true)
                                         {
-                                            print("p1Left highFive with p2AnyHand");
+                                            //print("p1Left highFive with p2AnyHand");
                                             for (int i = 0; i < LogData.instance.pID.Count; i++)
                                             {
                                                 if (LogData.instance.active[i] == true)
@@ -1080,7 +1080,7 @@ public class Manager : MonoBehaviour
                                     {
                                         if (ableToHigh5Right == true)
                                         {
-                                            print("p1Right highFive with p2AnyHand");
+                                            //print("p1Right highFive with p2AnyHand");
                                             for (int i = 0; i < LogData.instance.pID.Count; i++)
                                             {
                                                 if (LogData.instance.active[i] == true)
