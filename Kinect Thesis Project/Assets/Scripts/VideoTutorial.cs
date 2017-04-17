@@ -19,6 +19,7 @@ public class VideoTutorial : MonoBehaviour
 
     void Start()
     {
+        canvas.SetActive(true);
         counter = 0;
         countReps = 0;
         countToStart = 0;
