@@ -1795,7 +1795,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -378235995
+  randomSeed: -405264519
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4393,6 +4393,35 @@ MonoBehaviour:
   - {fileID: 2100000, guid: bf915de8bccd53e49b549c6823528b6b, type: 2}
   - {fileID: 2100000, guid: df46a8643bdde904e8576250db17cee1, type: 2}
   - {fileID: 2100000, guid: e5c4ceb5de84b3c4c8c0ec1687d35787, type: 2}
+  positiveFeedback:
+  - {fileID: 8300000, guid: 64d31bd5c6890cf41a43f9b023c2698c, type: 3}
+  - {fileID: 8300000, guid: 2f7aac7a77707d24a8a863c3f4ee064b, type: 3}
+  - {fileID: 8300000, guid: d92c48403dd111645b085b3c0041d884, type: 3}
+  - {fileID: 8300000, guid: 0554de9935dd7184080a6b7428fa5609, type: 3}
+  - {fileID: 8300000, guid: 4b4131a2471e0a54d9cd9be80d1248df, type: 3}
+  - {fileID: 8300000, guid: 95d220156d4b1cf4193eb05be0aaef3d, type: 3}
+  - {fileID: 8300000, guid: 0e5e0c714ba616c46b3507e444c38188, type: 3}
+  - {fileID: 8300000, guid: abfbe27c7c772294299cefa0b82fb153, type: 3}
+  - {fileID: 8300000, guid: 007775c9cef5d144a8dc9e013d2076a4, type: 3}
+  - {fileID: 8300000, guid: 02ef41fb2dc618244b449f0428c88867, type: 3}
+  - {fileID: 8300000, guid: 471b4db423956d444bba926bc9ec9124, type: 3}
+  - {fileID: 8300000, guid: b14475dc5678abd4380eb08c3fc147f5, type: 3}
+  - {fileID: 8300000, guid: 88f409003baa11146becb8a17523d41f, type: 3}
+  - {fileID: 8300000, guid: fbc324c203c03314d8b4fca3ebd36d63, type: 3}
+  - {fileID: 8300000, guid: 81ded88775ccbdb488e9bfd821af6480, type: 3}
+  - {fileID: 8300000, guid: eb6e875cf61b8df43b831bf9ebf80785, type: 3}
+  - {fileID: 8300000, guid: ce0d445fa6fad3049b8aebd83679129a, type: 3}
+  - {fileID: 8300000, guid: 56b5b45dc8b96624b8195fd43489de25, type: 3}
+  - {fileID: 8300000, guid: 67479b14559c0c342b85c18778dc17ed, type: 3}
+  - {fileID: 8300000, guid: c1df06c68e1c8714b9028230c06b983d, type: 3}
+  - {fileID: 8300000, guid: f9a2a689948d3ac44bc7a44c47fe7965, type: 3}
+  - {fileID: 8300000, guid: 1ae6f28a16458004d8614b0428287708, type: 3}
+  - {fileID: 8300000, guid: 4ea0c9c1fce7f2640b4a87a985c00338, type: 3}
+  - {fileID: 8300000, guid: 2eb5d8a387f8f7e47b4f2d0c8fdbdada, type: 3}
+  - {fileID: 8300000, guid: dda4efae8d6557a4fa39ba2a467274ef, type: 3}
+  - {fileID: 8300000, guid: 36387c1918c9ea9449b8cfad4c68ff86, type: 3}
+  highFive: {fileID: 8300000, guid: 0fbce9b1986500f49b70a15efa281344, type: 3}
+  timeBeforeStart: 8
   changeToneTime: 0.5
 --- !u!4 &1721709364 stripped
 Transform:
