@@ -51,6 +51,7 @@ public class VideoTutorial : MonoBehaviour
             countReps = 0;
             videoStarted = false;
             readyToPlay = true;
+            SceneManager.LoadScene(0);  //Load again the tutorial scene
         }
 
         if (counter < videoMats.Count)
