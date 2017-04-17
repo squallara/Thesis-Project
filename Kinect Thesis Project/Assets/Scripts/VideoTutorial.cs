@@ -15,6 +15,7 @@ public class VideoTutorial : MonoBehaviour
     bool videoStarted, readyToPlay, tutorialStarted;
     float countToStart;
     AudioSource aud;
+    bool registered;
 
     void Start()
     {
@@ -26,12 +27,15 @@ public class VideoTutorial : MonoBehaviour
         tutorialStarted = false;
         readyToPlay = true;
         aud = GetComponent<AudioSource>();
+        registered = false;
     }
 
     void Update()
     {
+        //print(registered);
         if (KinectForTutorial.instance.playersIdTut.Count > 0)
         {
+            registered = true;
             if (!tutorialStarted)
             {
                 countToStart += Time.deltaTime;
@@ -51,7 +55,14 @@ public class VideoTutorial : MonoBehaviour
             countReps = 0;
             videoStarted = false;
             readyToPlay = true;
-            SceneManager.LoadScene(0);  //Load again the tutorial scene
+            rend.material = videoMats[counter];
+            video = (MovieTexture)rend.material.mainTexture;
+            video.Stop();
+            aud.Stop();
+            if (registered == true)
+            {
+                SceneManager.LoadScene(0);  //Load again the tutorial scene
+            }
         }
 
         if (counter < videoMats.Count)
