@@ -659,7 +659,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1022,6 +1022,11 @@ Prefab:
         type: 2}
       propertyPath: targetBackInput
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 82777146449289670, guid: 4187cb9ace099004aa2896c95f27c6d2,
+        type: 2}
+      propertyPath: m_Volume
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4187cb9ace099004aa2896c95f27c6d2, type: 2}
@@ -1454,6 +1459,7 @@ MonoBehaviour:
   rythmObject: {fileID: 882749006}
   drumClip: {fileID: 8300000, guid: 47dd8f02750f27647847f4d05b94e874, type: 3}
   applause: {fileID: 8300000, guid: 9ffa05968400c074caac1260dab597b4, type: 3}
+  volume: 0.5
   rythmUseTwoSets: 0
   melodicUseTwoSets: 0
   startMusic: 0

@@ -1612,6 +1612,7 @@ MonoBehaviour:
   rythmObject: {fileID: 882749006}
   drumClip: {fileID: 8300000, guid: 6276166ca919bce4390aee4441e92f70, type: 3}
   applause: {fileID: 8300000, guid: 9ffa05968400c074caac1260dab597b4, type: 3}
+  volume: 1
   rythmUseTwoSets: 1
   melodicUseTwoSets: 0
   startMusic: 0

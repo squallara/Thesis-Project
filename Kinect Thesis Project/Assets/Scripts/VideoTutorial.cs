@@ -16,9 +16,12 @@ public class VideoTutorial : MonoBehaviour
     float countToStart;
     AudioSource aud;
     bool registered;
+    float countReset;
+    public float countUntilReset;
 
     void Start()
     {
+        countReset = 0;
         canvas.SetActive(true);
         counter = 0;
         countReps = 0;
@@ -37,6 +40,7 @@ public class VideoTutorial : MonoBehaviour
         if (KinectForTutorial.instance.playersIdTut.Count > 0)
         {
             registered = true;
+            countReset = 0;
             if (!tutorialStarted)
             {
                 countToStart += Time.deltaTime;
@@ -49,20 +53,26 @@ public class VideoTutorial : MonoBehaviour
         }
         else
         {
-            countToStart = 0;
-            tutorialStarted = false;
-            canvas.SetActive(true);
-            counter = 0;
-            countReps = 0;
-            videoStarted = false;
-            readyToPlay = true;
-            rend.material = videoMats[counter];
-            video = (MovieTexture)rend.material.mainTexture;
-            video.Stop();
-            aud.Stop();
-            if (registered == true)
+            //print("I AM HERE AND RESET TIME: " + countReset);
+            countReset += Time.deltaTime;
+            if (countReset >= countUntilReset)
             {
-                SceneManager.LoadScene(0);  //Load again the tutorial scene
+                countReset = 0;
+                countToStart = 0;
+                tutorialStarted = false;
+                canvas.SetActive(true);
+                counter = 0;
+                countReps = 0;
+                videoStarted = false;
+                readyToPlay = true;
+                rend.material = videoMats[counter];
+                video = (MovieTexture)rend.material.mainTexture;
+                video.Stop();
+                aud.Stop();
+                if (registered == true)
+                {
+                    SceneManager.LoadScene(0);  //Load again the tutorial scene
+                }
             }
         }
 

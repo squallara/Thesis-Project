@@ -12,6 +12,9 @@ public class MusicManager : MonoBehaviour
     int melodicSetAmount, rythmSetAmount;
 
     public AudioClip drumClip, applause;
+
+    public float volume;
+    
     AudioClip rythmSetOneHigh, rythmSetOneLow, rythmSetTwoHigh, rythmSetTwoLow;
     AudioClip melodicSetOneHigh, melodicSetOneLow, melodicSetTwoHigh, melodicSetTwoLow;
 
@@ -196,24 +199,24 @@ public class MusicManager : MonoBehaviour
     void StartMusic()
     {
 
-        drumSource.PlayOneShot(drumClip);
+        drumSource.PlayOneShot(drumClip, volume);
 
-        melodicSourceOneHigh.PlayOneShot(melodicSetOneHigh);
-        melodicSourceOneLow.PlayOneShot(melodicSetOneLow);
+        melodicSourceOneHigh.PlayOneShot(melodicSetOneHigh, volume);
+        melodicSourceOneLow.PlayOneShot(melodicSetOneLow, volume);
 
         if (melodicUseTwoSets)
         {
-            melodicSourceTwoHigh.PlayOneShot(melodicSetTwoHigh);
-            melodicSourceTwoLow.PlayOneShot(melodicSetTwoLow);
+            melodicSourceTwoHigh.PlayOneShot(melodicSetTwoHigh, volume);
+            melodicSourceTwoLow.PlayOneShot(melodicSetTwoLow, volume);
         }
 
-        rythmSourceOneHigh.PlayOneShot(rythmSetOneHigh);
-        rythmSourceOneLow.PlayOneShot(rythmSetOneLow);
+        rythmSourceOneHigh.PlayOneShot(rythmSetOneHigh, volume);
+        rythmSourceOneLow.PlayOneShot(rythmSetOneLow, volume);
 
         if (rythmUseTwoSets)
         {
-            rythmSourceTwoHigh.PlayOneShot(rythmSetTwoHigh);
-            rythmSourceTwoLow.PlayOneShot(rythmSetTwoLow);
+            rythmSourceTwoHigh.PlayOneShot(rythmSetTwoHigh, volume);
+            rythmSourceTwoLow.PlayOneShot(rythmSetTwoLow, volume);
         }
     }
 

@@ -932,19 +932,19 @@ public class Manager : MonoBehaviour
                                                     }
                                                 }
                                             }
-                                            else if (k < 2 && playersJointsHeight[k][1] <= playersJointsHeight[k][0] && playersJointsHeight[k][2] <= playersJointsHeight[k][0] && moveHands == true)
-                                            {
-                                                if (k == 0)
-                                                {
-                                                    p1UInput.userInput = null;
-                                                }
-                                                else if (k == 1)
-                                                {
-                                                    p2UInput.userInput = null;
-                                                }
+                                            //else if (k < 2 && playersJointsHeight[k][1] <= playersJointsHeight[k][0] && playersJointsHeight[k][2] <= playersJointsHeight[k][0] && moveHands == true)
+                                            //{
+                                            //    if (k == 0)
+                                            //    {
+                                            //        p1UInput.userInput = null;
+                                            //    }
+                                            //    else if (k == 1)
+                                            //    {
+                                            //        p2UInput.userInput = null;
+                                            //    }
 
-                                                moveHands = false;
-                                            }
+                                            //    moveHands = false;
+                                            //}
                                         }
                                     }
                                 }
