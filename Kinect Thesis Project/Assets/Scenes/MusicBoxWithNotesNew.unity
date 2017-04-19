@@ -1655,8 +1655,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   melodicBeatVerse: 2
   rythmBeatVerse: 2
-  melodicBeatChorus: 4
-  rythmBeatChorus: 4
+  melodicBeatChorus: 2
+  rythmBeatChorus: 2
   verseTimeStart: 0
   verse2TimeStart: 80
   bridgeTimeStart: 40
@@ -1851,7 +1851,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1140292571
+  randomSeed: 381110524
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4473,11 +4473,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 36387c1918c9ea9449b8cfad4c68ff86, type: 3}
   - {fileID: 8300000, guid: 1ae6f28a16458004d8614b0428287708, type: 3}
   - {fileID: 8300000, guid: 4ea0c9c1fce7f2640b4a87a985c00338, type: 3}
-  - {fileID: 8300000, guid: 2eb5d8a387f8f7e47b4f2d0c8fdbdada, type: 3}
   - {fileID: 8300000, guid: dda4efae8d6557a4fa39ba2a467274ef, type: 3}
   highFive: {fileID: 8300000, guid: 0fbce9b1986500f49b70a15efa281344, type: 3}
   timeBeforeStart: 8
   changeToneTime: 0.5
+  cooldown: 2
+  initialFeedback: 2
+  nextFeedback: 5
 --- !u!4 &1721709364 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4437664219897218, guid: b61f1a3793d9190439dd0d57d12d8634,

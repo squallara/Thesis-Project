@@ -20,6 +20,7 @@ public class TonesFeedback : MonoBehaviour
     int togetherCounter;
 
     bool firstPlay, onCooldown, musicStarted;
+    public int cooldown, initialFeedback, nextFeedback;
 
     // Use this for initialization
     void Start()
@@ -63,7 +64,7 @@ public class TonesFeedback : MonoBehaviour
         if (onCooldown)
         {
             playTogetherCooldown = playTogetherCooldown + Time.deltaTime;
-            if(playTogetherCooldown >= 5)
+            if(playTogetherCooldown >= cooldown)
             {
                 firstPlay = true;
                 playTogetherTimer = 0;
@@ -86,7 +87,7 @@ public class TonesFeedback : MonoBehaviour
                     randomFeedback = Random.Range(0, positiveFeedback.Count);
                 }
 
-                if (playTogetherTimer > 2 && firstPlay && !onCooldown)
+                if (playTogetherTimer > initialFeedback && firstPlay && !onCooldown)
                 {
                     pfSource.PlayOneShot(positiveFeedback[randomFeedback]);
                     prevFeedback = randomFeedback;
@@ -94,7 +95,7 @@ public class TonesFeedback : MonoBehaviour
                     playTogetherTimer = 0;
                     togetherCounter++;
                 }
-                else if (playTogetherTimer >= 10 && !firstPlay && !onCooldown)
+                else if (playTogetherTimer >= nextFeedback && !firstPlay && !onCooldown)
                 {
                     pfSource.PlayOneShot(positiveFeedback[randomFeedback]);
                     prevFeedback = randomFeedback;

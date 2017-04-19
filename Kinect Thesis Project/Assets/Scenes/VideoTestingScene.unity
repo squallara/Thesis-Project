@@ -121,7 +121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playersPlayedTut: 
   tutObj: {fileID: 325212955}
-  timeToStart: 10
+  timeToStart: 6
   timeToStartTemp: 0
 --- !u!4 &325212957
 Transform:
